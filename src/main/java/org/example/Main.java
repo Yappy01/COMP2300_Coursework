@@ -1,28 +1,20 @@
 package org.example;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
+import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Your full Neon connection string
-        String url = System.getenv("DB_URL");
-        String user = System.getenv("DB_USER");      // extract from connection string
-        String password = System.getenv("DB_PASSWORD");  // extract from connection string
 
-        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+        try (Connection conn = DBConnection.getConnection()) {
             System.out.println("Connected to Neon successfully!");
 
             // Example query
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(
-                    ""
+                    "SELECT * FROM users"
             );
 
-            if (rs.next()) {
-                System.out.println("PostgreSQL version: " + rs.getString(1));
+            while (rs.next()) {
+                System.out.println("Tables: " + rs.getString("name"));
             }
 
         } catch (Exception e) {
