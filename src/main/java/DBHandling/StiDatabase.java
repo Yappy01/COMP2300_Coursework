@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class StiDatabase {
-    public void save(StiEntry sti) {
+    public static void save(StiEntry sti) {
         String sql = "INSERT INTO sti_information (name, symptoms, prevention, treatment, risk_level) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,7 +31,7 @@ public class StiDatabase {
     }
 
     // 2️⃣ Read (By ID)
-    public StiEntry findById(int id) {
+    public static StiEntry findById(int id) {
         String sql = "SELECT * FROM sti_information WHERE sti_id = ?";
         StiEntry sti = null;
 
@@ -60,7 +60,7 @@ public class StiDatabase {
     }
 
     // 3️⃣ Update
-    public void update(StiEntry sti) {
+    public static void update(StiEntry sti) {
         String sql = "UPDATE sti_information SET name=?, symptoms=?, prevention=?, treatment=?, risk_level=? WHERE sti_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -80,7 +80,7 @@ public class StiDatabase {
     }
 
     // 4️⃣ Delete
-    public void delete(int id) {
+    public static void delete(int id) {
         String sql = "DELETE FROM sti_information WHERE sti_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -94,13 +94,42 @@ public class StiDatabase {
     }
 
     // 5️⃣ List All / Search
-    public ArrayList<StiEntry> findAll() {
+    public static ArrayList<StiEntry> getAll() {
         ArrayList<StiEntry> list = new ArrayList<>();
         String sql = "SELECT * FROM sti_information";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                StiEntry sti = new StiEntry(
+                        rs.getInt("sti_id"),
+                        rs.getString("name"),
+                        rs.getString("symptoms"),
+                        rs.getString("prevention"),
+                        rs.getString("treatment"),
+                        rs.getInt("risk_level")
+                );
+                list.add(sti);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public static ArrayList<StiEntry> searchBySymptom(String keyword) {
+        ArrayList<StiEntry> list = new ArrayList<>();
+        String sql = "SELECT * FROM sti WHERE symptoms LIKE ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + keyword + "%"); // add wildcards
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 StiEntry sti = new StiEntry(
