@@ -1,4 +1,6 @@
-package org.example;
+package App;
+import utils.DBConnection;
+
 import java.sql.*;
 
 public class Main {
