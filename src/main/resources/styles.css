@@ -1,0 +1,24 @@
+.logo-class {
+    -fx-background-color: #361000;
+    -fx-text-fill: #d7b0a0;
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+}
+
+.sidebar-list {
+    -fx
+}
+
+.sidebar-button-large {
+    -fx-background-color: #fff7f4;
+    -fx-text-fill: #D7B0A0;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-background-radius: 40;
+}
+
+.sidebar-button-large:hover {
+    -fx-background-color: #2196F3; /* darker blue on hover */
+}
