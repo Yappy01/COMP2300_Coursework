@@ -1,12 +1,14 @@
 .logo-class {
     -fx-background-color: #361000;
     -fx-text-fill: #d7b0a0;
-    -fx-font-size: 36px;
+    -fx-font-size: 30px;
     -fx-font-weight: bold;
     -fx-background-radius: 20;
 }
 
 .sidebar-list {
+    -fx-background-color: #fff7f4;
+    -fx-background-radius: 40;
 }
 
 .sidebar-button-large {
@@ -14,10 +16,25 @@
     -fx-text-fill: #D7B0A0;
     -fx-font-family: "Comic Sans MS";
     -fx-font-weight: bold;
-    -fx-font-size: 30px;
+    -fx-font-size: 28px;
     -fx-background-radius: 40;
 }
 
 .sidebar-button-large:hover {
     -fx-background-color: #2196F3; /* darker blue on hover */
+}
+
+.sidebar-button-medium {
+    -fx-background-color: #6C4535;
+    -fx-text-fill: #fff7f4;
+    -fx-font-family: "Constantia";
+    -fx-font-size: 16px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+}
+
+.sidebar-button-medium:selected {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: #261c1c;
 }
