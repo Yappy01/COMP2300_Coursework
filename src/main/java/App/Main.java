@@ -18,7 +18,7 @@ public class Main {
             while (rs.next()) {
                 System.out.println("Tables: " + rs.getString("name"));
             }
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

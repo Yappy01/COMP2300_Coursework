@@ -160,7 +160,7 @@
          </padding></VBox>
    </left>
    <center>
-      <VBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
+      <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;" BorderPane.alignment="CENTER_RIGHT">
          <children>
             <TextField maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;">
                <font>
