@@ -1,16 +1,10 @@
-.logo-class {
-    -fx-background-color: #361000;
-    -fx-text-fill: #d7b0a0;
-    -fx-font-size: 30px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 20;
-}
-
+/* General format for list in sidebar*/
 .sidebar-list {
     -fx-background-color: #fff7f4;
     -fx-background-radius: 40;
 }
 
+/* Button for returning to main */
 .sidebar-button-large {
     -fx-background-color: #fff7f4;
     -fx-text-fill: #D7B0A0;
@@ -24,6 +18,7 @@
     -fx-background-color: #f7cfc0; /* darker blue on hover */
 }
 
+/* Toggle button for tag use in information page */
 .sidebar-button-medium {
     -fx-background-color: #6C4535;
     -fx-text-fill: #fff7f4;
@@ -43,3 +38,49 @@
     -fx-background-color: #d7b0a0;
     -fx-text-fill: #261c1c;
 }
+
+/* Header */
+.table-view {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-font-family: "Times New Roman";
+}
+
+.table-view .column-header {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent transparent #ccc transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-font-size: 16px;
+}
+
+.table-view .column-header-background .label {
+    -fx-border-color: transparent #ccc transparent transparent;
+    -fx-border-width: 0 1px 0 0;
+}
+
+
+/* This part is still under revision as no data has been inputted yet*/
+/*
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e0f7fa;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #b2dfdb;
+}
+
+.table-view .table-cell:selected {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+*/
