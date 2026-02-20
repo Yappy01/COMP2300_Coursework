@@ -34,6 +34,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -46,14 +48,14 @@
       <HBox prefHeight="100.0" prefWidth="1100.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@styles.css" BorderPane.alignment="CENTER" />
    </top>
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="210.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="Home">
+            <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME">
                <graphic>
-                  <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" />
+                  <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
                </graphic>
                <font>
-                  <Font name="Comic Sans MS Bold" size="30.0" />
+                  <Font name="Comic Sans MS Bold" size="24.0" />
                </font>
                <opaqueInsets>
                   <Insets />
@@ -62,10 +64,61 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" styleClass="sidebar-list">
+            <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="sidebar-list">
                <children>
-                  <Button mnemonicParsing="false" text="Button" />
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="CLAMYDIA" textAlignment="CENTER" wrapText="true">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="diseaseTag" />
+                     </toggleGroup>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="SYPHILLIS" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="GENITAL HERPES" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="HIV" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="HPV" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToggleButton>
                </children>
+               <padding>
+                  <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </VBox>
          </children>
          <padding>

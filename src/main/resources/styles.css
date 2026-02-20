@@ -21,7 +21,7 @@
 }
 
 .sidebar-button-large:hover {
-    -fx-background-color: #2196F3; /* darker blue on hover */
+    -fx-background-color: #f7cfc0; /* darker blue on hover */
 }
 
 .sidebar-button-medium {
@@ -32,6 +32,11 @@
     -fx-min-height: 40;
     -fx-max-width: infinity;
     -fx-background-radius: 40;
+}
+
+.sidebar-button-medium:hover {
+    -fx-background-color: #f7cfc0;
+    -fx-text-fill: #261c1c;
 }
 
 .sidebar-button-medium:selected {
