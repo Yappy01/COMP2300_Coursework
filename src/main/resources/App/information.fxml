@@ -167,10 +167,11 @@
             </StackPane>
             <TableView fx:id="stiContentTable" prefWidth="200.0">
               <columns>
-                <TableColumn fx:id="stiNameColumn" prefWidth="152.53338623046875" text="STI NAME" />
-                <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="193.33331298828125" text="SYMPTOMS" />
-                  <TableColumn fx:id="stiTestAndCureColumn" prefWidth="244.2667236328125" text="TREATMENT" />
-                  <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="252.53338623046875" text="PREVENTION" />
+                <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" text="STI NAME" />
+                  <TableColumn fx:id="stiNameColumn1" prefWidth="96.0" text="Risk Level" />
+                <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="168.0" text="SYMPTOMS" />
+                  <TableColumn fx:id="stiTestAndCureColumn" prefWidth="208.0" text="TREATMENT" />
+                  <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="220.0" text="PREVENTION" />
               </columns>
             </TableView>
          </children>
