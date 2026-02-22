@@ -15,10 +15,23 @@
 }
 
 .sidebar-button-large:hover {
-    -fx-background-color: #f7cfc0; /* darker blue on hover */
+    -fx-background-color: #f7cfc0;
+}
+
+.sidebar-button-large:pressed {
+    -fx-background-color: #CF9784;
 }
 
 /* Toggle button for tag use in information page */
+.sidebar-title {
+    -fx-text-fill: #d7b0a0;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-max-width: infinity;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
 .sidebar-button-medium {
     -fx-background-color: #6C4535;
     -fx-text-fill: #fff7f4;
@@ -37,6 +50,22 @@
 .sidebar-button-medium:selected {
     -fx-background-color: #d7b0a0;
     -fx-text-fill: #261c1c;
+}
+
+/* Magnifying Glass */
+.info-magnifying {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.info-magnifying:pressed {
+    -fx-background-color: lightgray;
+}
+
+.info-magnifying:hover {
+    -fx-border-color: gray;
+    -fx-border-width: 2;
 }
 
 /* Header */

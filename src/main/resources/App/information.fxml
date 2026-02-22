@@ -42,6 +42,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
@@ -98,23 +99,21 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="sidebar-list">
+            <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                <children>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="CHLAMYDIA" textAlignment="CENTER" wrapText="true" fx:id="chlamydiaButton" onAction="#searchName" >
+                  <Label styleClass="sidebar-title" text="Table Options" />
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Risk Level Filter" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                      <toggleGroup>
                         <ToggleGroup fx:id="diseaseTag" />
                      </toggleGroup>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="SYPHILLIS" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -122,23 +121,7 @@
                         <Insets />
                      </opaqueInsets>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="GENITAL HERPES" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="HIV" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="HPV" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Symptom" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -162,17 +145,32 @@
    <center>
       <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <TextField maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;" fx:id="filterField">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-            </TextField>
-            <TableView prefWidth="200.0" fx:id="stiContentTable">
+            <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
+               <children>
+                  <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="25.0" right="50.0" />
+                     </padding>
+                  </TextField>
+                  <Button mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets right="20.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+            </StackPane>
+            <TableView fx:id="stiContentTable" prefWidth="200.0">
               <columns>
-                <TableColumn prefWidth="152.53338623046875" text="STI NAME" fx:id="stiNameColumn"/>
-                <TableColumn minWidth="0.0" prefWidth="193.33331298828125" text="SYMPTOMS" fx:id="stiSymptomsColumn" />
-                  <TableColumn prefWidth="244.2667236328125" text="TREATMENT" fx:id="stiTestAndCureColumn"/>
-                  <TableColumn prefWidth="252.53338623046875" text="PREVENTION" fx:id="stiTransmissionModeColumn"/>
+                <TableColumn fx:id="stiNameColumn" prefWidth="152.53338623046875" text="STI NAME" />
+                <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="193.33331298828125" text="SYMPTOMS" />
+                  <TableColumn fx:id="stiTestAndCureColumn" prefWidth="244.2667236328125" text="TREATMENT" />
+                  <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="252.53338623046875" text="PREVENTION" />
               </columns>
             </TableView>
          </children>
