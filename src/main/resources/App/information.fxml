@@ -85,7 +85,7 @@
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
          <children>
-            <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME">
+            <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME" onAction="#goToHomepage">
                <graphic>
                   <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
                </graphic>
