@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class StiDatabase {
     public static void save(StiEntry sti) {
-        String sql = "INSERT INTO sti_information (name, symptoms, prevention, treatment, risk_level) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO sti_information (name, symptoms, prevention, treatment, risklevel) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -32,7 +32,7 @@ public class StiDatabase {
 
     // 2️⃣ Read (By ID)
     public static StiEntry findById(int id) {
-        String sql = "SELECT * FROM sti_information WHERE sti_id = ?";
+        String sql = "SELECT * FROM sti_information WHERE stiid = ?";
         StiEntry sti = null;
 
         try (Connection conn = DBConnection.getConnection();
@@ -43,12 +43,40 @@ public class StiDatabase {
 
             if (rs.next()) {
                 sti = new StiEntry(
-                        rs.getInt("sti_id"),
+                        rs.getInt("stiid"),
                         rs.getString("name"),
                         rs.getString("symptoms"),
                         rs.getString("prevention"),
                         rs.getString("treatment"),
-                        rs.getInt("risk_level")
+                        rs.getInt("risklevel")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sti;
+    }
+
+    public static StiEntry findByName(String name) {
+        String sql = "SELECT * FROM sti_information WHERE name = ?";
+        StiEntry sti = null;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                sti = new StiEntry(
+                        rs.getInt("stiid"),
+                        rs.getString("name"),
+                        rs.getString("symptoms"),
+                        rs.getString("prevention"),
+                        rs.getString("treatment"),
+                        rs.getInt("risklevel")
                 );
             }
 
@@ -61,7 +89,7 @@ public class StiDatabase {
 
     // 3️⃣ Update
     public static void update(StiEntry sti) {
-        String sql = "UPDATE sti_information SET name=?, symptoms=?, prevention=?, treatment=?, risk_level=? WHERE sti_id=?";
+        String sql = "UPDATE sti_information SET name=?, symptoms=?, prevention=?, treatment=?, risklevel=? WHERE stiid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -81,7 +109,7 @@ public class StiDatabase {
 
     // 4️⃣ Delete
     public static void delete(int id) {
-        String sql = "DELETE FROM sti_information WHERE sti_id=?";
+        String sql = "DELETE FROM sti_information WHERE stiid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -93,7 +121,7 @@ public class StiDatabase {
         }
     }
 
-    // 5️⃣ List All / Search
+    // 5️⃣ List All
     public static ArrayList<StiEntry> getAll() {
         ArrayList<StiEntry> list = new ArrayList<>();
         String sql = "SELECT * FROM sti_information";
@@ -104,12 +132,12 @@ public class StiDatabase {
 
             while (rs.next()) {
                 StiEntry sti = new StiEntry(
-                        rs.getInt("sti_id"),
+                        rs.getInt("stiid"),
                         rs.getString("name"),
                         rs.getString("symptoms"),
                         rs.getString("prevention"),
                         rs.getString("treatment"),
-                        rs.getInt("risk_level")
+                        rs.getInt("risklevel")
                 );
                 list.add(sti);
             }
@@ -133,12 +161,12 @@ public class StiDatabase {
 
             while (rs.next()) {
                 StiEntry sti = new StiEntry(
-                        rs.getInt("sti_id"),
+                        rs.getInt("stiid"),
                         rs.getString("name"),
                         rs.getString("symptoms"),
                         rs.getString("prevention"),
                         rs.getString("treatment"),
-                        rs.getInt("risk_level")
+                        rs.getInt("risklevel")
                 );
                 list.add(sti);
             }
