@@ -24,6 +24,8 @@ public class InformationPageController {
     @FXML
     private TableColumn<StiEntry, String> stiTransmissionModeColumn;
     @FXML
+    private TableColumn<StiEntry, Integer> stiRiskLevelColumn;
+    @FXML
     private TextField filterField;
     private ObservableList<StiEntry> masterData;
 
@@ -34,6 +36,7 @@ public class InformationPageController {
         stiSymptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
         stiTestAndCureColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
         stiTransmissionModeColumn.setCellValueFactory(new PropertyValueFactory<>("prevention"));
+        stiRiskLevelColumn.setCellValueFactory(new PropertyValueFactory<>("riskLevel"));
 
         // Load data from DB
         ArrayList<StiEntry> stis = StiDatabase.getAll();
@@ -52,6 +55,22 @@ public class InformationPageController {
 
         ObservableList<StiEntry> filteredData = masterData.filtered(
                 sti -> sti.getName().toLowerCase().contains(filterText)
+        );
+
+        stiContentTable.setItems(filteredData);
+    }
+
+    @FXML
+    private void searchSymptoms() {
+        String filterText = filterField.getText().toLowerCase();
+
+        if (filterText.isEmpty()) {
+            stiContentTable.setItems(masterData);
+            return;
+        }
+
+        ObservableList<StiEntry> filteredData = masterData.filtered(
+                sti -> sti.getSymptoms().toLowerCase().contains(filterText)
         );
 
         stiContentTable.setItems(filteredData);

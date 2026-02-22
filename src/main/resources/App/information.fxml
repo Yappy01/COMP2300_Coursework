@@ -113,7 +113,7 @@
                         <ToggleGroup fx:id="diseaseTag" />
                      </toggleGroup>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true" onAction="#searchName">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -155,7 +155,7 @@
                         <Insets left="25.0" right="50.0" />
                      </padding>
                   </TextField>
-                  <Button mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
+                  <Button mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍" onAction="#searchSymptoms">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -168,7 +168,7 @@
             <TableView fx:id="stiContentTable" prefWidth="200.0">
               <columns>
                 <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" text="STI NAME" />
-                  <TableColumn fx:id="stiNameColumn1" prefWidth="96.0" text="Risk Level" />
+                  <TableColumn fx:id="stiRiskLevelColumn" prefWidth="96.0" text="Risk Level" />
                 <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="168.0" text="SYMPTOMS" />
                   <TableColumn fx:id="stiTestAndCureColumn" prefWidth="208.0" text="TREATMENT" />
                   <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="220.0" text="PREVENTION" />
