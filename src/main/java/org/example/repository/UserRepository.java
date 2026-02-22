@@ -1,0 +1,185 @@
+package org.example.repository;
+import org.example.model.User; //import the model of user
+import org.example.config.DBConnection; //import the dbconnector
+import java.sql.*;
+import org.mindrot.jbcrypt.BCrypt;
+
+public class UserRepository {
+    //add new user, hashed password
+    public boolean register_user(User user) throws SQLException, ClassNotFoundException {
+        String query = "INSERT INTO users (name,email,password) VALUES (?, ?, ?)";
+
+        //generate the hash
+        String hash_password = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
+
+        try (Connection conn = DBConnection.getConnection();
+
+             PreparedStatement insert_user_stmt = conn.prepareStatement(query)) {
+            insert_user_stmt.setString(1, user.getName().trim());
+            insert_user_stmt.setString(2, user.getEmail());
+            insert_user_stmt.setString(3, hash_password);
+
+            insert_user_stmt.executeUpdate();
+
+            System.out.println("Registration Successful");
+//            conn.close();
+            return true;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("User not registered");
+        return false;
+    }
+
+    //check for hashed password, for secure login
+    public boolean secureLogin(String name, String password) throws SQLException, ClassNotFoundException {
+        String query = "SELECT password FROM users WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement login_stmt = conn.prepareStatement(query)) {
+            login_stmt.setString(1, name.trim());
+
+            try (ResultSet rs = login_stmt.executeQuery()) {
+                if (rs.next()) {
+                    String stored_password = rs.getString("password");
+
+                    boolean isMatch = BCrypt.checkpw(password, stored_password);
+                    System.out.println("Does it match? " + isMatch);
+                    if (BCrypt.checkpw(password, stored_password)) {
+                        System.out.println("Logged in successfully");
+//                        conn.close();
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Invalid username or password");
+        return false;
+
+    }
+
+    //check for a specific user based on the username and email
+    public boolean check_user(String username, String email) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM users WHERE name = ? and email = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement search_user_stmt = conn.prepareStatement(query)) {
+            System.out.println("Looking for user with name and email");
+
+            search_user_stmt.setString(1, username.trim());
+            search_user_stmt.setString(2, email);
+
+
+            try (ResultSet rs = search_user_stmt.executeQuery()) {
+                if (rs.next()) {
+                    System.out.println("User found");
+//                    conn.close();
+                    return true;
+
+                }else{
+                    System.out.println("User not found");
+//                    conn.close();
+                    return false;
+                }
+            }catch(SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    //change password in database
+    public boolean change_password(String username, String password) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET password = ? WHERE name = ?";
+        String hash_password = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+        try (Connection conn = DBConnection.getConnection();
+
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, hash_password);
+            update_user_stmt.setString(2, username.trim());
+            update_user_stmt.executeUpdate();
+
+            System.out.println("Password changed successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Password not changed");
+        return false;
+    }
+
+    //change note in database
+    public boolean change_notetoself(String username, String note) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET notetoself = ? WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, note.trim());
+            update_user_stmt.setString(2, username.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //fetch note based on username
+    public String fetch_notetoself(String name) throws SQLException, ClassNotFoundException {
+        String query = "SELECT notetoself FROM users WHERE name = ?";
+        try (Connection conn = DBConnection.getConnection();
+        PreparedStatement search_user_stmt = conn.prepareStatement(query)) {
+            search_user_stmt.setString(1, name.trim());
+
+            try (ResultSet rs = search_user_stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("notetoself");
+                }
+            }catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //check if the username already exist
+    public boolean checkUserExist(String user) {
+        String query = "SELECT count(1) FROM users WHERE name = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement count_stmt = conn.prepareStatement(query)) {
+
+            count_stmt.setString(1, user);
+            ResultSet rs = count_stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //check if the email already exists in the database
+    public boolean checkEmailExist(String email) {
+        String query = "SELECT count(1) FROM users WHERE email = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement count_stmt = conn.prepareStatement(query)) {
+
+            count_stmt.setString(1, email);
+            ResultSet rs = count_stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}
