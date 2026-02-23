@@ -10,9 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -20,6 +18,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class InformationPageController {
+    @FXML private ToggleButton riskLevelButton;
+    @FXML private ToggleButton nameButton;
+    @FXML private ToggleButton symptomsButton;
+    @FXML private Button searchButton;
+    private String searchMode;
     @FXML
     private TableView<StiEntry> stiContentTable;
     @FXML
@@ -84,6 +87,65 @@ public class InformationPageController {
     }
 
     @FXML
+    private void searchRiskLevel() {
+        String filterText = filterField.getText().toLowerCase();
+
+        if (filterText.isEmpty()) {
+            stiContentTable.setItems(masterData);
+            return;
+        }
+        ObservableList<StiEntry> filteredData;
+        try {
+            int risk = Integer.parseInt(filterText);
+
+            filteredData = masterData.filtered(
+                    sti -> sti.getRiskLevel() == risk
+            );
+
+            stiContentTable.setItems(filteredData);
+
+        } catch (NumberFormatException e) {
+            // If input invalid, just show all data
+            stiContentTable.setPlaceholder(new Label("No data found"));
+        }
+
+    }
+
+    @FXML
+    private void handleSearch(ActionEvent event) {
+        ToggleButton clicked = (ToggleButton) event.getSource();
+
+        if (clicked == riskLevelButton) {
+            clicked.setOnAction(e -> {
+                searchMode = "risk";
+                filterField.setPromptText("Search for risk level here.");
+            });
+        } else if (clicked == nameButton) {
+            clicked.setOnAction(e -> {
+                searchMode = "name";
+                filterField.setPromptText("Search for sti name here.");
+            });
+        } else if (clicked == symptomsButton) {
+            clicked.setOnAction(e -> {
+                searchMode = "symptoms";
+                filterField.setPromptText("Search for symptoms here.");
+            });
+        }
+
+        searchButton.setOnAction(
+                e -> {
+                    if (searchMode.equals("name")) {
+                        searchName();
+                    } else if (searchMode.equals("risk")) {
+                        searchRiskLevel();
+                    } else if (searchMode.equals("symptoms")) {
+                        searchSymptoms();
+                    }
+                }
+        );
+    }
+
+    @FXML
     private void goToHomepage(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(
                 getClass().getResource("/App/homePage.fxml")
@@ -96,4 +158,6 @@ public class InformationPageController {
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
 }

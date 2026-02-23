@@ -102,7 +102,7 @@
             <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                <children>
                   <Label styleClass="sidebar-title" text="Table Options" />
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Risk Level Filter" textAlignment="CENTER" wrapText="true">
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Risk Level Filter" textAlignment="CENTER" wrapText="true" fx:id="riskLevelButton" onAction="#handleSearch">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -113,7 +113,7 @@
                         <ToggleGroup fx:id="diseaseTag" />
                      </toggleGroup>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true" onAction="#searchName">
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true" fx:id="nameButton" onAction="#handleSearch">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -121,7 +121,7 @@
                         <Insets />
                      </opaqueInsets>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Symptom" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Symptom" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true" fx:id="symptomsButton" onAction="#handleSearch">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -147,7 +147,7 @@
          <children>
             <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
                <children>
-                  <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;">
+                  <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search here" style="-fx-background-radius: 30;">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -155,7 +155,7 @@
                         <Insets left="25.0" right="50.0" />
                      </padding>
                   </TextField>
-                  <Button mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍" onAction="#searchSymptoms">
+                  <Button mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍" fx:id="searchButton" onAction="#searchSymptoms">
                      <font>
                         <Font size="20.0" />
                      </font>
