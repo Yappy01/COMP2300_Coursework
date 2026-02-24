@@ -2,6 +2,7 @@ package Controller;
 
 import DBHandling.StiDatabase;
 import Models.StiEntry;
+import Service.StiService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InformationPageController {
     @FXML private ToggleButton riskLevelButton;
@@ -23,6 +25,7 @@ public class InformationPageController {
     @FXML private ToggleButton symptomsButton;
     @FXML private Button searchButton;
     private String searchMode;
+    private final StiService searchService = new StiService();
     @FXML
     private TableView<StiEntry> stiContentTable;
     @FXML
@@ -52,63 +55,44 @@ public class InformationPageController {
         ArrayList<StiEntry> stis = StiDatabase.getAll();
         masterData = FXCollections.observableArrayList(stis);
         stiContentTable.setItems(masterData);
+
+        searchButton.setOnAction(e -> {
+            switch (searchMode) {
+                case "name" -> searchName();
+                case "risk" -> searchRiskLevel();
+                case "symptoms" -> searchSymptoms();
+            }
+        });
     }
 
     @FXML
     private void searchName() {
         String filterText = filterField.getText().toLowerCase();
 
-        if (filterText.isEmpty()) {
-            stiContentTable.setItems(masterData);
-            return;
-        }
+        List<StiEntry> result =
+                searchService.searchByName(masterData, filterText);
 
-        ObservableList<StiEntry> filteredData = masterData.filtered(
-                sti -> sti.getName().toLowerCase().contains(filterText)
-        );
-
-        stiContentTable.setItems(filteredData);
+        stiContentTable.setItems(FXCollections.observableArrayList(result));
     }
 
     @FXML
     private void searchSymptoms() {
         String filterText = filterField.getText().toLowerCase();
 
-        if (filterText.isEmpty()) {
-            stiContentTable.setItems(masterData);
-            return;
-        }
+        List<StiEntry> result =
+                searchService.searchBySymptoms(masterData, filterText);
 
-        ObservableList<StiEntry> filteredData = masterData.filtered(
-                sti -> sti.getSymptoms().toLowerCase().contains(filterText)
-        );
-
-        stiContentTable.setItems(filteredData);
+        stiContentTable.setItems(FXCollections.observableArrayList(result));
     }
 
     @FXML
     private void searchRiskLevel() {
         String filterText = filterField.getText().toLowerCase();
 
-        if (filterText.isEmpty()) {
-            stiContentTable.setItems(masterData);
-            return;
-        }
-        ObservableList<StiEntry> filteredData;
-        try {
-            int risk = Integer.parseInt(filterText);
+        List<StiEntry> result =
+                searchService.searchByRiskLevel(masterData, filterText);
 
-            filteredData = masterData.filtered(
-                    sti -> sti.getRiskLevel() == risk
-            );
-
-            stiContentTable.setItems(filteredData);
-
-        } catch (NumberFormatException e) {
-            // If input invalid, just show all data
-            stiContentTable.setPlaceholder(new Label("No data found"));
-        }
-
+        stiContentTable.setItems(FXCollections.observableArrayList(result));
     }
 
     @FXML
@@ -116,20 +100,15 @@ public class InformationPageController {
         ToggleButton clicked = (ToggleButton) event.getSource();
 
         if (clicked == riskLevelButton) {
-            clicked.setOnAction(e -> {
-                searchMode = "risk";
-                filterField.setPromptText("Search for risk level here.");
-            });
+            searchMode = "risk";
+            filterField.setPromptText("Search for risk level here.");
+
         } else if (clicked == nameButton) {
-            clicked.setOnAction(e -> {
-                searchMode = "name";
-                filterField.setPromptText("Search for sti name here.");
-            });
+            searchMode = "name";
+            filterField.setPromptText("Search for sti name here.");
         } else if (clicked == symptomsButton) {
-            clicked.setOnAction(e -> {
-                searchMode = "symptoms";
-                filterField.setPromptText("Search for symptoms here.");
-            });
+            searchMode = "symptoms";
+            filterField.setPromptText("Search for symptoms here.");
         }
 
         searchButton.setOnAction(
