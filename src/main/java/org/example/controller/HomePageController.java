@@ -2,6 +2,7 @@ package org.example.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -44,6 +45,7 @@ public class HomePageController {
     //assign the username to the usertag on top right
     public void assign_usertag(String user) {
         mp_UserNameLbl.setText(user);
+        mp_UserNameLbl.setAlignment(Pos.CENTER);
     }
 
     //access to userpage, not yet made.
