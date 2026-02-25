@@ -13,7 +13,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,10 +53,18 @@ public class InformationPageController {
         stiTransmissionModeColumn.setCellValueFactory(new PropertyValueFactory<>("prevention"));
         stiRiskLevelColumn.setCellValueFactory(new PropertyValueFactory<>("riskLevel"));
 
+        // Wraps text in cells
+        stiNameColumn.setCellFactory(wrapTextCellFactory());
+        stiSymptomsColumn.setCellFactory(wrapTextCellFactory());
+        stiTestAndCureColumn.setCellFactory(wrapTextCellFactory());
+        stiTransmissionModeColumn.setCellFactory(wrapTextCellFactory());
+
         // Load data from DB
         ArrayList<StiEntry> stis = StiDatabase.getAll();
         masterData = FXCollections.observableArrayList(stis);
         stiContentTable.setItems(masterData);
+
+        stiContentTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         searchButton.setOnAction(e -> {
             switch (searchMode) {
@@ -122,6 +132,24 @@ public class InformationPageController {
                     }
                 }
         );
+    }
+
+    // Makes Text in table column rapped
+    private <T> Callback<TableColumn<T, String>, TableCell<T, String>> wrapTextCellFactory() {
+        return tc -> new TableCell<>() {
+            private final Text text = new Text();
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    text.setText(item);
+                    text.wrappingWidthProperty().bind(getTableColumn().widthProperty().subtract(10));
+                    setGraphic(text);
+                }
+            }
+        };
     }
 
     @FXML

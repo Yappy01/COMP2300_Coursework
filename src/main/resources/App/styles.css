@@ -90,6 +90,9 @@
     -fx-border-width: 0 1px 0 0;
 }
 
+.wrap-text-cell {
+    -fx-wrap-text: true;
+}
 
 /* This part is still under revision as no data has been inputted yet*/
 /*
