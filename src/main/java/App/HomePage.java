@@ -23,7 +23,7 @@ public class HomePage extends Application {
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("My Window");
+        stage.setTitle("The Sexual Health Education App");
         stage.show();
     }
 }
