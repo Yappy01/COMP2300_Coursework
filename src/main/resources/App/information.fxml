@@ -51,9 +51,9 @@
    <top>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
          <children>
-            <Label maxHeight="1.7976931348623157E308" style="-fx-background-color: #361000; -fx-background-radius: 20;" text="LOGO" textAlignment="CENTER" textFill="#d7b0a0">
+            <Label maxHeight="1.7976931348623157E308" text="♛" textAlignment="CENTER" textFill="#361000">
                <font>
-                  <Font name="Georgia" size="36.0" />
+                  <Font name="Georgia" size="72.0" />
                </font>
                <HBox.margin>
                   <Insets />
@@ -85,7 +85,7 @@
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
          <children>
-            <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME" onAction="#goToHomepage">
+            <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME">
                <graphic>
                   <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
                </graphic>
@@ -102,7 +102,7 @@
             <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                <children>
                   <Label styleClass="sidebar-title" text="Table Options" />
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Risk Level Filter" textAlignment="CENTER" wrapText="true" fx:id="riskLevelButton" onAction="#handleSearch">
+                  <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Risk Level Filter" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -113,7 +113,7 @@
                         <ToggleGroup fx:id="diseaseTag" />
                      </toggleGroup>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true" fx:id="nameButton" onAction="#handleSearch">
+                  <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="By Name" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -121,7 +121,7 @@
                         <Insets />
                      </opaqueInsets>
                   </ToggleButton>
-                  <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="By Symptom" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true" fx:id="symptomsButton" onAction="#handleSearch">
+                  <ToggleButton fx:id="symptomsButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="By Symptom" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -155,7 +155,7 @@
                         <Insets left="25.0" right="50.0" />
                      </padding>
                   </TextField>
-                  <Button mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍" fx:id="searchButton" onAction="#searchSymptoms">
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchSymptoms" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
                      <font>
                         <Font size="20.0" />
                      </font>

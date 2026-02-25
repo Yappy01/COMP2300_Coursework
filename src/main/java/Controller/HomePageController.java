@@ -1,21 +1,27 @@
 package Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import DBHandling.UserRepository;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class HomePageController {
     //all textfields, passwordfields and button in the fxml has been recorded here
     //even if they are not all used
 
-    @FXML private Label mp_UserNameLbl;
     @FXML private Button mp_UserPageBtn;
 
     @FXML private Button mp_InfoBtn;
@@ -40,8 +46,7 @@ public class HomePageController {
 
     //assign the username to the usertag on top right
     public void assign_usertag(String user) {
-        mp_UserNameLbl.setText(user);
-        mp_UserNameLbl.setAlignment(Pos.CENTER);
+        mp_UserPageBtn.setText(user);
     }
 
     //access to userpage, not yet made.
@@ -58,14 +63,17 @@ public class HomePageController {
 
     //access to information Page, not yet connected
     @FXML
-    public void infoBtn() {
-        homePagePane.setVisible(false);
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("The information will be displayed.");
-        alert.showAndWait();
-        init_mainpage();
+    public void infoBtn(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/App/information.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     //access to quiz Page, not yet made
@@ -120,7 +128,7 @@ public class HomePageController {
     //when user types in notetoself textfield
     @FXML
     public void noteToSelfBtn() {
-        String name = mp_UserNameLbl.getText();
+        String name = mp_UserPageBtn.getText();
         String note = mp_NoteToSelf.getText();
 
         try{
@@ -143,7 +151,7 @@ public class HomePageController {
     //fetch the note from the database
     public void setNoteToSelf() {
         try{
-            String name = mp_UserNameLbl.getText();
+            String name = mp_UserPageBtn.getText();
             String note = userRepo.fetch_notetoself(name);
 
             if (Objects.equals(note, null)) {
