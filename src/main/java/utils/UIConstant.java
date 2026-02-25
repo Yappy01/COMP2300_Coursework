@@ -1,6 +1,4 @@
-package org.example.UIConstants;
-
-import java.awt.*;
+package utils;
 
 public class UIConstant {
     public static final int login_WIDTH = 600;

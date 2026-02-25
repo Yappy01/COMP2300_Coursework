@@ -1,19 +1,15 @@
-package org.example.controller;
+package Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import org.example.repository.UserRepository;
+import DBHandling.UserRepository;
 
-import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Stack;
 
 public class HomePageController {
     //all textfields, passwordfields and button in the fxml has been recorded here

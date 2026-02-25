@@ -1,6 +1,6 @@
-package org.example.repository;
-import org.example.model.User; //import the model of user
-import org.example.config.DBConnection; //import the dbconnector
+package DBHandling;
+import Models.User; //import the model of user
+import utils.DBConnection; //import the dbconnector
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -13,7 +13,6 @@ public class UserRepository {
         String hash_password = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
 
         try (Connection conn = DBConnection.getConnection();
-
              PreparedStatement insert_user_stmt = conn.prepareStatement(query)) {
             insert_user_stmt.setString(1, user.getName().trim());
             insert_user_stmt.setString(2, user.getEmail());

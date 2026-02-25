@@ -1,4 +1,5 @@
-package org.example.controller;
+package Controller;
+import Models.User;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,9 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.model.*;
-import org.example.repository.UserRepository;
-import org.example.UIConstants.UIConstant;
+import DBHandling.UserRepository;
+import utils.UIConstant;
 
 import java.sql.SQLException;
 
@@ -128,7 +128,7 @@ public class LRFController {
                         alert.setContentText("Login Successful");
 
                         // Create loader pointing to HomePage FXML file
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/homepage.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/homepage.fxml"));
                         Parent root = loader.load();
 
                         //GET the controller from the loader
@@ -178,9 +178,6 @@ public class LRFController {
 
     @FXML
     public void regBtn(){
-
-
-
         //check if any field is empty
         if (su_username.getText().isEmpty() || su_password.getText().isEmpty()
                 || su_email.getText().isEmpty()||su_answer.getText().isEmpty()

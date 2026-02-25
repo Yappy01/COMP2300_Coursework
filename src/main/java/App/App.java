@@ -1,15 +1,15 @@
-package org.example;
+package App;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.UIConstants.UIConstant;
+import utils.UIConstant;
 
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/LRFDocument_updated.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/LRFDocument_updated.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root,UIConstant.login_WIDTH,UIConstant.login_HEIGHT);
         primaryStage.setTitle("Sexual Health Application");

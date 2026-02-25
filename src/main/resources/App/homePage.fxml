@@ -10,13 +10,13 @@
 <?import javafx.scene.text.Font?>
 
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="homePagePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomePageController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane  prefHeight="200.0" prefWidth="200.0">
          <children>
             <BorderPane layoutX="103.0" layoutY="87.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
-                  <AnchorPane prefHeight="137.0" prefWidth="1100.0" styleClass="headerBackground" stylesheets="@homePageDesign.css" BorderPane.alignment="CENTER">
+                  <AnchorPane  prefHeight="137.0" prefWidth="1100.0" styleClass="headerBackground" stylesheets="@homePageDesign.css" BorderPane.alignment="CENTER">
                      <children>
                         <AnchorPane layoutY="8.0" prefHeight="120.0" prefWidth="1100.0" styleClass="headerMain" stylesheets="@homePageDesign.css">
                            <children>
@@ -35,8 +35,8 @@
                                     <Font size="75.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="1012.0" layoutY="83.0" text="Username" />
-                              <Button layoutX="1011.0" layoutY="23.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="55.0" styleClass="user-btn" stylesheets="@homePageDesign.css" text="👤">
+                              <Label fx:id="mp_UserNameLbl" layoutX="1012.0" layoutY="83.0" text="Username" />
+                              <Button fx:id="mp_UserPageBtn" layoutX="1011.0" layoutY="23.0" mnemonicParsing="false" onAction="#userpage" prefHeight="57.0" prefWidth="55.0" styleClass="user-btn" stylesheets="@homePageDesign.css" text="👤">
                                  <font>
                                     <Font size="22.0" />
                                  </font>
@@ -58,7 +58,7 @@
                                           <Font size="40.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="40.0" layoutY="111.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="368.0" stylesheets="@homePageDesign.css" text="Information Page">
+                                    <Button fx:id="mp_InfoBtn" layoutX="40.0" layoutY="111.0" mnemonicParsing="false" onAction="#infoBtn" prefHeight="54.0" prefWidth="368.0" stylesheets="@homePageDesign.css" text="Information Page">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -67,7 +67,7 @@
                                           <String fx:value="sectionSubFont" />
                                        </styleClass>
                                     </Button>
-                                    <Button layoutX="40.0" layoutY="193.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="368.0" stylesheets="@homePageDesign.css" text="Quiz">
+                                    <Button fx:id="mp_QuizBtn" layoutX="40.0" layoutY="193.0" mnemonicParsing="false" onAction="#quizBtn" prefHeight="54.0" prefWidth="368.0" stylesheets="@homePageDesign.css" text="Quiz">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -76,7 +76,7 @@
                                           <String fx:value="sectionSubFont" />
                                        </styleClass>
                                     </Button>
-                                    <Button layoutX="40.0" layoutY="272.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="368.0" stylesheets="@homePageDesign.css" text="Community Page">
+                                    <Button fx:id="mp_ComBtn" layoutX="40.0" layoutY="272.0" mnemonicParsing="false" onAction="#comBtn" prefHeight="54.0" prefWidth="368.0" stylesheets="@homePageDesign.css" text="Community Page">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -98,7 +98,7 @@
                                           <Font size="22.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="13.0" layoutY="73.0" mnemonicParsing="false" prefHeight="113.0" prefWidth="211.0" stylesheets="@homePageDesign.css" text="Claymidia">
+                                    <Button fx:id="mp_TodayFactBtn" layoutX="13.0" layoutY="73.0" onAction="#todayFactBtn" mnemonicParsing="false" prefHeight="113.0" prefWidth="211.0" stylesheets="@homePageDesign.css" text="Claymidia">
                                        <font>
                                           <Font size="36.0" />
                                        </font>
@@ -120,7 +120,7 @@
                                           <Font size="22.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="13.0" layoutY="73.0" mnemonicParsing="false" prefHeight="113.0" prefWidth="211.0" stylesheets="@homePageDesign.css" text="Contraception">
+                                    <Button fx:id="mp_TodayQuizBtn" layoutX="13.0" layoutY="73.0" mnemonicParsing="false" onAction="#todayQuizBtn" prefHeight="113.0" prefWidth="211.0" stylesheets="@homePageDesign.css" text="Contraception">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
@@ -142,7 +142,7 @@
                                           <Font size="22.0" />
                                        </font>
                                     </Label>
-                                    <TextField layoutX="13.0" layoutY="56.0" prefHeight="86.0" prefWidth="475.0" promptText="What's in your mind?" styleClass="section-btn" stylesheets="@homePageDesign.css">
+                                    <TextField fx:id="mp_NoteToSelf" layoutX="13.0" layoutY="56.0" onAction="#noteToSelfBtn" prefHeight="86.0" prefWidth="475.0" promptText="What's in your mind?" styleClass="section-btn" stylesheets="@homePageDesign.css">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
