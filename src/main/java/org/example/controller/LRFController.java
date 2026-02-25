@@ -1,9 +1,10 @@
 package org.example.controller;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -12,11 +13,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.model.*;
 import org.example.repository.UserRepository;
-import org.example.controller.HomePageController;
 import org.example.UIConstants.UIConstant;
 
 import java.sql.SQLException;
-import java.util.EventObject;
 
 
 public class LRFController {
@@ -29,16 +28,23 @@ public class LRFController {
     @FXML private AnchorPane su_signupForm;
     @FXML private AnchorPane si_loginForm;
 
+
     @FXML private TextField su_username;
     @FXML private PasswordField su_password;
     @FXML private TextField su_email;
+    @FXML private TextField su_answer;
+    @FXML private ComboBox<String> su_question;
+//    @FXML private TextField su_answer1;
     @FXML private Button su_signupBtn;
 
     @FXML private AnchorPane fp_questionForm;
     @FXML private Button fp_proceedBtn;
     @FXML private TextField fp_username;
     @FXML private TextField fp_email;
+    @FXML private TextField fp_answer;
     @FXML private Button fp_back;
+    @FXML private ComboBox<String> fp_question; //fp_questionForm
+//    @FXML private TextField su_answer11; //fp_questionform
 
     @FXML private AnchorPane np_newPassForm;
     @FXML private PasswordField np_newPassword;
@@ -56,6 +62,45 @@ public class LRFController {
     private final UserRepository userRepo = new UserRepository();
     private Alert alert;
 
+    @FXML private void initialize() {
+        ObservableList<String> questions = FXCollections.observableArrayList(
+                "What was your first pet's name?",
+                "What street did you grow up on?",
+                "What was your first car?",
+                "What is your mother's maiden name?"
+        );
+
+        su_question.setItems(questions);
+        fp_question.setItems(questions);
+
+        su_answer.setEditable(false);
+        fp_answer.setEditable(false);
+
+        su_question.setOnShowing(event -> {
+            su_answer.setEditable(true);
+
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Remember this question.\nIt will be asked to change your password");
+            alert.showAndWait();
+
+            su_answer.requestFocus();
+        });
+
+
+        fp_question.setOnShowing(event -> {
+            fp_answer.setEditable(true);
+
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Select the question selected during registration");
+            alert.showAndWait();
+
+            fp_answer.requestFocus();
+        });
+    }
 
     @FXML
     public void loginBtn(){
@@ -133,9 +178,13 @@ public class LRFController {
 
     @FXML
     public void regBtn(){
+
+
+
         //check if any field is empty
         if (su_username.getText().isEmpty() || su_password.getText().isEmpty()
-                || su_email.getText().isEmpty()) {
+                || su_email.getText().isEmpty()||su_answer.getText().isEmpty()
+                || su_question.getSelectionModel().getSelectedItem() == null) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
@@ -161,6 +210,7 @@ public class LRFController {
         }else{
             try{
 
+                String answer = this.su_answer.getText().trim();
                 String username = this.su_username.getText();
                 String password = this.su_password.getText();
                 String email = this.su_email.getText();
@@ -174,7 +224,7 @@ public class LRFController {
                     alert.showAndWait();
 
                 }else{
-                    User user = new User(username,password,email);
+                    User user = new User(username,password,email,answer);
 
                     //successful registration alert
                     if(userRepo.register_user(user)){
@@ -210,23 +260,27 @@ public class LRFController {
     //enter username and email to locate account to reset password
     @FXML
     public void proceedBtn(ActionEvent event) {
+
         //check if username and email textfield are full
-        if (fp_username.getText().isEmpty() || fp_email.getText().isEmpty()) {
+        if (fp_username.getText().isEmpty() || fp_email.getText().isEmpty()
+        || fp_question.getSelectionModel().getSelectedItem() == null || fp_answer.getText().isEmpty()) {
 
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
+
         }else{
             //if username and email textfield are both filled
             try{
                 String username = this.fp_username.getText();
                 String email = this.fp_email.getText();
+                String answer = this.fp_answer.getText();
 
                 //search for user
                 //if found user
-                if (this.userRepo.check_user(username, email)) {
+                if (this.userRepo.check_user(username, email, answer)) {
                     np_newPassForm.setVisible(true);// new password form visible
                     fp_questionForm.setVisible(false); //forgot password form removed
                 }else{

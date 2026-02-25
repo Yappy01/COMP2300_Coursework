@@ -7,7 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserRepository {
     //add new user, hashed password
     public boolean register_user(User user) throws SQLException, ClassNotFoundException {
-        String query = "INSERT INTO users (name,email,password) VALUES (?, ?, ?)";
+        String query = "INSERT INTO users (name,email,password,registration_answer) VALUES (?, ?, ?, ?)";
 
         //generate the hash
         String hash_password = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
@@ -18,6 +18,7 @@ public class UserRepository {
             insert_user_stmt.setString(1, user.getName().trim());
             insert_user_stmt.setString(2, user.getEmail());
             insert_user_stmt.setString(3, hash_password);
+            insert_user_stmt.setString(4, user.getAnswer());
 
             insert_user_stmt.executeUpdate();
 
@@ -61,8 +62,8 @@ public class UserRepository {
     }
 
     //check for a specific user based on the username and email
-    public boolean check_user(String username, String email) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM users WHERE name = ? and email = ?";
+    public boolean check_user(String username, String email, String answer) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM users WHERE name = ? and email = ? and registration_answer = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement search_user_stmt = conn.prepareStatement(query)) {
@@ -70,6 +71,7 @@ public class UserRepository {
 
             search_user_stmt.setString(1, username.trim());
             search_user_stmt.setString(2, email);
+            search_user_stmt.setString(3, answer);
 
 
             try (ResultSet rs = search_user_stmt.executeQuery()) {
@@ -182,4 +184,7 @@ public class UserRepository {
         }
         return false;
     }
+
+
+
 }
