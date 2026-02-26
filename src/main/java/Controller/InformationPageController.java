@@ -26,7 +26,7 @@ public class InformationPageController {
     @FXML private ToggleButton nameButton;
     @FXML private ToggleButton symptomsButton;
     @FXML private Button searchButton;
-    private String searchMode;
+    private String searchMode = "symptoms";
     private final StiService searchService = new StiService();
     @FXML
     private TableView<StiEntry> stiContentTable;
