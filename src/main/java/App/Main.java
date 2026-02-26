@@ -23,4 +23,14 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static long startTimer() {
+        return System.nanoTime();
+    }
+
+    public static void stopTimer(long start) {
+        long end = System.nanoTime();
+        long durationMs = (end - start) / 1_000_000;
+
+        System.out.println("Connection opened in " + durationMs + " ms");
+    }
 }
