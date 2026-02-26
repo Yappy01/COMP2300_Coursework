@@ -147,7 +147,7 @@
          <children>
             <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
                <children>
-                  <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search here" style="-fx-background-radius: 30;">
+                  <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
