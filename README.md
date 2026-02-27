@@ -4,7 +4,7 @@
 ## Instructions on running project
 This project utilizes Maven to run. Hence some prior modification to the run configuration of your compiler might be needed.
 ### Recommended compiler - IntelliJ
-1. Open the .env file and copy the content of the file.
+1. Open the .env file and copy the content of the file. (The env file is not included in this github repo for security reasons, please unzip the submission zip version for the env file.)
 2. In the Run/ Debug Configuration, add a new configuration and choose Maven.
 3. In the command line section of the configuration, add this line "clean javafx:run".
 4. In Java options, click on modify and allow environment variable to be edited.
