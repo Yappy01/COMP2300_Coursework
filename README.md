@@ -8,3 +8,6 @@ This project utilizes Maven to run. Hence some prior modification to the run con
 2. In the command line section of the configuration, add this line "clean javafx:run".
 3. Once done, click on apply and ok.
 4. You should be able to run the project by pressing on run now.
+
+## Notes
+Currently, only the Login/Registration page, Main page and the information page is functional and accessible. The other buttons is present but will only reveal a replacement action for pressing on the button.
