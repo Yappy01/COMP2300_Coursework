@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="449.0" prefWidth="754.0" styleClass="sectionBackground" stylesheets="@CalenderDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionCenter" stylesheets="@CalenderDesign.css" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </BorderPane.margin>
+         <children>
+            <HBox layoutX="37.0" layoutY="14.0" prefHeight="44.0" prefWidth="345.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="199.0" styleClass="dateBackground" stylesheets="@CalenderDesign.css">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="arrow-button" stylesheets="@CalenderDesign.css" text="◀" />
+                        <Label prefHeight="40.0" prefWidth="104.0" styleClass="dateFont" stylesheets="@CalenderDesign.css" text="DECEMBER" />
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="26.0" styleClass="arrow-button" stylesheets="@CalenderDesign.css" text="▶" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox prefHeight="44.0" prefWidth="134.0" styleClass="dateBackground" stylesheets="@CalenderDesign.css">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="arrow-button" stylesheets="@CalenderDesign.css" text="◀" />
+                        <Label prefHeight="50.0" prefWidth="37.0" styleClass="dateFont" stylesheets="@CalenderDesign.css" text="2025" />
+                        <Button mnemonicParsing="false" styleClass="arrow-button" stylesheets="@CalenderDesign.css" text="▶" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <GridPane layoutX="23.0" layoutY="73.0" prefHeight="300.0" prefWidth="373.0" styleClass="Calender" stylesheets="@CalenderDesign.css">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="11.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="1">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="CalenderDate" />
+                           </toggleGroup>
+                        </ToggleButton>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="2" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="3" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="4" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="5" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="5">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="6" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="8" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="9" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="10" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="8.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="11" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="12" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="13" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.rowIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="8.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="15" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="16" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="17" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="18" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="19" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="5.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="20" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="22" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="23" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="24" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="25" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="26" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="27" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="5.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="29" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="5.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="30" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="31" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="32" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="33" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="5" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="34" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="6">
+                     <children>
+                        <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="7" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="14" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                     <children>
+                        <ToggleButton layoutX="7.0" layoutY="13.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="21" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="28" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Calender" stylesheets="@CalenderDesign.css" GridPane.columnIndex="6" GridPane.rowIndex="4">
+                     <children>
+                        <ToggleButton layoutX="6.0" layoutY="12.0" mnemonicParsing="false" styleClass="CalenderDate-Button" stylesheets="@CalenderDesign.css" text="35" toggleGroup="$CalenderDate" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </GridPane>
+            <TextField layoutX="422.0" layoutY="86.0" prefHeight="41.0" prefWidth="256.0" promptText="Event Title..." styleClass="textfield" stylesheets="@CalenderDesign.css" />
+            <TextField layoutX="422.0" layoutY="137.0" prefHeight="41.0" prefWidth="256.0" promptText="Event Description..." styleClass="textfield" stylesheets="@CalenderDesign.css" />
+            <HBox layoutX="424.0" layoutY="209.0" prefHeight="100.0" prefWidth="253.0">
+               <children>
+                  <TextField prefHeight="100.0" prefWidth="119.0" promptText="10:00" styleClass="TimeTextfield" stylesheets="@CalenderDesign.css">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </TextField>
+                  <VBox prefHeight="100.0" prefWidth="120.0">
+                     <children>
+                        <ToggleButton mnemonicParsing="false" prefHeight="46.0" prefWidth="84.0" styleClass="time-button" stylesheets="@CalenderDesign.css" text="AM">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="time" />
+                           </toggleGroup>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <ToggleButton mnemonicParsing="false" prefHeight="48.0" prefWidth="62.0" styleClass="time-button" stylesheets="@CalenderDesign.css" text="PM" toggleGroup="$time">
+                           <VBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
+            <Button layoutX="423.0" layoutY="333.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="254.0" styleClass="event-button" stylesheets="@CalenderDesign.css" text="Add Event" />
+            <Button layoutX="635.0" mnemonicParsing="false" styleClass="discard-button" stylesheets="@CalenderDesign.css" text="X" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
