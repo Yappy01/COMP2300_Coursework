@@ -9,11 +9,11 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="card" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #6C4535; -fx-background-radius: 30;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="cardBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #6C4535; -fx-background-radius: 30;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CardController">
    <children>
       <VBox prefHeight="200.0" prefWidth="250.0" spacing="5.0" style="-fx-background-color: #FFF7F4; -fx-background-radius: 30;">
          <children>
-            <Label styleClass="community-card-title" text="User 1">
+            <Label fx:id="nameLabel" styleClass="community-card-title" text="User 1">
                <graphic>
                   <Group>
                      <children>
@@ -22,7 +22,7 @@
                   </Group>
                </graphic>
             </Label>
-            <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="community-card-content" text="Insert Text or Image Here" wrapText="true" VBox.vgrow="ALWAYS" />
+            <Label fx:id="contentLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="community-card-content" text="Insert Text or Image Here" wrapText="true" VBox.vgrow="ALWAYS" />
          </children>
          <VBox.margin>
             <Insets left="8.0" right="8.0" top="12.0" />
@@ -33,7 +33,7 @@
       </VBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+            <Button fx:id="likeBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
                <font>
                   <Font name="Constantia" size="24.0" />
                </font>
@@ -48,7 +48,7 @@
                   </Group>
                </graphic>
             </Button>
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+            <Button fx:id="commentBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
                <font>
                   <Font name="Constantia" size="24.0" />
                </font>
@@ -63,7 +63,7 @@
                   </Group>
                </graphic>
             </Button>
-            <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="XX/XX/XXXX" textFill="WHITE" HBox.hgrow="ALWAYS">
+            <Label fx:id="dateLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="XX/XX/XXXX" textFill="WHITE" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Constantia" size="18.0" />
                </font>

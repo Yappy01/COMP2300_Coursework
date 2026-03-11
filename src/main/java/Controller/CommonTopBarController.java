@@ -11,7 +11,7 @@ public class CommonTopBarController {
     @FXML
     private Button userPageBtn;
     @FXML
-    public void UserPage(ActionEvent event) {
+    public void userPage(ActionEvent event) {
 
     }
 }

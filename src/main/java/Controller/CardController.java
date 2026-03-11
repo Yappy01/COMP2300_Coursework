@@ -3,25 +3,26 @@ package Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 
 public class CardController {
     @FXML
-    private Label name;
+    private Label nameLabel;
     @FXML
-    private Label content;
+    private Label contentLabel;
     @FXML
-    private Label date;
+    private Label dateLabel;
     @FXML
-    private Button card;
+    private VBox cardBox;
     @FXML
-    private Button like;
+    private Button likeBtn;
     @FXML
-    private Button comment;
+    private Button commentBtn;
 
     public void setData(String name, String content, String date) {
-        this.name.setText(name);
-        this.content.setText(content);
-        this.date.setText(date);
+        this.nameLabel.setText(name);
+        this.contentLabel.setText(content);
+        this.dateLabel.setText(date);
     }
 }

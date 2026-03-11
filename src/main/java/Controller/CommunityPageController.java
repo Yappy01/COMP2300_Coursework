@@ -1,14 +1,17 @@
 package Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
+import javafx.scene.Scene;
 import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class communityPageController {
+public class CommunityPageController {
     @FXML
     private TilePane cardTiles;
 
@@ -16,7 +19,7 @@ public class communityPageController {
     public void initialize() {
         for (int i = 1; i <= 12; i++) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/card.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/card.fxml"));
                 Parent card = loader.load();
 
                 CardController controller = loader.getController();
@@ -28,5 +31,19 @@ public class communityPageController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    public void goToHomepage(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/App/homePage.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
