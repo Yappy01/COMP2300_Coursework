@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="commonTopBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="1100.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommonTopBarController">
+   <children>
+      <Label alignment="CENTER" minWidth="100.0" text="♛" textAlignment="CENTER" textFill="#361000">
+         <font>
+            <Font name="Georgia" size="72.0" />
+         </font>
+         <HBox.margin>
+            <Insets left="15.0" />
+         </HBox.margin>
+      </Label>
+      <Label fx:id="pageTitle" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Page Title" textAlignment="CENTER" textFill="#6c4535" HBox.hgrow="ALWAYS">
+         <font>
+            <Font name="Comic Sans MS Bold" size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="userPageBtn" alignment="CENTER" contentDisplay="TOP" minWidth="100.0" mnemonicParsing="false" onAction="#userPage" styleClass="topbar-button-user" text="Username" textFill="#a1a1a1">
+         <graphic>
+            <SVGPath content="M36 6 C19.44 6 6 19.44 6 36 s13.44 30 30 30 30-13.44 30-30 S52.56 6 36 6 zm0 12 a9 9 0 1 1 0 18 9 9 0 0 1 0-18 zm0 42 c-7.5 0-14.13-3.84-18-9.66 .09-5.97 12-9.24 18-9.24 5.97 0 17.91 3.27 18 9.24 C50.13 56.16 43.5 60 36 60z" />
+         </graphic>
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+         <HBox.margin>
+            <Insets right="15.0" />
+         </HBox.margin>
+      </Button>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+   </padding>
+</HBox>

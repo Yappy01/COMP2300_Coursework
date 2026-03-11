@@ -1,7 +1,37 @@
+.topbar-button-user {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-text-fill: black;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 16;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+}
+.topbar-button-user:hover {
+    -fx-background-color: lightgrey;
+    -fx-underline: true;
+}
+
+.topbar-button-user:pressed {
+    -fx-background-color: darkgrey;
+    -fx-text-fill: white;
+    -fx-underline: true;
+}
+
 /* General format for list in sidebar*/
 .sidebar-list {
     -fx-background-color: #fff7f4;
     -fx-background-radius: 40;
+}
+
+.sidebar-toggle-label {
+    -fx-background-color: #6C4535;
+    -fx-background-radius: 40;
+    -fx-text-fill: #fff7f4;
+    -fx-font-size: 16px;
+    -fx-font-family: "constantia";
+    -fx-padding: 3 3 3 3;
 }
 
 /* Button for returning to main */
@@ -60,7 +90,7 @@
 }
 
 .info-magnifying:pressed {
-    -fx-background-color: lightgray;
+    -fx-background-color: lightgrey;
 }
 
 .info-magnifying:hover {
@@ -116,3 +146,24 @@
     -fx-background-color: #ffffff;
 }
 */
+
+.community-content-area {
+    -fx-border-color: #6c4535;
+    -fx-border-width: 20 10 20 10;
+    -fx-background-color: #fbe9e1;
+}
+
+.community-btn-like {
+    -fx-background-color: transparent;
+}
+
+.community-card-title {
+    -fx-font-family: Constantia;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.community-card-content {
+    -fx-font-family: Constantia;
+    -fx-font-size: 16px;
+}
