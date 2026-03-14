@@ -1,0 +1,73 @@
+.community-content-area {
+    -fx-border-color: #6c4535;
+    -fx-border-width: 20 10 20 10;
+    -fx-background-color: #fbe9e1;
+}
+
+.community-btn-like {
+    -fx-background-color: transparent;
+}
+
+.community-btn-like .svg-like {
+    -fx-fill: white;
+}
+
+.community-btn-like:hover .svg-like {
+    -fx-fill: cyan;
+}
+
+.community-btn-like:pressed .svg-like {
+    -fx-fill: dodgerblue;
+}
+
+.community-btn-comment {
+    -fx-background-color: transparent;
+}
+
+.community-btn-comment .svg-comment {
+    -fx-fill: white;
+}
+
+.community-btn-comment:hover .svg-comment {
+    -fx-fill: lightgrey;
+}
+
+.community-btn-comment:pressed .svg-comment {
+    -fx-fill: darkgrey;
+}
+
+.community-card-content {
+    -fx-background-color: #FFF7F4;
+    -fx-background-radius: 30;
+}
+
+.community-card-content:hover {
+    -fx-background-color: lightgrey;
+}
+
+.community-card-content:pressed {
+    -fx-background-color: grey;
+}
+
+.community-card-title {
+    -fx-font-family: Constantia;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.community-card-text {
+    -fx-font-family: Constantia;
+    -fx-font-size: 16px;
+}
+
+.community-btn-overlay-close {
+    -fx-background-color: transparent;
+}
+
+.community-btn-overlay-close .svg-close {
+    -fx-fill: white;
+}
+
+.community-btn-overlay-close:hover .svg-close {
+    -fx-fill: black;
+}

@@ -48,7 +48,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
    <top>
-      <fx:include fx:id="commonTopBar" source="commonTopBar.fxml"/>
+      <fx:include fx:id="commonTopBar" source="commonTopBar.fxml" />
    </top>
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
@@ -133,7 +133,7 @@
                   </Button>
                </children>
             </StackPane>
-            <TableView fx:id="stiContentTable" maxWidth="840.0" prefWidth="838.0">
+            <TableView fx:id="stiContentTable" maxWidth="840.0" prefWidth="838.0" stylesheets="@infoTableView.css">
               <columns>
                 <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" styleClass="wrap-text-cell" text="STI NAME" />
                   <TableColumn fx:id="stiRiskLevelColumn" prefWidth="96.0" styleClass="wrap-text-cell" text="Risk Level" />

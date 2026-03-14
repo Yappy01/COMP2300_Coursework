@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" stylesheets="@card.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
+         <children>
+            <VBox>
+               <children>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="User 1" />
+                              <ScrollPane>
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label text="Insert Text or Image Here" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <ScrollPane prefHeight="185.0" prefWidth="300.0">
+                                 <content>
+                                    <VBox />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="BOTTOM_CENTER">
+                     <children>
+                        <Button fx:id="overlayLikeButton" alignment="CENTER" mnemonicParsing="false" onAction="#likeClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+                           <font>
+                              <Font name="Constantia" size="24.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </padding>
+                           <graphic>
+                              <Group>
+                                 <children>
+                                    <SVGPath content="M720-144H264v-480l288-288 32 22q18 13 26.5 33t3.5 41l-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L787-188q-9 20-27 32t-40 12ZM192-624v480H48v-480h144Z" fill="WHITE" scaleX="0.05" scaleY="0.05" styleClass="svg-like" />
+                                 </children>
+                              </Group>
+                           </graphic>
+                        </Button>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <StackPane>
+                           <children>
+                              <TextField minHeight="40.0" style="-fx-background-radius: 10;" />
+                              <Button mnemonicParsing="false" text="Button" StackPane.alignment="CENTER_RIGHT">
+                                 <graphic>
+                                    <Group>
+                                       <children>
+                                          <SVGPath content="M97-136v-688l813 344L97-136Zm83-128 516-216-516-219v146l253 73-253 71v145Zm0 0v-435 435Z" fill="WHITE" scaleX="0.05" scaleY="0.05" styleClass="svg-like" />
+                                       </children>
+                                    </Group>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="15.0" top="15.0" />
+               </StackPane.margin>
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z" fill="WHITE" scaleX="0.05" scaleY="0.05" styleClass="svg-close" />
+                     </children>
+                  </Group>
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" />
+         </padding>
+      </StackPane>
+   </children>
+</StackPane>

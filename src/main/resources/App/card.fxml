@@ -12,9 +12,9 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="cardBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #6C4535; -fx-background-radius: 30;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CardController">
+<VBox fx:id="cardBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #6C4535; -fx-background-radius: 30;" stylesheets="@card.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CardController">
    <children>
-      <VBox fx:id="cardBoxContent" onMouseClicked="#cardClicked" prefHeight="200.0" prefWidth="250.0" spacing="5.0" style="-fx-background-color: #FFF7F4; -fx-background-radius: 30;">
+      <VBox fx:id="cardBoxContent" onMouseClicked="#cardClicked" prefHeight="200.0" prefWidth="250.0" spacing="5.0" styleClass="community-card-content">
          <children>
             <Label fx:id="nameLabel" styleClass="community-card-title" text="User 1">
                <graphic>
@@ -27,7 +27,7 @@
             </Label>
             <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label fx:id="contentLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="community-card-content" text="Insert Text or Image Here" wrapText="true" />
+                  <Label fx:id="contentLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="community-card-text" text="Insert Text or Image Here" wrapText="true" />
                   <ImageView fx:id="contentImage" fitHeight="94.0" fitWidth="213.0" pickOnBounds="true" preserveRatio="true">
                      <viewport>
                         <Rectangle2D />
@@ -55,12 +55,12 @@
                <graphic>
                   <Group>
                      <children>
-                        <SVGPath content="M720-144H264v-480l288-288 32 22q18 13 26.5 33t3.5 41l-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L787-188q-9 20-27 32t-40 12ZM192-624v480H48v-480h144Z" fill="WHITE" scaleX="0.03" scaleY="0.03" />
+                        <SVGPath content="M720-144H264v-480l288-288 32 22q18 13 26.5 33t3.5 41l-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L787-188q-9 20-27 32t-40 12ZM192-624v480H48v-480h144Z" fill="WHITE" scaleX="0.03" scaleY="0.03" styleClass="svg-like" />
                      </children>
                   </Group>
                </graphic>
             </Button>
-            <Button fx:id="commentBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#commentClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+            <Button fx:id="commentBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#commentClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-comment">
                <font>
                   <Font name="Constantia" size="24.0" />
                </font>
@@ -70,7 +70,7 @@
                <graphic>
                   <Group>
                      <children>
-                        <SVGPath content="M96-96v-696q0-29.7 21.15-50.85Q138.3-864 168-864h624q29.7 0 50.85 21.15Q864-821.7 864-792v480q0 29.7-21.15 50.85Q821.7-240 792-240H240L96-96Z" fill="WHITE" scaleX="0.03" scaleY="0.03" />
+                        <SVGPath content="M96-96v-696q0-29.7 21.15-50.85Q138.3-864 168-864h624q29.7 0 50.85 21.15Q864-821.7 864-792v480q0 29.7-21.15 50.85Q821.7-240 792-240H240L96-96Z" fill="WHITE" scaleX="0.03" scaleY="0.03" styleClass="svg-comment" />
                      </children>
                   </Group>
                </graphic>
