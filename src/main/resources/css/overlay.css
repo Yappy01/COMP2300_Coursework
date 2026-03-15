@@ -1,0 +1,24 @@
+.community-overlay-title {
+    -fx-font-family: Constantia;
+    -fx-text-fill: #6c4535;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.community-overlay-content {
+    -fx-font-family: Constantia;
+    -fx-font-size: 14;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #fff7f4;
+}
+
+.community-overlay-comments {
+    -fx-background-color: #6C4535;
+    -fx-background-radius: 15;
+    -fx-font-size: 14;
+    -fx-text-fill: white;
+    -fx-font-family: constantia;
+    -fx-font-weight: bold;
+}

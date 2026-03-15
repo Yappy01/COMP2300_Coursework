@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
@@ -14,35 +15,53 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" stylesheets="@card.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
          <children>
-            <VBox>
+            <VBox spacing="20.0">
                <children>
-                  <HBox VBox.vgrow="ALWAYS">
+                  <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox>
+                        <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Label text="User 1" />
-                              <ScrollPane>
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #fff7f4;">
                                  <content>
-                                    <VBox>
+                                    <VBox style="-fx-background-color: transparent;">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Label text="Insert Text or Image Here" />
+                                          <Label graphicTextGap="10.0" styleClass="community-overlay-title" text="User 1">
+                                             <graphic>
+                                                <Group>
+                                                   <children>
+                                                      <SVGPath content="M36 6 C19.44 6 6 19.44 6 36 s13.44 30 30 30 30-13.44 30-30 S52.56 6 36 6 zm0 12 a9 9 0 1 1 0 18 9 9 0 0 1 0-18 zm0 42 c-7.5 0-14.13-3.84-18-9.66 .09-5.97 12-9.24 18-9.24 5.97 0 17.91 3.27 18 9.24 C50.13 56.16 43.5 60 36 60z" scaleX="0.8" scaleY="0.8" />
+                                                   </children>
+                                                </Group>
+                                             </graphic>
+                                          </Label>
+                                          <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="community-overlay-content" text="Insert Text or Image Here" wrapText="true" VBox.vgrow="ALWAYS">
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </VBox.margin></Label>
                                        </children>
                                     </VBox>
                                  </content>
                               </ScrollPane>
                            </children>
                         </VBox>
-                        <VBox>
+                        <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <ScrollPane prefHeight="185.0" prefWidth="300.0">
+                              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox />
+                                    <VBox spacing="20.0">
+                                       <children>
+                                          <fx:include source="comment.fxml" />
+                                          <fx:include source="comment.fxml" />
+                                          <fx:include source="comment.fxml" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding></VBox>
                                  </content>
                               </ScrollPane>
                            </children>
@@ -69,15 +88,15 @@
                               </Group>
                            </graphic>
                         </Button>
-                        <Region prefHeight="200.0" prefWidth="200.0" />
-                        <StackPane>
+                        <Region HBox.hgrow="SOMETIMES" />
+                        <StackPane maxWidth="350.0" HBox.hgrow="ALWAYS">
                            <children>
                               <TextField minHeight="40.0" style="-fx-background-radius: 10;" />
-                              <Button mnemonicParsing="false" text="Button" StackPane.alignment="CENTER_RIGHT">
+                              <Button mnemonicParsing="false" StackPane.alignment="CENTER_RIGHT">
                                  <graphic>
                                     <Group>
                                        <children>
-                                          <SVGPath content="M97-136v-688l813 344L97-136Zm83-128 516-216-516-219v146l253 73-253 71v145Zm0 0v-435 435Z" fill="WHITE" scaleX="0.05" scaleY="0.05" styleClass="svg-like" />
+                                          <SVGPath content="M97-136v-688l813 344L97-136Zm83-128 516-216-516-219v146l253 73-253 71v145Zm0 0v-435 435Z" fill="WHITE" scaleX="0.03" scaleY="0.03" styleClass="svg-like" />
                                        </children>
                                     </Group>
                                  </graphic>
@@ -90,7 +109,7 @@
             </VBox>
             <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
-                  <Insets right="15.0" top="15.0" />
+                  <Insets top="15.0" />
                </StackPane.margin>
                <graphic>
                   <Group>
@@ -102,8 +121,12 @@
             </Button>
          </children>
          <padding>
-            <Insets bottom="20.0" left="20.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" />
          </padding>
       </StackPane>
    </children>
+   <stylesheets>
+      <URL value="@../../css/overlay.css" />
+      <URL value="@../../css/card.css" />
+   </stylesheets>
 </StackPane>

@@ -53,6 +53,7 @@
     -fx-font-family: Constantia;
     -fx-font-weight: bold;
     -fx-font-size: 20px;
+    -fx-text-fill: #6c4535;
 }
 
 .community-card-text {
