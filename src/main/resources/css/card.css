@@ -60,15 +60,3 @@
     -fx-font-family: Constantia;
     -fx-font-size: 16px;
 }
-
-.community-btn-overlay-close {
-    -fx-background-color: transparent;
-}
-
-.community-btn-overlay-close .svg-close {
-    -fx-fill: white;
-}
-
-.community-btn-overlay-close:hover .svg-close {
-    -fx-fill: black;
-}

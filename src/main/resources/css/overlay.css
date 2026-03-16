@@ -22,3 +22,62 @@
     -fx-font-family: constantia;
     -fx-font-weight: bold;
 }
+
+.community-btn-overlay-close {
+    -fx-background-color: transparent;
+}
+.community-btn-overlay-close .svg-close {
+    -fx-fill: white;
+}
+
+.community-btn-overlay-close:hover .svg-close {
+    -fx-fill: black;
+}
+
+.community-btn-overlay-close:pressed .svg-close {
+    -fx-fill: white;
+}
+
+.community-btn-send {
+    -fx-background-color: #6C4535;
+    -fx-background-radius: 15;
+}
+.community-btn-send .svg-send {
+    -fx-fill: white;
+}
+
+
+.community-btn-send:hover .svg-send {
+    -fx-fill: #6C4535;
+}
+.community-btn-send:hover {
+    -fx-background-color:whitesmoke;
+    -fx-border-color:lightgrey;
+    -fx-border-radius:15;
+}
+
+.community-btn-send:pressed {
+    -fx-background-color:darkgrey;
+}
+
+.title {
+    -fx-font-family: Constantia;
+    -fx-text-fill: #fff7f4;
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+}
+
+.text-area-content {
+    -fx-background-color: transparent;
+    -fx-font-family: Constantia;
+    -fx-text-fill: black;
+    -fx-font-size: 16;
+    -fx-prompt-text-fill: black;
+}
+.text-area-content .content {
+    -fx-background-color: transparent;
+}
+.text-area-content .prompt-text {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
