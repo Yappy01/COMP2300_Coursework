@@ -63,7 +63,7 @@ public class HomePageController {
     @FXML
     public void infoBtn(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(
-                getClass().getResource("/App/information.fxml")
+                getClass().getResource("/fxml/pages/information.fxml")
         );
 
         Stage stage = (Stage) ((Node) event.getSource())
