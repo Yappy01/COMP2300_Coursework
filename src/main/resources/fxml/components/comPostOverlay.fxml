@@ -15,9 +15,9 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="Controller.ComPageOverlayController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
+      <StackPane fx:id="mainPostPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
          <children>
             <VBox spacing="20.0">
                <children>
@@ -73,7 +73,7 @@
                   </HBox>
                   <HBox alignment="BOTTOM_CENTER">
                      <children>
-                        <Button fx:id="overlayLikeButton" alignment="CENTER" mnemonicParsing="false" onAction="#likeClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+                        <Button fx:id="overlayLikeButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
                            <font>
                               <Font name="Constantia" size="24.0" />
                            </font>
@@ -107,7 +107,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
+            <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT" onAction="#clickExitButton">
                <StackPane.margin>
                   <Insets top="15.0" />
                </StackPane.margin>

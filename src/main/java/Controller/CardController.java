@@ -2,10 +2,17 @@ package Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 public class CardController {
@@ -25,6 +32,12 @@ public class CardController {
     private VBox cardBoxContent;
     @FXML
     private ImageView contentImage;
+    @FXML
+    private CommunityPageController parentController;
+
+    public void setParentController(CommunityPageController parentController) {
+        this.parentController = parentController;
+    }
 
     // Use this to set the data and contain of each card.
     public void setData(String name, String content, String date) {
@@ -34,8 +47,8 @@ public class CardController {
     }
 
     // View the entire content of the card / Bringing a small box up.
-    public void cardClicked(ActionEvent event) {
-
+    public void cardClicked() {
+        parentController.setOverlayVisibility(true);
     }
 
     // This button likes the post directly
