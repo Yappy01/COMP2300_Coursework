@@ -91,15 +91,27 @@
                         <Region HBox.hgrow="SOMETIMES" />
                         <StackPane maxWidth="350.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField minHeight="40.0" style="-fx-background-radius: 10;" />
-                              <Button mnemonicParsing="false" StackPane.alignment="CENTER_RIGHT">
+                              <TextField minHeight="40.0" promptText="Enter Comment Here" style="-fx-background-radius: 10;">
+                                 <padding>
+                                    <Insets left="10.0" right="60.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Constantia" size="16.0" />
+                                 </font></TextField>
+                              <Button mnemonicParsing="false" styleClass="community-btn-send" StackPane.alignment="CENTER_RIGHT">
                                  <graphic>
                                     <Group>
                                        <children>
-                                          <SVGPath content="M97-136v-688l813 344L97-136Zm83-128 516-216-516-219v146l253 73-253 71v145Zm0 0v-435 435Z" fill="WHITE" scaleX="0.03" scaleY="0.03" styleClass="svg-like" />
+                                          <SVGPath content="M97-136v-688l813 344L97-136Zm83-128 516-216-516-219v146l253 73-253 71v145Zm0 0v-435 435Z" scaleX="0.03" scaleY="0.03" styleClass="svg-send" />
                                        </children>
                                     </Group>
                                  </graphic>
+                                 <StackPane.margin>
+                                    <Insets right="10.0" />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </padding>
                               </Button>
                            </children>
                         </StackPane>

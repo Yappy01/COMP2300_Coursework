@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Label styleClass="title" text="Create Your Post" textAlignment="CENTER" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox style="-fx-background-color: #fff7f4; -fx-background-radius: 30;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <TextArea promptText="Type Here..." styleClass="text-area-content" wrapText="true" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+                           </padding></VBox>
+                        <VBox alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" spacing="15.0" style="-fx-background-color: #fff7f4; -fx-background-radius: 30;" stylesheets="@../../css/styles.css">
+                           <children>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Upload Image" />
+                              <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Post" />
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="20.0" right="20.0" top="20.0" />
+                           </padding></VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <StackPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </StackPane.margin>
+            </VBox>
+            <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="20.0" top="20.0" />
+               </StackPane.margin>
+               <graphic>
+                  <Group>
+                     <children>
+                        <SVGPath content="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z" fill="WHITE" scaleX="0.05" scaleY="0.05" styleClass="svg-close" />
+                     </children>
+                  </Group>
+               </graphic>
+            </Button>
+         </children>
+      </StackPane>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/overlay.css" />
+      <URL value="@../../css/card.css" />
+   </stylesheets>
+</StackPane>
