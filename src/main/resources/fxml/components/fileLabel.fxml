@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<HBox alignment="CENTER" style="-fx-background-color: #6C4535;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label maxWidth="1.7976931348623157E308" style="-fx-text-fill: white; -fx-font-size: 16;" text="Img1.jpg" HBox.hgrow="ALWAYS" />
+      <Button mnemonicParsing="false" styleClass="community-btn-overlay-close">
+         <graphic>
+            <Group>
+               <children>
+                  <SVGPath content="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z" fill="WHITE" scaleX="0.035" scaleY="0.035" styleClass="svg-close" />
+               </children>
+            </Group>
+         </graphic>
+      </Button>
+   </children>
+   <padding>
+      <Insets bottom="3.0" left="20.0" right="5.0" top="3.0" />
+   </padding>
+</HBox>

@@ -29,11 +29,9 @@
 .community-btn-overlay-close .svg-close {
     -fx-fill: white;
 }
-
 .community-btn-overlay-close:hover .svg-close {
     -fx-fill: black;
 }
-
 .community-btn-overlay-close:pressed .svg-close {
     -fx-fill: white;
 }

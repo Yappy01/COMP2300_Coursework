@@ -155,7 +155,7 @@ public class InformationPageController {
     @FXML
     private void goToHomepage(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(
-                getClass().getResource("/App/homePage.fxml")
+                getClass().getResource("/fxml/pages/homePage.fxml")
         );
 
         Stage stage = (Stage) ((Node) event.getSource())
