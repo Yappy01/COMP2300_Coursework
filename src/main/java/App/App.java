@@ -9,7 +9,7 @@ import utils.UIConstant;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/LRFDocument_updated.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LRFDocument_updated.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root,UIConstant.login_WIDTH,UIConstant.login_HEIGHT);
         primaryStage.setTitle("Sexual Health Application");

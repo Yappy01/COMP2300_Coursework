@@ -13,7 +13,7 @@ public class InformationPage extends Application {
     public void start(Stage stage) throws Exception {
 
         Parent root = FXMLLoader.load(
-                Objects.requireNonNull(getClass().getResource("/App/information.fxml"))
+                Objects.requireNonNull(getClass().getResource("/fxml/pages/information.fxml"))
         );
 
         Scene scene = new Scene(root);

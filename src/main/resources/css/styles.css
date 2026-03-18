@@ -88,12 +88,29 @@
     -fx-border-color: transparent;
     -fx-padding: 0;
 }
-
+.info-magnifying:hover {
+    -fx-border-color: gray;
+    -fx-border-width: 2;
+}
 .info-magnifying:pressed {
     -fx-background-color: lightgrey;
 }
 
-.info-magnifying:hover {
+/* Add Button */
+.add-button {
+    -fx-background-color: #6c4535;
+    -fx-background-radius: 100;
+    -fx-border-color: transparent;
+    -fx-padding: 10;
+}
+.add-button:hover {
     -fx-border-color: gray;
     -fx-border-width: 2;
+    -fx-border-radius: 100;
+}
+.add-button:pressed {
+    -fx-background-color: white;
+}
+.add-button:pressed .svg-add {
+    -fx-fill: #6c4535;
 }

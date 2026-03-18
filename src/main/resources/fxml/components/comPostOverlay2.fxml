@@ -34,7 +34,14 @@
                            </padding></VBox>
                         <VBox alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" spacing="15.0" style="-fx-background-color: #fff7f4; -fx-background-radius: 30;" stylesheets="@../../css/styles.css">
                            <children>
-                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <fx:include source="fileLabel.fxml" />
+                                       </children>
+                                    </VBox>
+                                 </content></ScrollPane>
                               <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Upload Image" />
                               <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Post" />
                            </children>

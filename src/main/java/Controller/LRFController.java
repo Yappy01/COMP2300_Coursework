@@ -128,7 +128,7 @@ public class LRFController {
                         alert.setContentText("Login Successful");
 
                         // Create loader pointing to HomePage FXML file
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/homepage.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/homepage.fxml"));
                         Parent root = loader.load();
 
                         //GET the controller from the loader
