@@ -89,14 +89,17 @@ public class HomePageController {
 
     //access to community page
     @FXML
-    public void comBtn() {
-        homePagePane.setVisible(false);
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("The community page will be displayed.");
-        alert.showAndWait();
-        init_mainpage();
+    public void comBtn(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/fxml/pages/community.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     //access to today's fact, not yet connected
