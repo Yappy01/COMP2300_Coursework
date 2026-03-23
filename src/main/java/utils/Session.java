@@ -11,6 +11,7 @@ public class Session {
     private static Session instance; // single session
     private User user;
     private List<Post> allPosts;
+    private List<Post> likedPosts;
 
     // private constructor (important for singleton)
     private Session(User user) {
@@ -19,10 +20,15 @@ public class Session {
 
     public List<Post> getAllPosts() {
         if (this.allPosts == null) {
-            System.out.println("pulling");
             this.allPosts = ComPostDatabase.getRecent(12);
         }
-        System.out.println("doneeee");
+        return this.allPosts;
+    }
+
+    public List<Post> getLikedPosts() {
+        if (this.allPosts == null) {
+            this.allPosts = ComPostDatabase.getRecentLiked(Session.getInstance().getUser().getUserId(), 12);
+        }
         return this.allPosts;
     }
 

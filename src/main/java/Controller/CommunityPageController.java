@@ -83,6 +83,7 @@ public class CommunityPageController {
 
                 String name = UserRepository.getUserName(post.getUserId());
                 controller.setComPageOverlayController(comPageOverlayController);
+                controller.setPost(postsList.get(i));
                 controller.setData(name, post.getContent(), tsString);
 
                 cardTiles.getChildren().add(card);

@@ -101,6 +101,38 @@ public class ComPostDatabase {
         return list;
     }
 
+    public static ArrayList<Post> getRecentLiked(int userId, int limit) {
+        ArrayList<Post> list = new ArrayList<>();
+
+        // We JOIN posts and post_likes where the IDs match,
+        // then filter by the specific User ID.
+        String sql = "SELECT p.* FROM posts p " +
+                "JOIN post_likes pl ON p.id = pl.postid " +
+                "WHERE pl.userid = ? " +
+                "ORDER BY p.createdAt DESC LIMIT ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // 1. Set the User ID to filter the likes
+            stmt.setInt(1, userId);
+            // 2. Set the Limit
+            stmt.setInt(2, limit);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(extractPost(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
     // 4️⃣ Filter by User
     public static ArrayList<Post> getPostsByUser(int userId) {
         ArrayList<Post> list = new ArrayList<>();
@@ -180,19 +212,41 @@ public class ComPostDatabase {
     }
 
     // 8️⃣ Like Post (Increment)
-    public static void incrementLike(int postId) {
-        String sql = "UPDATE posts SET likeCount = likeCount + 1 WHERE postId=?";
+    public static boolean toggleLike(int postId, int userId) {
+        // We use a transaction so both SQL commands succeed or both fail
+        String insertLike = "INSERT INTO post_likes (postId, userId) VALUES (?, ?)";
+        String updateCount = "UPDATE posts SET likeCount = likeCount + 1 WHERE postId = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection()) {
+            conn.setAutoCommit(false); // Start Transaction
 
-            stmt.setInt(1, postId);
-            stmt.executeUpdate();
+            try (PreparedStatement st1 = conn.prepareStatement(insertLike);
+                 PreparedStatement st2 = conn.prepareStatement(updateCount)) {
 
+                // 1. Record the unique like
+                st1.setInt(1, postId);
+                st1.setInt(2, userId);
+                st1.executeUpdate();
+
+                // 2. Update the total count
+                st2.setInt(1, postId);
+                st2.executeUpdate();
+
+                conn.commit(); // Save changes
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn.rollback(); // Undo everything if user already liked it (Primary Key violation)
+                System.out.println("User already liked this post or error occurred.");
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
+
+
 
     // 🔧 Helper Method
     private static Post extractPost(ResultSet rs) throws SQLException {
