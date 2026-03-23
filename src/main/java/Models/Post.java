@@ -29,6 +29,8 @@ public class Post {
         this.content = content;
         this.imageLink = imageLink;
         this.likeCount = 0;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
     // Getters and Setters

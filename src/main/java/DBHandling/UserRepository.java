@@ -168,7 +168,7 @@ public class UserRepository {
     }
 
     public static User getUser(String username) {
-        String query = "SELECT count(1) FROM users WHERE name = ?";
+        String query = "SELECT * FROM users WHERE name = ?";
         User user = null;
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement count_stmt = conn.prepareStatement(query)) {
@@ -179,9 +179,7 @@ public class UserRepository {
                 user = new User(
                         rs.getInt("userId"),
                         rs.getString("name"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("answer")
+                        rs.getString("email")
                 );
 
                 return user;

@@ -23,6 +23,9 @@ public class CommunityPageController {
     private StackPane mainPostPage;
 
     @FXML
+    private StackPane addPostPage;
+
+    @FXML
     public void initialize() {
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
@@ -32,6 +35,13 @@ public class CommunityPageController {
             ComPageOverlayController comPageOverlayController = overlayLoader.getController();
             comPageOverlayController.setParentController(this);
             comPageArea.getChildren().add(mainPostPage);
+
+            FXMLLoader overlayBLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay2.fxml"));
+            addPostPage = overlayBLoader.load();
+            addPostPage.setVisible(false);
+            OverlayBController overlayBController = overlayBLoader.getController();
+            overlayBController.setParentController(this);
+            comPageArea.getChildren().add(addPostPage);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -54,6 +64,15 @@ public class CommunityPageController {
 
     public void setOverlayVisibility(Boolean visibility) {
         mainPostPage.setVisible(visibility);
+    }
+
+    public void setOverlayBVisibility(Boolean visibility) {
+        addPostPage.setVisible(visibility);
+    }
+
+    @FXML
+    public void onAddButtonClick(){
+        setOverlayBVisibility(true);
     }
 
     @FXML

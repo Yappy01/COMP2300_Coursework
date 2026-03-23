@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="Controller.OverlayBController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
+      <StackPane fx:id="addPostPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
@@ -25,7 +25,7 @@
                            <children>
                               <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <TextArea promptText="Type Here..." styleClass="text-area-content" wrapText="true" />
+                                    <TextArea fx:id="postText" promptText="Type Here..." styleClass="text-area-content" wrapText="true" />
                                  </content>
                               </ScrollPane>
                            </children>
@@ -43,7 +43,7 @@
                                     </VBox>
                                  </content></ScrollPane>
                               <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Upload Image" />
-                              <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Post" />
+                              <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Post" onAction="#insertPost"/>
                            </children>
                            <padding>
                               <Insets bottom="15.0" left="20.0" right="20.0" top="20.0" />
@@ -55,7 +55,7 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" />
                </StackPane.margin>
             </VBox>
-            <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
+            <Button onAction="#clickExitButton" mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
                   <Insets right="20.0" top="20.0" />
                </StackPane.margin>

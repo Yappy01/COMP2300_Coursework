@@ -15,12 +15,10 @@ public class User {
         this.answer = answer;
     }
 
-    public User(Integer userId, String name, String password, String email,String answer) {
+    public User(Integer userId, String name, String email) {
         this.userId = userId;
         this.name = name;
-        this.password = password;
         this.email = email;
-        this.answer = answer;
     }
 
     public String getName() { return name;}
@@ -29,6 +27,7 @@ public class User {
 
     public String getEmail() { return email;}
     public String getAnswer() { return answer;}
+    public Integer getUserId() { return userId;}
 
 
 }

@@ -120,7 +120,7 @@
                                 <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
                             </content>
                         </ScrollPane>
-                        <Button mnemonicParsing="false" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button onAction="#onAddButtonClick" mnemonicParsing="false" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
                             <StackPane.margin>
                                 <Insets bottom="50.0" right="50.0" />
                             </StackPane.margin>
@@ -136,6 +136,7 @@
                 </StackPane>
             </center>
         </BorderPane>
-        <fx:include fx:id="overlayB" source="../components/comPostOverlay2.fxml" />
+<!--        <fx:include fx:id="overlayB" source="../components/comPostOverlay2.fxml" />-->
+<!--        <fx:include fx:id="overlayA" source="../components/comPostOverlay.fxml" />-->
     </children>
 </StackPane>
