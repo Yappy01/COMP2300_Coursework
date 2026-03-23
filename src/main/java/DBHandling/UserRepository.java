@@ -184,6 +184,106 @@ public class UserRepository {
         return false;
     }
 
+    public boolean change_phonenumber(String name, String phone_number) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET phone_number = ? WHERE name = ? and password = ?";
 
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, phone_number.trim());
+            update_user_stmt.setString(2, name.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
 
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    public boolean change_date_of_birth(String name, String date_of_birth) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET date_of_birth = ? WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, date_of_birth.trim());
+            update_user_stmt.setString(2, name.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean change_allergies(String name, String allergies) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET allergies = ? WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, allergies.trim());
+            update_user_stmt.setString(2, name.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean change_cd(String name, String chronic_disease) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET chronic_disease = ? WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, chronic_disease.trim());
+            update_user_stmt.setString(2, name.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean change_blood_type(String name, String blood_type) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET blood_type = ? WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, blood_type.trim());
+            update_user_stmt.setString(2, name.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean change_injuries_illness(String name, String injuries_illness) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET injuries_illness = ? WHERE name = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
+            update_user_stmt.setString(1, injuries_illness.trim());
+            update_user_stmt.setString(2, name.trim());
+            update_user_stmt.executeUpdate();
+            System.out.println("Note updated in the database successfully");
+            return true;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
