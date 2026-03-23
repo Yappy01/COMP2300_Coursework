@@ -86,6 +86,7 @@ public class CommunityPageController {
                 controller.setPost(postsList.get(i));
                 controller.setData(name, post.getContent(), tsString);
 
+
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {
                 e.printStackTrace();

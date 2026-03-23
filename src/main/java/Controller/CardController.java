@@ -55,6 +55,7 @@ public class CardController {
         parentController.setOverlayVisibility(true);
         comPageOverlayController.setOverlayData(this.nameLabel.getText(), this.contentLabel.getText());
         comPageOverlayController.setPost(post);
+        comPageOverlayController.setCommentSection();
     }
 
     // This button likes the post directly
@@ -63,9 +64,6 @@ public class CardController {
     }
 
     // This button allows user to directly comment without looking at other people's comment.
-    public void commentClicked(ActionEvent event) {
-
-    }
 
     public void setComPageOverlayController(ComPageOverlayController comPageOverlayController) {
         this.comPageOverlayController = comPageOverlayController;

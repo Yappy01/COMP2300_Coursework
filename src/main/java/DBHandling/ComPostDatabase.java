@@ -1,5 +1,6 @@
 package DBHandling;
 
+import Models.Comment;
 import Models.Post;
 import utils.DBConnection;
 
@@ -91,6 +92,38 @@ public class ComPostDatabase {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     list.add(extractPost(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public static ArrayList<Comment> getRecentComment(int postId, int limit) {
+        ArrayList<Comment> list = new ArrayList<>();
+        // Use '?' as a placeholder for the limit
+        String sql = "SELECT * FROM comments where postId = ? ORDER BY createdAt DESC LIMIT ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Set the value for the placeholder
+            stmt.setInt(1, postId);
+            stmt.setInt(2, limit);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Comment(
+                            rs.getInt("commentId"),
+                            rs.getInt("postId"),
+                            rs.getInt("userId"),
+                            rs.getString("content"),
+                            rs.getTimestamp("createdAt"),
+                            rs.getTimestamp("updatedAt")
+                    ));
                 }
             }
 
@@ -246,7 +279,39 @@ public class ComPostDatabase {
         }
     }
 
+    public static boolean addComment(int postId, int userId, String content) {
+        String insertComment = "INSERT INTO comments (postid, userid, content) VALUES (?, ?, ?)";
+        // Optional: If your 'posts' table has a 'commentCount' column to track totals
+        String updatePostCount = "UPDATE posts SET commentCount = commentCount + 1 WHERE postId = ?";
 
+        try (Connection conn = DBConnection.getConnection()) {
+            conn.setAutoCommit(false); // Start Transaction
+
+            try (PreparedStatement st1 = conn.prepareStatement(insertComment);
+                 PreparedStatement st2 = conn.prepareStatement(updatePostCount)) {
+
+                // 1. Insert the new comment
+                st1.setInt(1, postId);
+                st1.setInt(2, userId);
+                st1.setString(3, content);
+                st1.executeUpdate();
+
+                // 2. Update the post's comment counter
+                st2.setInt(1, postId);
+                st2.executeUpdate();
+
+                conn.commit(); // Success!
+                return true;
+            } catch (SQLException e) {
+                conn.rollback(); // If anything fails, don't save the comment
+                e.printStackTrace();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // 🔧 Helper Method
     private static Post extractPost(ResultSet rs) throws SQLException {

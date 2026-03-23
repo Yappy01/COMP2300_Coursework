@@ -60,7 +60,7 @@
                   </Group>
                </graphic>
             </Button>
-            <Button fx:id="commentBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#commentClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-comment">
+            <Button fx:id="commentBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cardClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-comment">
                <font>
                   <Font name="Constantia" size="24.0" />
                </font>
