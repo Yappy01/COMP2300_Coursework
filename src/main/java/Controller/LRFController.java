@@ -1,5 +1,6 @@
 package Controller;
 import Models.User;
+import Service.UserService;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import DBHandling.UserRepository;
+import utils.Session;
 import utils.UIConstant;
 
 import java.sql.SQLException;
@@ -57,6 +59,8 @@ public class LRFController {
     @FXML private Button side_alreadyHave;
     @FXML Hyperlink si_forgotPass;
     @FXML private Button si_loginBtn;
+
+    private final UserService userService = new UserService();
 
 
     private final UserRepository userRepo = new UserRepository();
@@ -131,11 +135,13 @@ public class LRFController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/homepage.fxml"));
                         Parent root = loader.load();
 
+
                         //GET the controller from the loader
                         HomePageController controller = loader.getController();
 
                         //call init, assign_usertag and setNoteToSelf
                         controller.init_mainpage();
+                        Session.startSession(userService.searchByUsername(si_username.getText()));
                         controller.assign_usertag(si_username.getText());
                         controller.setNoteToSelf();
 
