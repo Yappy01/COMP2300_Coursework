@@ -3,6 +3,8 @@ package Controller;
 import DBHandling.ComPostDatabase;
 import DBHandling.UserRepository;
 import Models.Post;
+import Models.User;
+import Service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
+import utils.Session;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommunityPageController {
     @FXML
@@ -30,10 +34,22 @@ public class CommunityPageController {
     @FXML
     private StackPane addPostPage;
 
+    private List<Post> postsList;
+
     @FXML
     public void initialize() {
         ComPageOverlayController comPageOverlayController = null;
         OverlayBController overlayBController = null;
+
+        //Remember to remove this after
+        if (!Session.isLoggedIn()){
+            UserService service = new UserService();
+            User user = service.searchByUsername("Oswald");
+            Session.startSession(user);
+        }
+        //This is just testing example user session
+
+        postsList = Session.getInstance().getAllPosts();
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
             mainPostPage = overlayLoader.load();
@@ -53,16 +69,14 @@ public class CommunityPageController {
             e1.printStackTrace();
         }
 
-        ArrayList<Post> recentPosts = ComPostDatabase.getRecent(12);
-
-        for (int i = 0; i < recentPosts.size(); i++) {
+        for (int i = 0; i < postsList.size(); i++) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
                 Node card = loader.load();
 
                 CardController controller = loader.getController();
                 controller.setParentController(this);
-                Post post = recentPosts.get(i);
+                Post post = postsList.get(i);
 
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
                 String tsString = sdf.format(post.getCreatedAt());
@@ -70,7 +84,6 @@ public class CommunityPageController {
                 String name = UserRepository.getUserName(post.getUserId());
                 controller.setComPageOverlayController(comPageOverlayController);
                 controller.setData(name, post.getContent(), tsString);
-
 
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {

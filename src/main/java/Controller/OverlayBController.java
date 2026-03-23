@@ -31,10 +31,8 @@ public class OverlayBController {
 
     @FXML
     public void insertPost() {
-//        User user = Session.getInstance().getUser();
-        UserService service = new UserService();
-        User user = service.searchByUsername("Oswald");
-        System.out.println(user.getName());
+        User user = Session.getInstance().getUser();
+        Session.startSession(user);
 
         Post post = new Post(user.getUserId(), postText.getText(), "");
         ComPostDatabase.insertPost(post);
