@@ -35,6 +35,8 @@ public class CardController {
     @FXML
     private CommunityPageController parentController;
 
+    private ComPageOverlayController comPageOverlayController;
+
     public void setParentController(CommunityPageController parentController) {
         this.parentController = parentController;
     }
@@ -49,6 +51,7 @@ public class CardController {
     // View the entire content of the card / Bringing a small box up.
     public void cardClicked() {
         parentController.setOverlayVisibility(true);
+        comPageOverlayController.setOverlayData(this.nameLabel.getText(), this.contentLabel.getText());
     }
 
     // This button likes the post directly
@@ -61,9 +64,12 @@ public class CardController {
 
     }
 
+    public void setComPageOverlayController(ComPageOverlayController comPageOverlayController) {
+        this.comPageOverlayController = comPageOverlayController;
+    }
+
     @FXML
     private void initialize() {
-
         // This detects if the data contains an image to showcase allowing it to change between text and image.
         if (contentImage.getImage() == null) {
             contentImage.setVisible(false);

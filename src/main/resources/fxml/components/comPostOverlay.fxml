@@ -29,7 +29,7 @@
                                  <content>
                                     <VBox style="-fx-background-color: transparent;">
                                        <children>
-                                          <Label graphicTextGap="10.0" styleClass="community-overlay-title" text="User 1">
+                                          <Label fx:id="overlayUsernameLabel" graphicTextGap="10.0" styleClass="community-overlay-title" text="User 1">
                                              <graphic>
                                                 <Group>
                                                    <children>
@@ -39,7 +39,7 @@
                                              </graphic>
                                           </Label>
                                           <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Label maxWidth="1.7976931348623157E308" styleClass="community-overlay-content" text="Insert Text or Image Here" wrapText="true" VBox.vgrow="ALWAYS">
+                                          <Label fx:id="overlayContentLabel" maxWidth="1.7976931348623157E308" styleClass="community-overlay-content" text="Insert Text or Image Here" wrapText="true" VBox.vgrow="ALWAYS">
                                              <VBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </VBox.margin></Label>

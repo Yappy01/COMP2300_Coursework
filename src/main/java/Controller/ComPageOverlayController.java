@@ -10,43 +10,33 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import javax.smartcardio.Card;
 import java.io.IOException;
 
 
 public class ComPageOverlayController {
 
     @FXML
-    private Label nameLabel;
+    public Label overlayUsernameLabel;
     @FXML
-    private Label contentLabel;
-    @FXML
-    private Label dateLabel;
-    @FXML
-    private VBox cardBox;
-    @FXML
-    private Button likeBtn;
-    @FXML
-    private Button commentBtn;
-    @FXML
-    private VBox cardBoxContent;
-    @FXML
-    private ImageView contentImage;
+    public Label overlayContentLabel;
     @FXML
     private CommunityPageController parentController;
-    @FXML
-    private StackPane mainPostPage;
 
     public void setParentController(CommunityPageController parentController) {
         this.parentController = parentController;
     }
 
-    public void setOverlayData(String name, String content, String date) {
-        this.nameLabel.setText(name);
-        this.contentLabel.setText(content);
-        this.dateLabel.setText(date);
+    public void setOverlayData(String name, String content) {
+        overlayUsernameLabel.setText(name);
+        overlayContentLabel.setText(content);
     }
 
     public void clickExitButton() {
         parentController.setOverlayVisibility(false);
+    }
+
+    @FXML
+    private void initialize() {
     }
 }

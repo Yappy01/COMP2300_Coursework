@@ -32,19 +32,21 @@ public class CommunityPageController {
 
     @FXML
     public void initialize() {
+        ComPageOverlayController comPageOverlayController = null;
+        OverlayBController overlayBController = null;
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
             mainPostPage = overlayLoader.load();
 
             mainPostPage.setVisible(false);
-            ComPageOverlayController comPageOverlayController = overlayLoader.getController();
+            comPageOverlayController = overlayLoader.getController();
             comPageOverlayController.setParentController(this);
             comPageArea.getChildren().add(mainPostPage);
 
             FXMLLoader overlayBLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay2.fxml"));
             addPostPage = overlayBLoader.load();
             addPostPage.setVisible(false);
-            OverlayBController overlayBController = overlayBLoader.getController();
+            overlayBController = overlayBLoader.getController();
             overlayBController.setParentController(this);
             comPageArea.getChildren().add(addPostPage);
         } catch (IOException e1) {
@@ -66,8 +68,9 @@ public class CommunityPageController {
                 String tsString = sdf.format(post.getCreatedAt());
 
                 String name = UserRepository.getUserName(post.getUserId());
-
+                controller.setComPageOverlayController(comPageOverlayController);
                 controller.setData(name, post.getContent(), tsString);
+
 
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {
