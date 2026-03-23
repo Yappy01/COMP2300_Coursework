@@ -1,12 +1,22 @@
 package Models;
 
 public class User {
+    private Integer userId;
     private String name;
     private String password;
     private String email;
     private String answer;
 
     public User(String name, String password, String email,String answer) {
+        this.userId = null;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.answer = answer;
+    }
+
+    public User(Integer userId, String name, String password, String email,String answer) {
+        this.userId = userId;
         this.name = name;
         this.password = password;
         this.email = email;
