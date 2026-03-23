@@ -73,7 +73,7 @@
                   </HBox>
                   <HBox alignment="BOTTOM_CENTER">
                      <children>
-                        <Button fx:id="overlayLikeButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+                        <Button fx:id="overlayLikeButton" onAction="#likeClicked" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
                            <font>
                               <Font name="Constantia" size="24.0" />
                            </font>

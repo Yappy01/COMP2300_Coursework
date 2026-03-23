@@ -54,6 +54,7 @@ public class CardController {
     public void cardClicked() {
         parentController.setOverlayVisibility(true);
         comPageOverlayController.setOverlayData(this.nameLabel.getText(), this.contentLabel.getText());
+        comPageOverlayController.setPost(post);
     }
 
     // This button likes the post directly
