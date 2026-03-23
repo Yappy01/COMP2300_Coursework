@@ -1,5 +1,8 @@
 package Controller;
 
+import DBHandling.ComPostDatabase;
+import DBHandling.UserRepository;
+import Models.Post;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +14,8 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class CommunityPageController {
     @FXML
@@ -46,14 +51,23 @@ public class CommunityPageController {
             e1.printStackTrace();
         }
 
-        for (int i = 1; i <= 12; i++) {
+        ArrayList<Post> recentPosts = ComPostDatabase.getRecent(12);
+
+        for (int i = 0; i < recentPosts.size(); i++) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
                 Node card = loader.load();
 
                 CardController controller = loader.getController();
                 controller.setParentController(this);
-                controller.setData("User 1","Content 1", "20/03/2026");
+                Post post = recentPosts.get(i);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+                String tsString = sdf.format(post.getCreatedAt());
+
+                String name = UserRepository.getUserName(post.getUserId());
+
+                controller.setData(name, post.getContent(), tsString);
 
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {
@@ -88,4 +102,6 @@ public class CommunityPageController {
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
 }

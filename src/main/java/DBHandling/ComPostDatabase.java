@@ -77,6 +77,30 @@ public class ComPostDatabase {
         return list;
     }
 
+    public static ArrayList<Post> getRecent(int limit) {
+        ArrayList<Post> list = new ArrayList<>();
+        // Use '?' as a placeholder for the limit
+        String sql = "SELECT * FROM posts ORDER BY createdAt DESC LIMIT ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Set the value for the placeholder
+            stmt.setInt(1, limit);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(extractPost(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     // 4️⃣ Filter by User
     public static ArrayList<Post> getPostsByUser(int userId) {
         ArrayList<Post> list = new ArrayList<>();

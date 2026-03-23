@@ -190,6 +190,22 @@ public class UserRepository {
         return null;
     }
 
+    public static String getUserName(Integer userId) {
+        String query = "SELECT name FROM users WHERE \"userId\" = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement count_stmt = conn.prepareStatement(query)) {
+
+            count_stmt.setInt(1, userId);
+            ResultSet rs = count_stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     //check if the email already exists in the database
     public boolean checkEmailExist(String email) {
         String query = "SELECT count(1) FROM users WHERE email = ?";
