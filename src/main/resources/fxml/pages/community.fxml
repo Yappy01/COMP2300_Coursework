@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommunityPageController">
+<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommunityPageController">
     <children>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css">
             <top>
@@ -54,19 +54,19 @@
                                                 <ToggleGroup fx:id="searchMode" />
                                             </toggleGroup>
                                         </RadioButton>
-                                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="sidebar-toggle-label" text="Most Recent" wrapText="true" HBox.hgrow="ALWAYS" />
+                                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="sidebar-toggle-label" text="Most Recent" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" spacing="15.0">
                                     <children>
                                         <RadioButton mnemonicParsing="false" toggleGroup="$searchMode" />
-                                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="sidebar-toggle-label" text="Most Liked" wrapText="true" HBox.hgrow="ALWAYS" />
+                                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="sidebar-toggle-label" text="Most Liked" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" spacing="15.0">
                                     <children>
                                         <RadioButton mnemonicParsing="false" toggleGroup="$searchMode" />
-                                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="sidebar-toggle-label" text="Most Comments" wrapText="true" HBox.hgrow="ALWAYS" />
+                                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="sidebar-toggle-label" text="Most Comments" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
                                     </children>
                                 </HBox>
                             </children>
@@ -120,7 +120,7 @@
                                 <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
                             </content>
                         </ScrollPane>
-                        <Button onAction="#onAddButtonClick" mnemonicParsing="false" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button mnemonicParsing="false" onAction="#onAddButtonClick" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
                             <StackPane.margin>
                                 <Insets bottom="50.0" right="50.0" />
                             </StackPane.margin>
