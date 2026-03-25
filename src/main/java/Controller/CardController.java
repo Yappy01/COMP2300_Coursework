@@ -2,7 +2,6 @@ package Controller;
 
 import Models.Post;
 import Service.PostService;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +16,10 @@ public class CardController {
     private Label contentLabel;
     @FXML
     private Label dateLabel;
+    @FXML
+    private Label likeNumLabel;
+    @FXML
+    private Label commentNumLabel;
     @FXML
     private VBox cardBox;
     @FXML
