@@ -3,12 +3,13 @@ package Service;
 import DBHandling.ComPostDatabase;
 import Models.Comment;
 import Models.Post;
+import utils.Session;
 
 import java.util.ArrayList;
 
 public class PostService {
     public void likePost(Post post) {
-        ComPostDatabase.toggleLike(post.getPostId(), post.getUserId());
+        ComPostDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
     }
 
     public void commentPost(Post post, String content) {
@@ -17,7 +18,7 @@ public class PostService {
 
     public ArrayList<Comment> getComments(Post post) {
         try {
-            return ComPostDatabase.getRecentComment(post.getPostId(), 12);
+            return ComPostDatabase.getComment(post.getPostId(), 12);
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<Comment>();
