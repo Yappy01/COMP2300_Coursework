@@ -34,22 +34,21 @@ public class CommunityPageController {
     @FXML
     private StackPane addPostPage;
 
-    private List<Post> postsList;
+    private List<Post> postsList = new ArrayList<>();
+    private ComPageOverlayController comPageOverlayController;
 
     @FXML
     public void initialize() {
-        ComPageOverlayController comPageOverlayController = null;
         OverlayBController overlayBController = null;
 
         //Remember to remove this after
         if (!Session.isLoggedIn()){
             UserService service = new UserService();
-            User user = service.searchByUsername("Oswald");
+            User user = service.searchByUsername("Yappy");
             Session.startSession(user);
         }
         //This is just testing example user session
 
-        postsList = Session.getInstance().getAllPosts();
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
             mainPostPage = overlayLoader.load();
@@ -69,6 +68,56 @@ public class CommunityPageController {
             e1.printStackTrace();
         }
 
+        filterRecent();
+    }
+
+    public void setOverlayVisibility(Boolean visibility) {
+        mainPostPage.setVisible(visibility);
+    }
+
+    public void setOverlayBVisibility(Boolean visibility) {
+        addPostPage.setVisible(visibility);
+    }
+
+    @FXML
+    public void onAddButtonClick(){
+        setOverlayBVisibility(true);
+    }
+
+    @FXML
+    public void filterRecent() {
+        System.out.println("recent");
+        this.postsList.clear();
+        this.cardTiles.getChildren().clear();
+        System.out.println("cleared");
+        this.postsList = Session.getInstance().getAllPosts("recent");
+        System.out.println(this.postsList.size());
+        loadCards();
+    }
+
+    @FXML
+    public void filterLikeCount() {
+        System.out.println("Likes");
+        this.postsList.clear();
+        this.cardTiles.getChildren().clear();
+        System.out.println("cleared");
+        this.postsList = Session.getInstance().getAllPosts("likes");
+        System.out.println(this.postsList.size());
+        loadCards();
+    }
+
+    @FXML
+    public void filterCommentCount() {
+        System.out.println("Comments");
+        this.postsList.clear();
+        this.cardTiles.getChildren().clear();
+        System.out.println("cleared");
+        this.postsList = Session.getInstance().getAllPosts("comments");
+        System.out.println(this.postsList.size());
+        loadCards();
+    }
+
+    public void loadCards() {
         for (int i = 0; i < postsList.size(); i++) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
@@ -86,7 +135,6 @@ public class CommunityPageController {
                 controller.setPost(postsList.get(i));
                 controller.setData(name, post.getContent(), tsString);
 
-
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -94,18 +142,6 @@ public class CommunityPageController {
         }
     }
 
-    public void setOverlayVisibility(Boolean visibility) {
-        mainPostPage.setVisible(visibility);
-    }
-
-    public void setOverlayBVisibility(Boolean visibility) {
-        addPostPage.setVisible(visibility);
-    }
-
-    @FXML
-    public void onAddButtonClick(){
-        setOverlayBVisibility(true);
-    }
 
     @FXML
     public void goToHomepage(ActionEvent event) throws IOException {

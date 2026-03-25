@@ -78,16 +78,27 @@ public class ComPostDatabase {
         return list;
     }
 
-    public static ArrayList<Post> getRecent(int limit) {
+    public static ArrayList<Post> getCard(int limit, String type) {
         ArrayList<Post> list = new ArrayList<>();
         // Use '?' as a placeholder for the limit
-        String sql = "SELECT * FROM posts ORDER BY createdAt DESC LIMIT ?";
+        String orderBy ="createdAt";
+        String sql;
 
+        if (type.equals("recent")) {
+            orderBy = "createdat";
+        } else if (type.equals("likes")) {
+            orderBy = "likecount";
+        } else if (type.equals("comments")) {
+            orderBy = "commentcount";
+        }
+        sql = "SELECT * FROM posts ORDER BY " + orderBy + " DESC LIMIT ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Set the value for the placeholder
             stmt.setInt(1, limit);
+
+            System.out.println(stmt);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -102,7 +113,7 @@ public class ComPostDatabase {
         return list;
     }
 
-    public static ArrayList<Comment> getRecentComment(int postId, int limit) {
+    public static ArrayList<Comment> getComment(int postId, int limit) {
         ArrayList<Comment> list = new ArrayList<>();
         // Use '?' as a placeholder for the limit
         String sql = "SELECT * FROM comments where postId = ? ORDER BY createdAt DESC LIMIT ?";

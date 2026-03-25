@@ -18,10 +18,8 @@ public class Session {
         this.user = user;
     }
 
-    public List<Post> getAllPosts() {
-        if (this.allPosts == null) {
-            this.allPosts = ComPostDatabase.getRecent(12);
-        }
+    public List<Post> getAllPosts(String type) {
+        this.allPosts = ComPostDatabase.getCard(12, type);
         return this.allPosts;
     }
 
