@@ -6,9 +6,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import utils.General;
+
+import java.io.File;
 
 
 public class CardController {
@@ -48,18 +51,24 @@ public class CardController {
     }
 
     // Use this to set the data and contain of each card.
-    public void setData(String name, String content, String date, Integer likeCount, Integer commentCount) {
+    public void setData(String name, String content, String date, Integer likeCount, Integer commentCount, String filePath) {
         this.nameLabel.setText(name);
         this.contentLabel.setText(content);
         this.dateLabel.setText(date);
         this.likeNumLabel.setText(General.formatLikes(likeCount));
         this.commentNumLabel.setText(General.formatLikes(commentCount));
+        if (!filePath.equals("")) {
+            Image image = new Image(new File(filePath).toURI().toString());
+            this.contentImage.setImage(image);
+            contentImage.setVisible(true);
+            contentImage.setManaged(true);
+        }
     }
 
     // View the entire content of the card / Bringing a small box up.
     public void cardClicked() {
         parentController.setOverlayVisibility(true);
-        comPageOverlayController.setOverlayData(this.nameLabel.getText(), this.contentLabel.getText());
+        comPageOverlayController.setOverlayData(this.nameLabel.getText(), this.contentLabel.getText(), contentImage.getImage());
         comPageOverlayController.setPost(post);
         comPageOverlayController.setCommentSection();
     }
@@ -82,6 +91,7 @@ public class CardController {
             contentImage.setVisible(false);
             contentImage.setManaged(false);
         } else  {
+            System.out.println("visible");
             contentImage.setVisible(true);
             contentImage.setManaged(true);
         }

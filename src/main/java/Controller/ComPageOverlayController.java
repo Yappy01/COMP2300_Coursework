@@ -13,11 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import javax.smartcardio.Card;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,11 +28,13 @@ import java.util.ArrayList;
 public class ComPageOverlayController {
 
     @FXML
-    public Label overlayUsernameLabel;
+    private Label overlayUsernameLabel;
     @FXML
-    public Label overlayContentLabel;
+    private Label overlayContentLabel;
     @FXML
-    public TextField commentTextField;
+    private TextField commentTextField;
+    @FXML
+    private ImageView imageArea;
     @FXML
     private CommunityPageController parentController;
     @FXML
@@ -46,9 +50,14 @@ public class ComPageOverlayController {
         this.post = post;
     }
 
-    public void setOverlayData(String name, String content) {
+    public void setOverlayData(String name, String content, Image image) {
         overlayUsernameLabel.setText(name);
         overlayContentLabel.setText(content);
+        if (image != null) {
+            this.imageArea.setImage(image);
+            imageArea.setVisible(true);
+            imageArea.setManaged(true);
+        }
     }
 
     public void clickExitButton() {

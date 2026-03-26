@@ -197,7 +197,7 @@ public class CommunityPageController {
                 String name = UserRepository.getUserName(post.getUserId());
                 controller.setComPageOverlayController(comPageOverlayController);
                 controller.setPost(postsList.get(i));
-                controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount());
+                controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount(), post.getImageLink());
 
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {
