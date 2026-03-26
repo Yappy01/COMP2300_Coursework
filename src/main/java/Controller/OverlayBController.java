@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import utils.Session;
@@ -32,6 +34,9 @@ public class OverlayBController {
     @FXML
     private VBox imageArea;
 
+    @FXML
+    private ImageView imagePreview;
+
     private String imageLink = "";
 
     public void setParentController(CommunityPageController parentController) {
@@ -41,6 +46,8 @@ public class OverlayBController {
     @FXML
     public void clickExitButton() {
         parentController.setOverlayBVisibility(false);
+        imagePreview.setVisible(false);
+        imagePreview.setManaged(false);
     }
 
     private File selectedFile; // store the chosen file temporarily
@@ -65,6 +72,10 @@ public class OverlayBController {
                 FileLabelController controller = fileLabelLoader.getController();
                 controller.setImageLabel(selectedFile.getAbsolutePath());
                 controller.setFileLabelArea(imageArea);
+                Image image = new Image(selectedFile.toURI().toString());
+                imagePreview.setVisible(true);
+                imagePreview.setManaged(true);
+                imagePreview.setImage(image);
                 imageArea.getChildren().add(fileLabel);
 
             } catch (IOException e) {
@@ -113,8 +124,21 @@ public class OverlayBController {
         ComPostDatabase.insertPost(post);
 
         // Clear temporary file reference after posting
+        postText.clear();
         selectedFile = null;
         imageArea.getChildren().clear();
         clickExitButton();
+    }
+
+    @FXML
+    public void initialize() {
+        if (imagePreview.getImage() == null) {
+            imagePreview.setVisible(false);
+            imagePreview.setManaged(false);
+        } else  {
+            System.out.println("visible");
+            imagePreview.setVisible(true);
+            imagePreview.setManaged(true);
+        }
     }
 }

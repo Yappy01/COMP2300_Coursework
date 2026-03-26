@@ -84,16 +84,16 @@ public class CardController {
         this.comPageOverlayController = comPageOverlayController;
     }
 
-    @FXML
-    private void initialize() {
-        // This detects if the data contains an image to showcase allowing it to change between text and image.
-        if (contentImage.getImage() == null) {
-            contentImage.setVisible(false);
-            contentImage.setManaged(false);
-        } else  {
-            System.out.println("visible");
-            contentImage.setVisible(true);
-            contentImage.setManaged(true);
-        }
-    }
+//    @FXML
+//    private void initialize() {
+//        // This detects if the data contains an image to showcase allowing it to change between text and image.
+//        if (contentImage.getImage() == null) {
+//            contentImage.setVisible(false);
+//            contentImage.setManaged(false);
+//        } else  {
+//            System.out.println("visible");
+//            contentImage.setVisible(true);
+//            contentImage.setManaged(true);
+//        }
+//    }
 }
