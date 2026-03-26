@@ -35,6 +35,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -46,7 +47,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
    <top>
       <fx:include fx:id="commonTopBar" source="../components/commonTopBar.fxml" />
    </top>
@@ -111,41 +112,46 @@
          </padding></VBox>
    </left>
    <center>
-      <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;" BorderPane.alignment="CENTER_RIGHT">
+      <StackPane BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
+            <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;">
                <children>
-                  <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets left="25.0" right="50.0" />
-                     </padding>
-                  </TextField>
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchSymptoms" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <StackPane.margin>
-                        <Insets right="20.0" />
-                     </StackPane.margin>
-                  </Button>
+                  <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
+                     <children>
+                        <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search for symptoms here" style="-fx-background-radius: 30;">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="25.0" right="50.0" />
+                           </padding>
+                        </TextField>
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchSymptoms" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets right="20.0" />
+                           </StackPane.margin>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <TableView fx:id="stiContentTable" maxWidth="840.0" prefWidth="838.0" stylesheets="@../../css/infoTableView.css">
+                    <columns>
+                      <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" styleClass="wrap-text-cell" text="STI NAME" />
+                        <TableColumn fx:id="stiRiskLevelColumn" prefWidth="96.0" styleClass="wrap-text-cell" text="Risk Level" />
+                      <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="168.0" styleClass="wrap-text-cell" text="SYMPTOMS" />
+                        <TableColumn fx:id="stiTestAndCureColumn" prefWidth="208.0" styleClass="wrap-text-cell" text="TREATMENT" />
+                        <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="220.0" styleClass="wrap-text-cell" text="PREVENTION" />
+                    </columns>
+                  </TableView>
                </children>
-            </StackPane>
-            <TableView fx:id="stiContentTable" maxWidth="840.0" prefWidth="838.0" stylesheets="@../../css/infoTableView.css">
-              <columns>
-                <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" styleClass="wrap-text-cell" text="STI NAME" />
-                  <TableColumn fx:id="stiRiskLevelColumn" prefWidth="96.0" styleClass="wrap-text-cell" text="Risk Level" />
-                <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="168.0" styleClass="wrap-text-cell" text="SYMPTOMS" />
-                  <TableColumn fx:id="stiTestAndCureColumn" prefWidth="208.0" styleClass="wrap-text-cell" text="TREATMENT" />
-                  <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="220.0" styleClass="wrap-text-cell" text="PREVENTION" />
-              </columns>
-            </TableView>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </VBox>
+            <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
          </children>
-         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-         </padding>
-      </VBox>
+      </StackPane>
    </center>
 </BorderPane>
