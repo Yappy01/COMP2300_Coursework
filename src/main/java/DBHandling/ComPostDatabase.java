@@ -333,7 +333,8 @@ public class ComPostDatabase {
                 rs.getInt("likeCount"),
                 rs.getString("imageLink"),
                 rs.getTimestamp("createdAt"),
-                rs.getTimestamp("updatedAt")
+                rs.getTimestamp("updatedAt"),
+                rs.getInt("commentCount")
         );
     }
 }

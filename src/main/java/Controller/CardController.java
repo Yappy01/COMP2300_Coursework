@@ -3,10 +3,12 @@ package Controller;
 import Models.Post;
 import Service.PostService;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import utils.General;
 
 
 public class CardController {
@@ -35,7 +37,6 @@ public class CardController {
 
     private ComPageOverlayController comPageOverlayController;
 
-    private PostService postService = new PostService();
     private Post post;
 
     public void setParentController(CommunityPageController parentController) {
@@ -47,10 +48,12 @@ public class CardController {
     }
 
     // Use this to set the data and contain of each card.
-    public void setData(String name, String content, String date) {
+    public void setData(String name, String content, String date, Integer likeCount, Integer commentCount) {
         this.nameLabel.setText(name);
         this.contentLabel.setText(content);
         this.dateLabel.setText(date);
+        this.likeNumLabel.setText(General.formatLikes(likeCount));
+        this.commentNumLabel.setText(General.formatLikes(commentCount));
     }
 
     // View the entire content of the card / Bringing a small box up.
@@ -63,7 +66,7 @@ public class CardController {
 
     // This button likes the post directly
     public void likeClicked() {
-        postService.likePost(post);
+        PostService.likePost(post);
     }
 
     // This button allows user to directly comment without looking at other people's comment.

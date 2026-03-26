@@ -7,17 +7,19 @@ public class Post {
     private int userId;
     private String content;
     private int likeCount;
+    private int commentCount;
     private String imageLink;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
     // Constructor (full)
     public Post(int postId, int userId, String content, int likeCount,
-                String imageLink, Timestamp createdAt, Timestamp updatedAt) {
+                String imageLink, Timestamp createdAt, Timestamp updatedAt, int commentCount) {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.likeCount = likeCount;
+        this.commentCount = commentCount;
         this.imageLink = imageLink;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -29,6 +31,7 @@ public class Post {
         this.content = content;
         this.imageLink = imageLink;
         this.likeCount = 0;
+        this.commentCount = 0;
         this.createdAt = new Timestamp(System.currentTimeMillis());
         this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
@@ -88,5 +91,13 @@ public class Post {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }

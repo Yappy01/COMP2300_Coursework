@@ -94,7 +94,6 @@ public class CommunityPageController {
 
     @FXML
     public void filterRecent() {
-        System.out.println("recent");
         loadingSpinner.setVisible(true);
 
         Task<ArrayList<Post>> task = new Task<>() {
@@ -109,7 +108,6 @@ public class CommunityPageController {
             cardTiles.getChildren().clear();
 
             postsList = task.getValue();
-            System.out.println(postsList.size());
             loadCards(); // UI update
             loadingSpinner.setVisible(false);
         });
@@ -124,7 +122,6 @@ public class CommunityPageController {
 
     @FXML
     public void filterLikeCount() {
-        System.out.println("likes");
         loadingSpinner.setVisible(true);
 
         Task<ArrayList<Post>> task = new Task<>() {
@@ -139,7 +136,6 @@ public class CommunityPageController {
             cardTiles.getChildren().clear();
 
             postsList = task.getValue();
-            System.out.println(postsList.size());
             loadCards(); // UI update
             loadingSpinner.setVisible(false);
         });
@@ -155,7 +151,6 @@ public class CommunityPageController {
 
     @FXML
     public void filterCommentCount() {
-        System.out.println("comments");
         loadingSpinner.setVisible(true);
 
         Task<ArrayList<Post>> task = new Task<>() {
@@ -170,7 +165,6 @@ public class CommunityPageController {
             cardTiles.getChildren().clear();
 
             postsList = task.getValue();
-            System.out.println(postsList.size());
             loadCards(); // UI update
             loadingSpinner.setVisible(false);
         });
@@ -199,7 +193,7 @@ public class CommunityPageController {
                 String name = UserRepository.getUserName(post.getUserId());
                 controller.setComPageOverlayController(comPageOverlayController);
                 controller.setPost(postsList.get(i));
-                controller.setData(name, post.getContent(), tsString);
+                controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount());
 
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {
