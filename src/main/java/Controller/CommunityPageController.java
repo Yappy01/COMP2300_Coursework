@@ -4,13 +4,16 @@ import DBHandling.ComPostDatabase;
 import DBHandling.UserRepository;
 import Models.Post;
 import Models.User;
+import Service.PostService;
 import Service.UserService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -34,12 +37,17 @@ public class CommunityPageController {
     @FXML
     private StackPane addPostPage;
 
+    @FXML
+    private ProgressIndicator loadingSpinner;
+
     private List<Post> postsList = new ArrayList<>();
     private ComPageOverlayController comPageOverlayController;
 
     @FXML
     public void initialize() {
         OverlayBController overlayBController = null;
+        loadingSpinner.setVisible(false);
+        loadingSpinner.setProgress(-1);
 
         //Remember to remove this after
         if (!Session.isLoggedIn()){
@@ -87,34 +95,92 @@ public class CommunityPageController {
     @FXML
     public void filterRecent() {
         System.out.println("recent");
-        this.postsList.clear();
-        this.cardTiles.getChildren().clear();
-        System.out.println("cleared");
-        this.postsList = Session.getInstance().getAllPosts("recent");
-        System.out.println(this.postsList.size());
-        loadCards();
+        loadingSpinner.setVisible(true);
+
+        Task<ArrayList<Post>> task = new Task<>() {
+            @Override
+            protected ArrayList<Post> call() {
+                return PostService.getAllPosts("recent"); // background
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            postsList.clear();
+            cardTiles.getChildren().clear();
+
+            postsList = task.getValue();
+            System.out.println(postsList.size());
+            loadCards(); // UI update
+            loadingSpinner.setVisible(false);
+        });
+
+        task.setOnFailed(e -> {
+            System.out.println("Failed to load posts");
+            task.getException().printStackTrace();
+        });
+
+        new Thread(task).start();
     }
 
     @FXML
     public void filterLikeCount() {
-        System.out.println("Likes");
-        this.postsList.clear();
-        this.cardTiles.getChildren().clear();
-        System.out.println("cleared");
-        this.postsList = Session.getInstance().getAllPosts("likes");
-        System.out.println(this.postsList.size());
-        loadCards();
+        System.out.println("likes");
+        loadingSpinner.setVisible(true);
+
+        Task<ArrayList<Post>> task = new Task<>() {
+            @Override
+            protected ArrayList<Post> call() {
+                return PostService.getAllPosts("likes"); // background
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            postsList.clear();
+            cardTiles.getChildren().clear();
+
+            postsList = task.getValue();
+            System.out.println(postsList.size());
+            loadCards(); // UI update
+            loadingSpinner.setVisible(false);
+        });
+
+        task.setOnFailed(e -> {
+            System.out.println("Failed to load posts");
+            task.getException().printStackTrace();
+            loadingSpinner.setVisible(false);
+        });
+
+        new Thread(task).start();
     }
 
     @FXML
     public void filterCommentCount() {
-        System.out.println("Comments");
-        this.postsList.clear();
-        this.cardTiles.getChildren().clear();
-        System.out.println("cleared");
-        this.postsList = Session.getInstance().getAllPosts("comments");
-        System.out.println(this.postsList.size());
-        loadCards();
+        System.out.println("comments");
+        loadingSpinner.setVisible(true);
+
+        Task<ArrayList<Post>> task = new Task<>() {
+            @Override
+            protected ArrayList<Post> call() {
+                return PostService.getAllPosts("comments"); // background
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            postsList.clear();
+            cardTiles.getChildren().clear();
+
+            postsList = task.getValue();
+            System.out.println(postsList.size());
+            loadCards(); // UI update
+            loadingSpinner.setVisible(false);
+        });
+
+        task.setOnFailed(e -> {
+            System.out.println("Failed to load posts");
+            task.getException().printStackTrace();
+        });
+
+        new Thread(task).start();
     }
 
     public void loadCards() {

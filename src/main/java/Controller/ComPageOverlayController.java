@@ -7,6 +7,7 @@ import Service.PostService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -35,7 +36,6 @@ public class ComPageOverlayController {
     @FXML
     private VBox commentBox;
 
-    private PostService postService = new PostService();
     private Post post;
 
     public void setParentController(CommunityPageController parentController) {
@@ -57,16 +57,16 @@ public class ComPageOverlayController {
     }
 
     public void likeClicked() {
-        postService.likePost(post);
+        PostService.likePost(post);
     }
 
     public void sendComment() {
-        postService.commentPost(post, commentTextField.getText());
+        PostService.commentPost(post, commentTextField.getText());
         commentTextField.clear();
     }
 
     public void setCommentSection() {
-        ArrayList<Comment> comments = postService.getComments(post);
+        ArrayList<Comment> comments = PostService.getComments(post);
         System.out.println("COMMENTS: " + comments.size());
         for (int i = 0; i < comments.size(); i++) {
             comments.get(i);
