@@ -63,6 +63,7 @@ public class ComPageOverlayController {
     public void sendComment() {
         PostService.commentPost(post, commentTextField.getText());
         commentTextField.clear();
+        setCommentSection();
     }
 
     public void setCommentSection() {

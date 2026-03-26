@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<HBox alignment="CENTER" style="-fx-background-color: #6C4535;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:controller="Controller.FileLabelController" alignment="CENTER" style="-fx-background-color: #6C4535;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="imageLabel" maxWidth="1.7976931348623157E308" style="-fx-text-fill: white; -fx-font-size: 16;" text="Img1.jpg" HBox.hgrow="ALWAYS" />
-      <Button mnemonicParsing="false" styleClass="community-btn-overlay-close">
+      <Button fx:id="removeButton" onAction="#removeClicked" mnemonicParsing="false" styleClass="community-btn-overlay-close">
          <graphic>
             <Group>
                <children>

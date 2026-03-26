@@ -36,13 +36,13 @@
                            <children>
                               <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox>
+                                    <VBox fx:id="imageArea">
                                        <children>
-                                          <fx:include source="fileLabel.fxml" />
+<!--                                          <fx:include source="fileLabel.fxml" />-->
                                        </children>
                                     </VBox>
                                  </content></ScrollPane>
-                              <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Upload Image" />
+                              <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Upload Image" onAction="#uploadImage" />
                               <Button mnemonicParsing="false" styleClass="sidebar-button-medium" text="Post" onAction="#insertPost"/>
                            </children>
                            <padding>

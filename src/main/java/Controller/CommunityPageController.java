@@ -43,6 +43,10 @@ public class CommunityPageController {
     private List<Post> postsList = new ArrayList<>();
     private ComPageOverlayController comPageOverlayController;
 
+    public StackPane getAddPostPage() {
+        return addPostPage;
+    }
+
     @FXML
     public void initialize() {
         OverlayBController overlayBController = null;
