@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -37,6 +38,9 @@ public class OverlayBController {
     @FXML
     private ImageView imagePreview;
 
+    @FXML
+    private Button uploadButton;
+
     private String imageLink = "";
 
     public void setParentController(CommunityPageController parentController) {
@@ -48,6 +52,8 @@ public class OverlayBController {
         parentController.setOverlayBVisibility(false);
         imagePreview.setVisible(false);
         imagePreview.setManaged(false);
+        uploadButton.setVisible(true);
+        postText.clear();
     }
 
     private File selectedFile; // store the chosen file temporarily
@@ -72,11 +78,14 @@ public class OverlayBController {
                 FileLabelController controller = fileLabelLoader.getController();
                 controller.setImageLabel(selectedFile.getAbsolutePath());
                 controller.setFileLabelArea(imageArea);
+                controller.setUploadButton(uploadButton);
+                controller.setImagePreview(imagePreview);
                 Image image = new Image(selectedFile.toURI().toString());
                 imagePreview.setVisible(true);
                 imagePreview.setManaged(true);
                 imagePreview.setImage(image);
                 imageArea.getChildren().add(fileLabel);
+                uploadButton.setVisible(false);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,7 +121,7 @@ public class OverlayBController {
                 savedPath = destination.toString();
 
                 System.out.println("File saved to: " + savedPath);
-
+                uploadButton.setVisible(true);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to save the file.");

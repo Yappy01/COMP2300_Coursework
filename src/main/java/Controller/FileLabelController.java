@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class FileLabelController {
@@ -14,6 +15,17 @@ public class FileLabelController {
 
     @FXML
     private VBox fileLabelArea;
+
+    private ImageView imagePreview;
+    private Button uploadButton;
+
+    public void setUploadButton(Button uploadButton) {
+        this.uploadButton = uploadButton;
+    }
+
+    public void setImagePreview(ImageView imagePreview) {
+        this.imagePreview = imagePreview;
+    }
 
     public void setFileLabelArea(VBox fileLabelArea) {
         this.fileLabelArea = fileLabelArea;
@@ -31,5 +43,7 @@ public class FileLabelController {
         Parent parent = source.getParent();
 
         fileLabelArea.getChildren().remove(parent);
+        uploadButton.setVisible(true);
+        imagePreview.setImage(null);
     }
 }
