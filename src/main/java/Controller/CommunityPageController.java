@@ -121,7 +121,9 @@ public class CommunityPageController {
             task.getException().printStackTrace();
         });
 
-        new Thread(task).start();
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     @FXML
@@ -150,7 +152,9 @@ public class CommunityPageController {
             loadingSpinner.setVisible(false);
         });
 
-        new Thread(task).start();
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     @FXML
@@ -177,13 +181,15 @@ public class CommunityPageController {
             System.out.println("Failed to load posts");
             task.getException().printStackTrace();
         });
-
-        new Thread(task).start();
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     public void loadCards() {
         for (int i = 0; i < postsList.size(); i++) {
             try {
+                final int index = i;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
                 Node card = loader.load();
 
@@ -194,10 +200,35 @@ public class CommunityPageController {
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
                 String tsString = sdf.format(post.getCreatedAt());
 
-                String name = UserRepository.getUserName(post.getUserId());
-                controller.setComPageOverlayController(comPageOverlayController);
-                controller.setPost(postsList.get(i));
-                controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+                Task<String> task = new Task<String>() {
+                    @Override
+                    protected String call() throws Exception {
+                        return UserRepository.getUserName(post.getUserId());
+                    }
+                };
+
+                task.setOnSucceeded(e -> {
+                    String name = task.getValue();
+                    controller.setComPageOverlayController(comPageOverlayController);
+                    controller.setPost(postsList.get(index));
+                    controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+
+                    if (index == postsList.size()) {
+                        loadingSpinner.setVisible(false);
+                    }
+                });
+
+                task.setOnFailed(e -> {
+                    task.getException().printStackTrace();
+
+                    if (index == postsList.size()) {
+                        loadingSpinner.setVisible(false);
+                    }
+                });
+
+                Thread thread = new Thread(task);
+                thread.setDaemon(true); // optional: allows app to exit if this thread is running
+                thread.start();
 
                 cardTiles.getChildren().add(card);
             } catch (IOException e) {

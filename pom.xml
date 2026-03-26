@@ -56,7 +56,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>App.InformationPage</mainClass>
+                    <mainClass>App.CommunityPage</mainClass>
                 </configuration>
             </plugin>
         </plugins>
