@@ -13,6 +13,9 @@ public class PostService {
     }
 
     public static void commentPost(Post post, String content) {
+        if (content == null || content.equals("")) {
+            return ;
+        }
         ComPostDatabase.addComment(post.getPostId(), post.getUserId(), content);
     }
 

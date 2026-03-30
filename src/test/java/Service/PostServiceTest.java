@@ -21,25 +21,19 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        // 1. Create fake objects
         mockPost = mock(Post.class);
         mockUser = mock(User.class);
 
-        // 2. Setup mock behavior
         when(mockPost.getPostId()).thenReturn(101);
-        when(mockPost.getUserId()).thenReturn(202); // The post creator
-        when(mockUser.getUserId()).thenReturn(5);   // The person liking/commenting
+        when(mockPost.getUserId()).thenReturn(202);
+        when(mockUser.getUserId()).thenReturn(5);
 
-        // 3. Start a "Fake" Session
         Session.startSession(mockUser);
-
-        // 4. Mock the Static Database class to intercept calls
         mockedDatabase = mockStatic(ComPostDatabase.class);
     }
 
     @AfterEach
     void tearDown() {
-        // Crucial for MockedStatic: must close after each test
         mockedDatabase.close();
     }
 
@@ -49,7 +43,6 @@ class PostServiceTest {
     void testLikePostCallsCorrectDatabaseParams() {
         PostService.likePost(mockPost);
 
-        // Verify the service pulled the correct IDs: 101 from Post, 5 from Session
         mockedDatabase.verify(() ->
                 ComPostDatabase.toggleLike(101, 5)
         );
@@ -60,17 +53,15 @@ class PostServiceTest {
         String content = "Hello World";
         PostService.commentPost(mockPost, content);
 
-        // Verify service uses the post's ID and content
         mockedDatabase.verify(() ->
                 ComPostDatabase.addComment(eq(101), anyInt(), eq(content))
         );
     }
 
-    // --- 2. BOUNDARY TESTING ---
+    // --- 2. PARTITION TESTING ---
 
     @Test
     void testCommentPostWithEmptyString() {
-        // Boundary: Does the service handle empty comments?
         assertDoesNotThrow(() -> PostService.commentPost(mockPost, ""));
 
         mockedDatabase.verify(() ->
@@ -79,15 +70,39 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Boundary: Handle extremely long comment text")
-    void testCommentPostWithHugeContent() {
+    void testCommentPostWithLongString() {
         String longContent = "A".repeat(5000);
         assertDoesNotThrow(() -> PostService.commentPost(mockPost, longContent));
     }
 
     @Test
+    void testCommentPostWithSpecialCharacters() {
+        String content = "@#$%^&*()!";
+        assertDoesNotThrow(() -> PostService.commentPost(mockPost, content));
+    }
+
+    @Test
+    void testCommentPostWithNullContent() {
+        assertDoesNotThrow(() ->
+                PostService.commentPost(mockPost, null)
+        );
+
+        // Verify that DB is NEVER called when content is null
+        mockedDatabase.verify(() ->
+                        ComPostDatabase.addComment(anyInt(), anyInt(), anyString()),
+                never()
+        );
+    }
+
+    @Test
+    void testLikePostWithNullPost() {
+        assertThrows(Exception.class, () ->
+                PostService.likePost(null)
+        );
+    }
+
+    @Test
     void testGetCommentsWithNullPost() {
-        // Boundary: Passing null instead of a Post object
         ArrayList<Comment> result = PostService.getComments(null);
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -99,7 +114,6 @@ class PostServiceTest {
     void testGetAllPostsRespectsInternalLimit() {
         PostService.getAllPosts("recent");
 
-        // Limit Test: Verify the hardcoded '12' is actually passed to the DB
         mockedDatabase.verify(() ->
                 ComPostDatabase.getCard(12, "recent")
         );
@@ -109,7 +123,6 @@ class PostServiceTest {
     void testGetCommentsLimitParameters() {
         PostService.getComments(mockPost);
 
-        // Limit Test: Verify the hardcoded '12' is used for fetching comments
         mockedDatabase.verify(() ->
                 ComPostDatabase.getComment(101, 12)
         );
@@ -119,11 +132,9 @@ class PostServiceTest {
 
     @Test
     void testGetCommentsWhenDatabaseFails() {
-        // Simulate the database throwing an error
         mockedDatabase.when(() -> ComPostDatabase.getComment(anyInt(), anyInt()))
                 .thenThrow(new RuntimeException("Connection Timeout"));
 
-        // The service has a try-catch, so it shouldn't crash
         ArrayList<Comment> result = PostService.getComments(mockPost);
 
         assertNotNull(result);
