@@ -1,10 +1,13 @@
 package Controller;
 
 import DBHandling.StiDatabase;
+import Models.Post;
 import Models.StiEntry;
+import Service.PostService;
 import Service.StiService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,10 +21,12 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InformationPageController {
+    @FXML private ProgressIndicator progressIndicator;
     @FXML private ToggleButton riskLevelButton;
     @FXML private ToggleButton nameButton;
     @FXML private ToggleButton symptomsButton;
@@ -43,9 +48,12 @@ public class InformationPageController {
     @FXML
     private TextField filterField;
     private ObservableList<StiEntry> masterData;
+    private ArrayList<StiEntry> stis;
 
     @FXML
     public void initialize() {
+        progressIndicator.setVisible(true);
+        progressIndicator.setProgress(-1);
         // Bind columns to model properties
         stiNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         stiSymptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
@@ -60,49 +68,95 @@ public class InformationPageController {
         stiTransmissionModeColumn.setCellFactory(wrapTextCellFactory());
 
         // Load data from DB
-        ArrayList<StiEntry> stis = StiDatabase.getAll();
-        masterData = FXCollections.observableArrayList(stis);
-        stiContentTable.setItems(masterData);
-
-        stiContentTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        searchButton.setOnAction(e -> {
-            switch (searchMode) {
-                case "name" -> searchName();
-                case "risk" -> searchRiskLevel();
-                case "symptoms" -> searchSymptoms();
+        Task<ArrayList<StiEntry>> task = new Task<>() {
+            @Override
+            protected ArrayList<StiEntry> call() {
+                return StiService.getAll(); // background
             }
+        };
+
+        task.setOnSucceeded(e -> {
+            progressIndicator.setVisible(false);
+            stis = task.getValue();
+            masterData = FXCollections.observableArrayList(stis);
+            stiContentTable.setItems(masterData);
+            stiContentTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            searchButton.setOnAction(e1 -> {
+                switch (searchMode) {
+                    case "name" -> searchName();
+                    case "risk" -> searchRiskLevel();
+                    case "symptoms" -> searchSymptoms();
+                }
+            });
         });
+
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     @FXML
     private void searchName() {
         String filterText = filterField.getText().toLowerCase();
 
-        List<StiEntry> result =
-                searchService.searchByName(masterData, filterText);
+        Task<ArrayList<StiEntry>> task = new Task<ArrayList<StiEntry>>() {
+            @Override
+            protected ArrayList<StiEntry> call() throws Exception {
+                return searchService.searchByName(masterData, filterText);
+            }
+        };
 
-        stiContentTable.setItems(FXCollections.observableArrayList(result));
+        task.setOnSucceeded(e -> {
+            List<StiEntry> result = task.getValue();
+            stiContentTable.setItems(FXCollections.observableArrayList(result));
+        });
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     @FXML
     private void searchSymptoms() {
         String filterText = filterField.getText().toLowerCase();
 
-        List<StiEntry> result =
-                searchService.searchBySymptoms(masterData, filterText);
+        Task<ArrayList<StiEntry>> task = new Task<ArrayList<StiEntry>>() {
+            @Override
+            protected ArrayList<StiEntry> call() throws Exception {
+                return searchService.searchBySymptoms(masterData, filterText);
+            }
+        };
 
-        stiContentTable.setItems(FXCollections.observableArrayList(result));
+        task.setOnSucceeded(e -> {
+            List<StiEntry> result = task.getValue();
+            stiContentTable.setItems(FXCollections.observableArrayList(result));
+        });
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     @FXML
     private void searchRiskLevel() {
         String filterText = filterField.getText().toLowerCase();
 
-        List<StiEntry> result =
-                searchService.searchByRiskLevel(masterData, filterText);
+        Task<ArrayList<StiEntry>> task = new Task<ArrayList<StiEntry>>() {
+            @Override
+            protected ArrayList<StiEntry> call() throws Exception {
+                return searchService.searchByRiskLevel(masterData, filterText);
+            }
+        };
 
-        stiContentTable.setItems(FXCollections.observableArrayList(result));
+        task.setOnSucceeded(e -> {
+            List<StiEntry> result = task.getValue();
+            stiContentTable.setItems(FXCollections.observableArrayList(result));
+        });
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     @FXML
