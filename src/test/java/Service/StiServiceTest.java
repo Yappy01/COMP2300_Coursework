@@ -24,7 +24,8 @@ class StiServiceTest {
         );
     }
 
-    // --- 1. EXISTING TESTS ---
+    // --- 1. FUNCTIONAL TESTING ---
+
     @Test
     void searchByName_shouldReturnMatch() {
         List<StiEntry> result = service.searchByName(fakeData, "hiv");
@@ -45,61 +46,102 @@ class StiServiceTest {
         assertTrue(result.isEmpty());
     }
 
-    // --- 2. ADDED BOUNDARY & LIMIT TESTING ---
+    // --- 2. PARTITION TESTING ---
 
     @Test
-    @DisplayName("Boundary: Null keyword should return the original full list")
+    @DisplayName("Partition: Null keyword (name search)")
     void searchByName_nullKeyword_returnsAll() {
         List<StiEntry> result = service.searchByName(fakeData, null);
-        assertEquals(fakeData.size(), result.size(), "Should return full list on null input");
+        assertEquals(fakeData.size(), result.size());
     }
 
     @Test
-    @DisplayName("Boundary: Empty string or whitespace should return full list")
+    @DisplayName("Partition: Empty keyword")
+    void searchByName_emptyKeyword_returnsAll() {
+        List<StiEntry> result = service.searchByName(fakeData, "");
+        assertEquals(fakeData.size(), result.size());
+    }
+
+    @Test
+    @DisplayName("Partition: Whitespace keyword")
     void searchBySymptoms_blankKeyword_returnsAll() {
         List<StiEntry> result = service.searchBySymptoms(fakeData, "   ");
-        assertEquals(fakeData.size(), result.size(), "Should return full list on blank input");
+        assertEquals(fakeData.size(), result.size());
     }
 
     @Test
-    @DisplayName("Unit: Partial match and case insensitivity in symptoms")
-    void searchBySymptoms_partialMatch_caseInsensitive() {
-        // Search "FEVER" (uppercase) should find two entries containing "fever"
-        List<StiEntry> result = service.searchBySymptoms(fakeData, "FEVER");
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    @DisplayName("Limit: Searching an empty dataset")
-    void search_onEmptyList_returnsEmpty() {
-        List<StiEntry> emptyList = new ArrayList<>();
-        List<StiEntry> result = service.searchByName(emptyList, "HIV");
-        assertTrue(result.isEmpty(), "Searching an empty list should return an empty result");
-    }
-
-    @Test
-    @DisplayName("Limit: Risk level search with no matching value")
-    void searchByRiskLevel_noMatch_returnsEmpty() {
-        // We have 3, 4, 5. Search for 1.
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "1");
-        assertTrue(result.isEmpty(), "Should return empty list if no entry has that risk level");
-    }
-
-    @Test
-    @DisplayName("Boundary: Handling special characters in search")
+    @DisplayName("Partition: Special characters")
     void searchByName_specialCharacters() {
-        // Ensure symbols don't crash the regex/stream logic
         assertDoesNotThrow(() -> service.searchByName(fakeData, "!@#$%^&*()"));
         List<StiEntry> result = service.searchByName(fakeData, "!!!");
         assertTrue(result.isEmpty());
     }
 
     @Test
-    @DisplayName("Boundary: Large numeric input for risk level")
+    @DisplayName("Partition: Case insensitivity")
+    void searchBySymptoms_caseInsensitive() {
+        List<StiEntry> result = service.searchBySymptoms(fakeData, "FEVER");
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    @DisplayName("Partition: Partial match")
+    void searchByName_partialMatch() {
+        List<StiEntry> result = service.searchByName(fakeData, "syph");
+        assertEquals(1, result.size());
+    }
+
+    // --- 3. LIMIT TESTING ---
+
+    @Test
+    @DisplayName("Limit: Empty dataset")
+    void search_onEmptyList_returnsEmpty() {
+        List<StiEntry> emptyList = new ArrayList<>();
+        List<StiEntry> result = service.searchByName(emptyList, "HIV");
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Limit: No matching results")
+    void searchByRiskLevel_noMatch_returnsEmpty() {
+        List<StiEntry> result = service.searchByRiskLevel(fakeData, "1");
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Limit: Very large keyword input")
+    void searchByName_veryLongInput() {
+        String longInput = "A".repeat(10000);
+        assertDoesNotThrow(() -> service.searchByName(fakeData, longInput));
+    }
+
+    @Test
+    @DisplayName("Limit: Very large numeric input for risk level")
     void searchByRiskLevel_largeNumber() {
-        // Test a number larger than Integer.MAX_VALUE to see if ParseInt throws error
-        // Your service catches NumberFormatException, so it should return empty
         List<StiEntry> result = service.searchByRiskLevel(fakeData, "9999999999999999");
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Limit: Minimum valid risk level")
+    void searchByRiskLevel_minBoundary() {
+        List<StiEntry> result = service.searchByRiskLevel(fakeData, "0");
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Limit: Maximum valid risk level in dataset")
+    void searchByRiskLevel_maxBoundary() {
+        List<StiEntry> result = service.searchByRiskLevel(fakeData, "5");
+        assertEquals(1, result.size());
+    }
+
+    // --- 4. NEGATIVE TESTING ---
+
+    @Test
+    @DisplayName("Negative: Null input for risk level")
+    void searchByRiskLevel_nullInput() {
+        List<StiEntry> result = service.searchByRiskLevel(fakeData, null);
+        assertTrue(result.equals(fakeData));
     }
 }

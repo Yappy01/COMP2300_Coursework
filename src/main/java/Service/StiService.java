@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 public class StiService {
     public ArrayList<StiEntry> searchByName(List<StiEntry> data, String keyword) {
         if (keyword == null || keyword.isBlank()) return new ArrayList<>(data);
-
         return data.stream()
                 .filter(sti -> sti.getName() != null &&
                         sti.getName().toLowerCase().contains(keyword.toLowerCase()))
