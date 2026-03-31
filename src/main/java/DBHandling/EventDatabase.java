@@ -1,6 +1,6 @@
 package DBHandling;
 
-import Models.Event;
+import Models.UserEvent;
 import utils.DBConnection;
 
 import java.sql.*;
@@ -33,8 +33,8 @@ public class EventDatabase {
 
 
 
-    public List<Event> getAllEvents() {
-        List<Event> eventList = new ArrayList<>();
+    public List<UserEvent> getAllEvents() {
+        List<UserEvent> userEventList = new ArrayList<>();
         String query = "SELECT date_time, name, description FROM events WHERE fk_userid = ? AND fk_typeid = ?";
 
 
@@ -53,19 +53,19 @@ public class EventDatabase {
                     String formattedDate = ldt.format(DateTimeFormatter.ofPattern("dd MMM yyyy")).toUpperCase();
                     String formattedTime = ldt.format(DateTimeFormatter.ofPattern("hh:mm a")).toUpperCase();
 
-                    Event event = new Event(
+                    UserEvent userEvent = new UserEvent(
                                 formattedDate,
                                 formattedTime,
                                 rs.getString("name"),
                                 rs.getString("description")
                     );
-                    eventList.add(event);
+                    userEventList.add(userEvent);
                 }
             }
         } catch (SQLException e) {
             System.err.println("Database error: " + e.getMessage());
             e.printStackTrace();
         }
-        return eventList;
+        return userEventList;
     }
 }

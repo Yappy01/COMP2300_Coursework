@@ -27,6 +27,9 @@ public class Session {
         return user;
     }
 
+    // Get userID
+    public int getUserID() {return user.getUserId();}
+
     // Get username
     public String getUserName() { return user.getName();}
 

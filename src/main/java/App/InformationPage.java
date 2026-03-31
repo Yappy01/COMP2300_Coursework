@@ -11,11 +11,9 @@ public class InformationPage extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         Parent root = FXMLLoader.load(
                 Objects.requireNonNull(getClass().getResource("/fxml/pages/information.fxml"))
         );
-
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("My Window");

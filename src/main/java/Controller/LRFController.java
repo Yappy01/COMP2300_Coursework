@@ -334,7 +334,7 @@ public class LRFController {
 
                     }else{
                         //alert that password have been reset
-                        if(userRepo.change_password(Session.getInstance().getUserName(), password)){
+                        if(userRepo.change_password(username, password)){
                             alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Information Message");
                             alert.setHeaderText(null);

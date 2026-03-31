@@ -32,6 +32,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -50,8 +51,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
             <children>
@@ -66,12 +66,12 @@
                         <Insets left="25.0" right="25.0" />
                     </padding>
                 </Label>
-                <Label styleClass="headerFont" stylesheets="@UserProfileDesign.css" text="  User Profile  " textAlignment="CENTER" textFill="#6c4535">
+                <Label styleClass="headerFont" text="  User Profile  " textAlignment="CENTER" textFill="#6c4535">
                     <font>
                         <Font name="Comic Sans MS Bold" size="40.0" />
                     </font>
                 </Label>
-            <Button mnemonicParsing="false" styleClass="signout-button" stylesheets="@UserProfileDesign.css" text="Sign Out" />
+            <Button mnemonicParsing="false" styleClass="signout-button" text="Sign Out" />
             </children>
             <padding>
                 <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
@@ -80,7 +80,7 @@
     <left>
         <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
             <children>
-                <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" stylesheets="@UserProfileDesign.css" text="HOME">
+                <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" text="HOME">
                     <graphic>
                         <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
                     </graphic>
@@ -94,9 +94,9 @@
                         <Insets />
                     </VBox.margin>
                 </Button>
-                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list" stylesheets="@UserProfileDesign.css">
+                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list" >
                     <children>
-                        <ToggleButton fx:id="informationpageButton" mnemonicParsing="false" onAction="#gotoPIPage" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Personal Information" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="informationpageButton" mnemonicParsing="false" onAction="#gotoPIPage" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -107,7 +107,7 @@
                                 <ToggleGroup fx:id="informationPageButtons" />
                             </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Your Post" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -136,7 +136,7 @@
          <children>
             <VBox prefHeight="495.0" prefWidth="545.0">
                <children>
-                  <GridPane prefHeight="211.0" prefWidth="545.0" styleClass="mainBackground" stylesheets="@UserProfileDesign.css">
+                  <GridPane prefHeight="211.0" prefWidth="545.0" styleClass="mainBackground" >
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -145,7 +145,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" >
                            <GridPane.margin>
                               <Insets right="60.0" top="10.0" />
                            </GridPane.margin>
@@ -160,30 +160,30 @@
                                     <Font size="82.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="username_label" layoutX="63.0" layoutY="132.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="Username" />
+                              <Label fx:id="username_label" layoutX="63.0" layoutY="132.0" styleClass="sectionTitleFont" text="Username" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css" GridPane.columnIndex="1">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets left="-35.0" top="10.0" />
                            </GridPane.margin>
                            <children>
-                              <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="GENERAL INFORMATION:" />
-                              <Label layoutX="14.0" layoutY="60.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="PHONE NUMBER:" />
-                              <Label layoutX="14.0" layoutY="122.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="DATE OF BIRTH:" />
+                              <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" text="GENERAL INFORMATION:" />
+                              <Label layoutX="14.0" layoutY="60.0" styleClass="sectionSubFont" text="PHONE NUMBER:" />
+                              <Label layoutX="14.0" layoutY="122.0" styleClass="sectionSubFont" text="DATE OF BIRTH:" />
                               <Line endX="178.0" layoutX="115.0" layoutY="86.0" startX="-100.0" strokeWidth="2.0" />
                               <Line endX="178.0" layoutX="115.0" layoutY="150.0" startX="-100.0" strokeWidth="2.0" />
-                              <TextField fx:id="pntextfield" layoutX="144.0" layoutY="57.0" onAction="#addPhoneNumber" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                              <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" onAction="#addDateOfBirth" promptText="DD/MM/YY" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                              <TextField fx:id="pntextfield" layoutX="144.0" layoutY="57.0" onAction="#addPhoneNumber" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" />
+                              <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" onAction="#addDateOfBirth" promptText="DD/MM/YY" styleClass="textfield" />
                            </children>
                         </AnchorPane>
                      </children>
                   </GridPane>
-                  <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" stylesheets="@UserProfileDesign.css">
+                  <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" >
                     <content>
-                        <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" stylesheets="@UserProfileDesign.css">
+                        <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" >
                             <content>
-                                <VBox fx:id="mainScrollContent" prefWidth="528.0" spacing="10.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
+                                <VBox fx:id="mainScrollContent" prefWidth="528.0" spacing="10.0" styleClass="sectionBackground" >
                                     <children>
                                         <AnchorPane minHeight="40.0" prefHeight="45.0">
                                             <children>
@@ -198,7 +198,7 @@
                                             </children>
                                         </AnchorPane>
 
-                                        <VBox fx:id="eventContainer" styleClass="event-box" spacing="15.0">
+                                        <VBox fx:id="eventContainer" spacing="15.0" styleClass="userEvent-box">
                                             <padding>
                                                 <Insets left="10.0" right="10.0" />
                                             </padding>
@@ -224,32 +224,32 @@
         </VBox>
     </center>
    <right>
-      <VBox prefHeight="500.0" prefWidth="295.0" styleClass="mainBackground" stylesheets="@UserProfileDesign.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="500.0" prefWidth="295.0" styleClass="mainBackground" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane prefHeight="235.0" prefWidth="252.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
+            <AnchorPane prefHeight="235.0" prefWidth="252.0" styleClass="sectionBackground" >
                <VBox.margin>
                   <Insets bottom="10.0" left="5.0" right="20.0" top="19.0" />
                </VBox.margin>
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="ANAMNESIS:" />
-                  <Label layoutX="14.0" layoutY="47.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="ALLERGIES:" />
-                  <Label layoutX="14.0" layoutY="89.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="CHRONIC DISEASES:" />
-                  <Label layoutX="14.0" layoutY="136.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="BLOOD TYPE:" />
-                  <Label layoutX="14.0" layoutY="184.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="PASS ILLNESSES" />
+                  <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" text="ANAMNESIS:" />
+                  <Label layoutX="14.0" layoutY="47.0" styleClass="sectionSubFont" text="ALLERGIES:" />
+                  <Label layoutX="14.0" layoutY="89.0" styleClass="sectionSubFont" text="CHRONIC DISEASES:" />
+                  <Label layoutX="14.0" layoutY="136.0" styleClass="sectionSubFont" text="BLOOD TYPE:" />
+                  <Label layoutX="14.0" layoutY="184.0" styleClass="sectionSubFont" text="PASS ILLNESSES" />
                   <Line endX="141.5" layoutX="114.0" layoutY="69.0" startX="-100.0" strokeWidth="2.0" />
                   <Line endX="141.5" layoutX="114.0" layoutY="110.0" startX="-100.0" strokeWidth="2.0" />
                   <Line endX="141.5" layoutX="115.0" layoutY="157.0" startX="-100.0" strokeWidth="2.0" />
                   <Line endX="141.5" layoutX="114.0" layoutY="221.0" startX="-100.0" strokeWidth="2.0" />
-                  <Label layoutX="15.0" layoutY="197.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="OR INJURIES:" />
-                  <TextField fx:id="allergies_textfield" layoutX="96.0" layoutY="41.0" onAction="#add_allergy" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                  <TextField fx:id="chronicdiseaseTextfield" layoutX="157.0" layoutY="83.0" onAction="#addchronicdisease" prefHeight="25.0" prefWidth="84.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                  <TextField fx:id="btTextefield" layoutX="109.0" layoutY="129.0" onAction="#addbt" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                  <TextField fx:id="piTextfield" layoutX="123.0" layoutY="193.0" onAction="#addpiField" prefHeight="25.0" prefWidth="128.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                  <Label layoutX="15.0" layoutY="197.0" styleClass="sectionSubFont" text="OR INJURIES:" />
+                  <TextField fx:id="allergies_textfield" layoutX="96.0" layoutY="41.0" onAction="#add_allergy" styleClass="textfield" />
+                  <TextField fx:id="chronicdiseaseTextfield" layoutX="157.0" layoutY="83.0" onAction="#addchronicdisease" prefHeight="25.0" prefWidth="84.0" styleClass="textfield" />
+                  <TextField fx:id="btTextefield" layoutX="109.0" layoutY="129.0" onAction="#addbt" styleClass="textfield" />
+                  <TextField fx:id="piTextfield" layoutX="123.0" layoutY="193.0" onAction="#addpiField" prefHeight="25.0" prefWidth="128.0" styleClass="textfield" />
                </children>
             </AnchorPane>
             <ScrollPane prefHeight="221.0" prefWidth="295.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground">
 
                   </AnchorPane>
               </content>
@@ -260,4 +260,8 @@
          </children>
       </VBox>
    </right>
+   <stylesheets>
+      <URL value="@../../css/styles.css" />
+      <URL value="@../../css/UserProfileDesign.css" />
+   </stylesheets>
 </BorderPane>

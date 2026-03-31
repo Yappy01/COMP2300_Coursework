@@ -1,12 +1,12 @@
 package Models;
 
-public class Event {
+public class UserEvent {
     private String date;
     private String time;
     private String title;
     private String description;
 
-    public Event(String date, String time, String title, String description) {
+    public UserEvent(String date, String time, String title, String description) {
         this.date = date;
         this.time = time;
         this.title = title;

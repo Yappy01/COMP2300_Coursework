@@ -33,8 +33,8 @@ public class UserRepository {
     }
 
     //check for hashed password, for secure login
-    public int secureLogin(String name, String password) throws SQLException, ClassNotFoundException {
-        String query = "SELECT \"userId\", password FROM users WHERE name = ?";
+    public boolean secureLogin(String name, String password) throws SQLException, ClassNotFoundException {
+        String query = "SELECT password FROM users WHERE name = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement login_stmt = conn.prepareStatement(query)) {
@@ -44,19 +44,20 @@ public class UserRepository {
                 if (rs.next()) {
                     String stored_password = rs.getString("password");
 
-
+                    boolean isMatch = BCrypt.checkpw(password, stored_password);
+                    System.out.println("Does it match? " + isMatch);
                     if (BCrypt.checkpw(password, stored_password)) {
-//                        System.out.println("Logged in successfully");
-                        return rs.getInt("\"userId\"");
+                        System.out.println("Logged in successfully");
+//                        conn.close();
+                        return true;
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         System.out.println("Invalid username or password");
-        return -1;
+        return false;
 
     }
 

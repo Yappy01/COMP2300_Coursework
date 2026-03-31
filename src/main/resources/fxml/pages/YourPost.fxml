@@ -43,7 +43,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
             <children>
@@ -58,12 +58,12 @@
                         <Insets left="25.0" right="25.0" />
                     </padding>
                 </Label>
-                <Label styleClass="headerFont" stylesheets="@UserProfileDesign.css" text="     Your Post     " textAlignment="CENTER" textFill="#6c4535">
+                <Label styleClass="headerFont" text="     Your Post     " textAlignment="CENTER" textFill="#6c4535">
                     <font>
                         <Font name="Comic Sans MS Bold" size="40.0" />
                     </font>
                 </Label>
-                <Button mnemonicParsing="false" styleClass="signout-button" stylesheets="@UserProfileDesign.css" text="Sign Out" />
+                <Button mnemonicParsing="false" styleClass="signout-button" text="Sign Out" />
             </children>
             <padding>
                 <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
@@ -72,7 +72,7 @@
     <left>
         <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
             <children>
-                <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" stylesheets="@UserProfileDesign.css" text="HOME">
+                <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" text="HOME">
                     <graphic>
                         <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
                     </graphic>
@@ -86,9 +86,9 @@
                         <Insets />
                     </VBox.margin>
                 </Button>
-                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list" stylesheets="@UserProfileDesign.css">
+                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                     <children>
-                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Personal Information" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -99,7 +99,7 @@
                                 <ToggleGroup fx:id="diseaseTag" />
                             </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Your Post" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -127,4 +127,8 @@
             </padding>
         </VBox>
     </center>
+    <stylesheets>
+        <URL value="@../../css/styles.css" />
+        <URL value="@../../css/UserProfileDesign.css" />
+    </stylesheets>
 </BorderPane>
