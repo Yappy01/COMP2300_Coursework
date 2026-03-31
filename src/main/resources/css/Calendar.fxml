@@ -12,7 +12,7 @@
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
          </BorderPane.margin>
          <children>
-            <Button layoutX="635.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleExit" styleClass="discard-button" text="X" />
+            <Button fx:id="exitCalendarButton" layoutX="635.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleExit" styleClass="discard-button" text="X" />
 
             <VBox layoutX="46.0" layoutY="59.0" spacing="10.0">
                <children>
@@ -42,7 +42,7 @@
                </children>
             </HBox>
 
-            <Button layoutX="423.0" layoutY="333.0" mnemonicParsing="false" onAction="#addEvent" prefHeight="40.0" prefWidth="254.0" styleClass="userEvent-button" text="Add Event" />
+            <Button layoutX="423.0" layoutY="333.0" mnemonicParsing="false" onAction="#addEvent" prefHeight="40.0" prefWidth="254.0" styleClass="event-button" text="Add Event" />
          </children>
       </AnchorPane>
    </center>
