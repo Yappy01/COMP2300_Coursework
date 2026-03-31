@@ -164,28 +164,45 @@
                               <Line endX="178.0" layoutX="115.0" layoutY="86.0" startX="-100.0" strokeWidth="2.0" />
                               <Line endX="178.0" layoutX="115.0" layoutY="150.0" startX="-100.0" strokeWidth="2.0" />
                               <TextField fx:id="pntextfield" layoutX="144.0" layoutY="57.0" onAction="#addPhoneNumber" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                              <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" promptText="DD/MM/YY" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                              <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" onAction="#addDateOfBirth" promptText="DD/MM/YY" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
                            </children>
                         </AnchorPane>
                      </children>
                   </GridPane>
                   <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" stylesheets="@UserProfileDesign.css">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="528.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
-                           <padding>
-                              <Insets bottom="5.0" />
-                           </padding>
-                           <children>
-                              <Button layoutX="491.0" layoutY="4.0" minHeight="25.0" mnemonicParsing="false" prefWidth="30.0" styleClass="add-button" stylesheets="@UserProfileDesign.css" text="+" />
-                              <ToggleButton layoutX="6.0" mnemonicParsing="false" styleClass="visitTreatment-button" stylesheets="@UserProfileDesign.css" text="FUTURE VISITS" underline="true">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="visitsTreatments" />
-                                 </toggleGroup>
-                              </ToggleButton>
-                              <ToggleButton layoutX="153.0" mnemonicParsing="false" styleClass="visitTreatment-button" stylesheets="@UserProfileDesign.css" text="PAST VISITS" toggleGroup="$visitsTreatments" underline="true" />
-                              <ToggleButton layoutX="275.0" mnemonicParsing="false" styleClass="visitTreatment-button" stylesheets="@UserProfileDesign.css" text="PLANNED TREATMENTS" toggleGroup="$visitsTreatments" underline="true" />
-                           </children>
-                        </AnchorPane>
+                        <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" stylesheets="@UserProfileDesign.css">
+                            <content>
+                                <VBox fx:id="mainScrollContent" prefWidth="528.0" spacing="10.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
+                                    <children>
+                                        <AnchorPane minHeight="40.0" prefHeight="45.0">
+                                            <children>
+                                                <ToggleButton layoutX="6.0" mnemonicParsing="false" styleClass="visitTreatment-button" text="FUTURE VISITS" underline="true">
+                                                    <toggleGroup>
+                                                        <ToggleGroup fx:id="visitsTreatments" />
+                                                    </toggleGroup>
+                                                </ToggleButton>
+                                                <ToggleButton layoutX="153.0" mnemonicParsing="false" styleClass="visitTreatment-button" text="PAST VISITS" toggleGroup="$visitsTreatments" underline="true" />
+                                                <ToggleButton layoutX="275.0" mnemonicParsing="false" styleClass="visitTreatment-button" text="PLANNED TREATMENTS" toggleGroup="$visitsTreatments" underline="true" />
+                                                <Button layoutX="491.0" layoutY="4.0" mnemonicParsing="false" styleClass="add-button" text="+" />
+                                            </children>
+                                        </AnchorPane>
+
+                                        <VBox fx:id="eventContainer" styleClass="event-box" spacing="15.0">
+                                            <padding>
+                                                <Insets left="10.0" right="10.0" />
+                                            </padding>
+                                        </VBox>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="10.0" />
+                                    </padding>
+                                </VBox>
+                            </content>
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </ScrollPane>
                     </content>
                      <VBox.margin>
                         <Insets top="15.0" />
@@ -223,9 +240,7 @@
             <ScrollPane prefHeight="221.0" prefWidth="295.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
-                     <children>
-                        <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="Files" />
-                     </children>
+
                   </AnchorPane>
               </content>
                <VBox.margin>

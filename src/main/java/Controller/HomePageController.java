@@ -1,5 +1,7 @@
 package Controller;
 
+import Models.User;
+import Models.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,7 +58,7 @@ public class HomePageController {
         Parent root = loader.load();
 
         UserProfileController controller = loader.getController();
-        controller.initialize(mp_UserPageBtn.getText());
+        controller.initialize();
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));

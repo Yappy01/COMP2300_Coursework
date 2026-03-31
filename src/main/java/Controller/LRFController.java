@@ -1,5 +1,6 @@
 package Controller;
 import Models.User;
+import Models.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -117,8 +118,9 @@ public class LRFController {
                 String password = this.si_password.getText().trim();
 
                 try{
-                    if (userRepo.secureLogin(username,password)){
-                        //alert for login
+                    int userId = userRepo.secureLogin(username, password);
+                    if (userId != -1){
+                        UserSession.setInstance(userId,username);
                         alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Information Message");
                         alert.setHeaderText(null);
@@ -334,7 +336,7 @@ public class LRFController {
 
                     }else{
                         //alert that password have been reset
-                        if(userRepo.change_password(username, password)){
+                        if(userRepo.change_password(UserSession.getInstance().getUserName(), password)){
                             alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Information Message");
                             alert.setHeaderText(null);
