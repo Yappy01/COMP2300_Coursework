@@ -87,8 +87,8 @@ public class EventDatabase {
         }
     }
 
-    public List<Event> getFilteredEvents(int userId, int typeId, String timeMode) {
-        List<Event> eventList = new ArrayList<>();
+    public List<UserEvent> getFilteredEvents(int userId, int typeId, String timeMode) {
+        List<UserEvent> eventList = new ArrayList<>();
         String query = "SELECT date_time, name, description FROM events WHERE fk_userid = ? AND fk_typeid = ?";
 
         // Add date filtering based on timeMode
@@ -114,7 +114,7 @@ public class EventDatabase {
                     String formattedDate = ldt.format(DateTimeFormatter.ofPattern("dd MMM yyyy")).toUpperCase();
                     String formattedTime = ldt.format(DateTimeFormatter.ofPattern("hh:mm ")).toUpperCase();
 
-                    eventList.add(new Event(formattedDate, formattedTime, rs.getString("name"), rs.getString("description")));
+                    eventList.add(new UserEvent(formattedDate, formattedTime, rs.getString("name"), rs.getString("description")));
                 }
             }
         } catch (SQLException e) {

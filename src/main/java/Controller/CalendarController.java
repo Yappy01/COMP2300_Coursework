@@ -2,7 +2,6 @@ package Controller;
 
 import DBHandling.EventDatabase;
 import Models.User;
-import Models.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import utils.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -80,7 +80,7 @@ public class CalendarController implements Initializable {
                     eventTitle.getText(),
                     eventDescription.getText(),
                     sqlTimestamp,
-                    UserSession.getInstance().getUserId(),
+                    Session.getInstance().getUserID(),
                     selectedTypeId
             );
 

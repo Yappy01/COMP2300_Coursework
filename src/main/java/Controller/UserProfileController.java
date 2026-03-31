@@ -259,7 +259,7 @@ public class UserProfileController {
             for (UserEvent userEvent : userEvents) {
                 System.out.println("trying to load event");
                 // Adding "/App/" before the filename
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/EventBox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
                 Node node = loader.load();
 
                 //Access the controller of the specific EventBox to set its text
@@ -307,7 +307,7 @@ public class UserProfileController {
 
         for (UserEvent userEvent : filtered) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/EventBox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
                 Node node = loader.load();
 
                 EventBoxController controller = loader.getController();
@@ -335,7 +335,7 @@ public class UserProfileController {
     @FXML
     private void openAddEventWindow(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/Calendar.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/components/calendar.fxml"));
             Parent root = loader.load();
 
             CalendarController calendarController = loader.getController();

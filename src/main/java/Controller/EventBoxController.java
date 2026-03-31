@@ -1,10 +1,10 @@
 package Controller;
 
 import DBHandling.EventDatabase;
-import Models.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import utils.Session;
 
 
 public class EventBoxController {
@@ -30,7 +30,7 @@ public class EventBoxController {
 
     @FXML
     public void deleteEvent(MouseEvent mouseEvent) {
-        eventDatabase.deleteEvent(titleLabel.getText(), UserSession.getInstance().getUserId());
+        eventDatabase.deleteEvent(titleLabel.getText(), Session.getInstance().getUserID());
         if (userProfileController != null) {
             userProfileController.refreshEvents();
         }
