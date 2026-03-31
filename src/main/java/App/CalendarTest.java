@@ -13,7 +13,7 @@ public class CalendarTest extends Application {
     public void start(Stage primaryStage) throws Exception {
         UserSession.setInstance(15, "Grace");
 
-        Parent root = FXMLLoader.load(getClass().getResource("UserProfile.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/App/UserProfile.fxml"));
 
         Scene scene = new Scene(root);
 

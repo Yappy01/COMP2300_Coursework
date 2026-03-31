@@ -53,7 +53,7 @@ public class HomePageController {
     //access to userpage, Connected, to be tested
     @FXML
     public void userpage(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserProfile.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/UserProfile.fxml"));
 
         Parent root = loader.load();
 

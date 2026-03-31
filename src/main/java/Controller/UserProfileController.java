@@ -12,20 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-//import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class UserProfileController {
 
-    @FXML private ToggleButton userPostButton;
-    @FXML private ToggleGroup informationPageButtons;
-    @FXML private ToggleButton informationpageButton;
-    @FXML private Button username;
-    @FXML private ToggleButton riskLevelButton;
+    @FXML private ToggleGroup visitsTreatments;
     @FXML private TextField pntextfield;
     @FXML private TextField dateOfBirthField;
     @FXML private TextField allergies_textfield;
@@ -44,7 +39,17 @@ public class UserProfileController {
     @FXML
     public void initialize(){
         System.out.println("UserProfileController initialize");
+        populateProfileFields();
+
+        visitsTreatments.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
+            if (newToggle != null) {
+                filterEvents();
+            }
+        });
+
+        filterEvents();
         displayEventsFromDatabase();
+
         username_label.setText(UserSession.getInstance().getUserName());
     };
 
@@ -68,10 +73,25 @@ public class UserProfileController {
         initialize();
     }
 
-    @FXML //go to the post page toggle page
+    @FXML //go to the post page toggle page, not completed
     public void postSearch(ActionEvent event) {
     }
 
+    public void populateProfileFields() {
+        Map<String, String> data = userRepo.getUserFullProfile(UserSession.getInstance().getUserId());
+
+        if (!data.isEmpty()) {
+            // Use setText() for each respective field
+            pntextfield.setText(data.getOrDefault("phone", ""));
+            dateOfBirthField.setText(data.getOrDefault("dob", ""));
+            allergies_textfield.setText(data.getOrDefault("allergies", ""));
+            chronicdiseaseTextfield.setText(data.getOrDefault("chronic", ""));
+            btTextefield.setText(data.getOrDefault("blood", ""));
+            piTextfield.setText(data.getOrDefault("injuries", ""));
+        }
+    }
+
+    //add phone number to database
     @FXML void addPhoneNumber(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (pntextfield.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -86,7 +106,7 @@ public class UserProfileController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);
-                alert.setContentText("Phone number was not updated.");
+                alert.setContentText("Phone number was updated.");
                 alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -98,6 +118,7 @@ public class UserProfileController {
         }
     }
 
+    //add date of birth to database
     @FXML public void addDateOfBirth(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (dateOfBirthField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -107,7 +128,7 @@ public class UserProfileController {
             alert.showAndWait();
 
         }else{
-            if(userRepo.change_date_of_birth(UserSession.getInstance().getUserId(), allergies_textfield.getText())){
+            if(userRepo.change_date_of_birth(UserSession.getInstance().getUserId(), dateOfBirthField.getText())){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);
@@ -123,6 +144,7 @@ public class UserProfileController {
         }
     }
 
+    //add allergy to database
     @FXML
     public void add_allergy() throws SQLException, ClassNotFoundException {
         if (allergies_textfield.getText().isEmpty()) {
@@ -150,6 +172,7 @@ public class UserProfileController {
 
     }
 
+    //add chronic diseases in the database
     @FXML
     public void addchronicdisease(ActionEvent event ) throws SQLException, ClassNotFoundException {
         if (chronicdiseaseTextfield.getText().isEmpty()) {
@@ -164,7 +187,7 @@ public class UserProfileController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);
-                alert.setContentText("Chronic Disease list was not updated.");
+                alert.setContentText("Chronic Disease list was updated.");
                 alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -177,6 +200,8 @@ public class UserProfileController {
 
     }
 
+
+    //add blood type to database
     @FXML
     public void addbt(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (btTextefield.getText().isEmpty()) {
@@ -191,7 +216,7 @@ public class UserProfileController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);
-                alert.setContentText("Blood Type not updated.");
+                alert.setContentText("Blood Type was updated.");
                 alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -203,6 +228,7 @@ public class UserProfileController {
         }
     }
 
+    //add past in daatabase
     @FXML
     public void addpiField() throws SQLException, ClassNotFoundException {
         if (piTextfield.getText().isEmpty()) {
@@ -230,6 +256,7 @@ public class UserProfileController {
     }
 
 
+    //display all events unfiltered in database
     public void displayEventsFromDatabase() {
         System.out.println("populating list of events");
 
@@ -247,6 +274,7 @@ public class UserProfileController {
                 //Access the controller of the specific EventBox to set its text
                 EventBoxController controller = loader.getController();
                 controller.setEventData(event.getDate(), event.getTime(), event.getTitle(), event.getDescription());
+                controller.setUserProfileController(this);
 
                 //Add the box to the main container
                 eventContainer.getChildren().add(node);
@@ -256,4 +284,88 @@ public class UserProfileController {
         }
     }
 
+    //filter events as per future visits, past visits, planned treatments
+    private void filterEvents() {
+        ToggleButton selected = (ToggleButton) visitsTreatments.getSelectedToggle();
+        if (selected == null) return;
+
+        String text = selected.getText();
+        int typeId = 1;      // Default for Visits
+        String timeMode = "";
+
+        //Based on buttons, future visits, past visits, planned treatments
+        if (text.equals("FUTURE VISITS")) {
+            typeId = 1;
+            timeMode = "FUTURE";
+        } else if (text.equals("PAST VISITS")) {
+            typeId = 1;
+            timeMode = "PAST";
+        } else if (text.equals("PLANNED TREATMENTS")) {
+            typeId = 2;
+            timeMode = "ALL"; // Or specify FUTURE if needed
+        }
+
+        updateUI(typeId, timeMode);
+    }
+
+    //updateUI when events are filtered
+    private void updateUI(int typeId, String timeMode) {
+        eventContainer.getChildren().clear();
+
+        List<Event> filtered = eventDatabase.getFilteredEvents(UserSession.getInstance().getUserId(), typeId, timeMode);
+
+        for (Event event : filtered) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/EventBox.fxml"));
+                Node node = loader.load();
+
+                EventBoxController controller = loader.getController();
+                controller.setEventData(event.getDate(), event.getTime(), event.getTitle(), event.getDescription());
+                controller.setUserProfileController(this);
+
+                eventContainer.getChildren().add(node);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void refreshEvents() {
+        if (eventContainer == null) {
+            System.err.println("Critical Error: eventContainer is null! Check FXML fx:id.");
+            return;
+        }
+        eventContainer.getChildren().clear();
+        displayEventsFromDatabase();
+    }
+
+
+    @FXML
+    private void openAddEventWindow(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/App/Calendar.fxml"));
+            Parent root = loader.load();
+
+            CalendarController calendarController = loader.getController();
+
+            // Type ID based on selection
+            ToggleButton selected = (ToggleButton) visitsTreatments.getSelectedToggle();
+            int typeToCreate = 1; // Default to Visit
+
+            if (selected != null && selected.getText().equals("PLANNED TREATMENTS")) {
+                typeToCreate = 2;
+            }
+
+            System.out.println("typeToCreate: " + typeToCreate);
+
+            calendarController.setInitialType(typeToCreate);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

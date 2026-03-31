@@ -2,6 +2,9 @@ package DBHandling;
 import Models.User; //import the model of user
 import utils.DBConnection; //import the dbconnector
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 public class UserRepository {
@@ -45,8 +48,7 @@ public class UserRepository {
 
 
                     if (BCrypt.checkpw(password, stored_password)) {
-//                        System.out.println("Logged in successfully");
-                        return rs.getInt("\"userId\"");
+                        return rs.getInt(1);
                     }
                 }
             }
@@ -71,16 +73,13 @@ public class UserRepository {
             search_user_stmt.setString(2, email);
             search_user_stmt.setString(3, answer);
 
-
             try (ResultSet rs = search_user_stmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println("User found");
-//                    conn.close();
                     return true;
 
                 }else{
                     System.out.println("User not found");
-//                    conn.close();
                     return false;
                 }
             }catch(SQLException e) {
@@ -226,7 +225,7 @@ public class UserRepository {
             update_user_stmt.setString(1, allergies.trim());
             update_user_stmt.setInt(2, userid);
             update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
+            System.out.println("allergies updated in the database successfully");
             return true;
 
         }catch(SQLException e) {
@@ -236,7 +235,7 @@ public class UserRepository {
     }
 
     public boolean change_cd(Integer userid,  String chronic_disease) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET chronic_disease = ? WHERE \"userId\" = ?";
+        String query = "UPDATE users SET chronic_diseases = ? WHERE \"userId\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
@@ -285,4 +284,30 @@ public class UserRepository {
         }
         return false;
     }
+
+    public Map<String, String> getUserFullProfile(int userId) {
+        Map<String, String> profileData = new HashMap<>();
+        String query = "SELECT phone_number, date_of_birth, allergies, blood_type,injuries_illness, chronic_diseases FROM users WHERE \"userId\" = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    profileData.put("phone", rs.getString("phone_number"));
+                    profileData.put("dob", rs.getString("date_of_birth"));
+                    profileData.put("allergies", rs.getString("allergies"));
+                    profileData.put("chronic", rs.getString("chronic_diseases"));
+                    profileData.put("blood", rs.getString("blood_type"));
+                    profileData.put("injuries", rs.getString("injuries_illness"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return profileData;
+    }
 }
+
+
