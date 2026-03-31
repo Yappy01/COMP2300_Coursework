@@ -51,6 +51,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
             <children>
@@ -95,7 +96,7 @@
                 </Button>
                 <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list" stylesheets="@UserProfileDesign.css">
                     <children>
-                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Personal Information" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="informationpageButton" mnemonicParsing="false" onAction="#gotoPIPage" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Personal Information" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -103,10 +104,10 @@
                                 <Insets />
                             </opaqueInsets>
                             <toggleGroup>
-                                <ToggleGroup fx:id="diseaseTag" />
+                                <ToggleGroup fx:id="informationPageButtons" />
                             </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Your Post" textAlignment="CENTER" toggleGroup="$diseaseTag" wrapText="true">
+                        <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" stylesheets="@UserProfileDesign.css" text="Your Post" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -159,7 +160,7 @@
                                     <Font size="82.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="63.0" layoutY="132.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="Username" />
+                              <Label fx:id="username_label" layoutX="63.0" layoutY="132.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="Username" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css" GridPane.columnIndex="1">
@@ -172,29 +173,46 @@
                               <Label layoutX="14.0" layoutY="122.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="DATE OF BIRTH:" />
                               <Line endX="178.0" layoutX="115.0" layoutY="86.0" startX="-100.0" strokeWidth="2.0" />
                               <Line endX="178.0" layoutX="115.0" layoutY="150.0" startX="-100.0" strokeWidth="2.0" />
-                              <TextField layoutX="144.0" layoutY="57.0" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                              <TextField layoutX="135.0" layoutY="119.0" promptText="DD/MM/YY" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                              <TextField fx:id="pntextfield" layoutX="144.0" layoutY="57.0" onAction="#addPhoneNumber" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                              <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" onAction="#addDateOfBirth" promptText="DD/MM/YY" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
                            </children>
                         </AnchorPane>
                      </children>
                   </GridPane>
                   <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" stylesheets="@UserProfileDesign.css">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="528.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
-                           <padding>
-                              <Insets bottom="5.0" />
-                           </padding>
-                           <children>
-                              <Button layoutX="491.0" layoutY="4.0" minHeight="25.0" mnemonicParsing="false" prefWidth="30.0" styleClass="add-button" stylesheets="@UserProfileDesign.css" text="+" />
-                              <ToggleButton layoutX="6.0" mnemonicParsing="false" styleClass="visitTreatment-button" stylesheets="@UserProfileDesign.css" text="FUTURE VISITS" underline="true">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="visitsTreatments" />
-                                 </toggleGroup>
-                              </ToggleButton>
-                              <ToggleButton layoutX="153.0" mnemonicParsing="false" styleClass="visitTreatment-button" stylesheets="@UserProfileDesign.css" text="PAST VISITS" toggleGroup="$visitsTreatments" underline="true" />
-                              <ToggleButton layoutX="275.0" mnemonicParsing="false" styleClass="visitTreatment-button" stylesheets="@UserProfileDesign.css" text="PLANNED TREATMENTS" toggleGroup="$visitsTreatments" underline="true" />
-                           </children>
-                        </AnchorPane>
+                        <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" stylesheets="@UserProfileDesign.css">
+                            <content>
+                                <VBox fx:id="mainScrollContent" prefWidth="528.0" spacing="10.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
+                                    <children>
+                                        <AnchorPane minHeight="40.0" prefHeight="45.0">
+                                            <children>
+                                                <ToggleButton layoutX="6.0" mnemonicParsing="false" styleClass="visitTreatment-button" text="FUTURE VISITS" underline="true">
+                                                    <toggleGroup>
+                                                        <ToggleGroup fx:id="visitsTreatments" />
+                                                    </toggleGroup>
+                                                </ToggleButton>
+                                                <ToggleButton layoutX="153.0" mnemonicParsing="false" styleClass="visitTreatment-button" text="PAST VISITS" toggleGroup="$visitsTreatments" underline="true" />
+                                                <ToggleButton layoutX="275.0" mnemonicParsing="false" styleClass="visitTreatment-button" text="PLANNED TREATMENTS" toggleGroup="$visitsTreatments" underline="true" />
+                                                <Button layoutX="491.0" layoutY="4.0" mnemonicParsing="false" styleClass="add-button" text="+" />
+                                            </children>
+                                        </AnchorPane>
+
+                                        <VBox fx:id="eventContainer" styleClass="event-box" spacing="15.0">
+                                            <padding>
+                                                <Insets left="10.0" right="10.0" />
+                                            </padding>
+                                        </VBox>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="10.0" />
+                                    </padding>
+                                </VBox>
+                            </content>
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </ScrollPane>
                     </content>
                      <VBox.margin>
                         <Insets top="15.0" />
@@ -223,18 +241,16 @@
                   <Line endX="141.5" layoutX="115.0" layoutY="157.0" startX="-100.0" strokeWidth="2.0" />
                   <Line endX="141.5" layoutX="114.0" layoutY="221.0" startX="-100.0" strokeWidth="2.0" />
                   <Label layoutX="15.0" layoutY="197.0" styleClass="sectionSubFont" stylesheets="@UserProfileDesign.css" text="OR INJURIES:" />
-                  <TextField layoutX="96.0" layoutY="41.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                  <TextField layoutX="157.0" layoutY="83.0" prefHeight="25.0" prefWidth="84.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                  <TextField layoutX="109.0" layoutY="129.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
-                  <TextField layoutX="123.0" layoutY="193.0" prefHeight="25.0" prefWidth="128.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                  <TextField fx:id="allergies_textfield" layoutX="96.0" layoutY="41.0" onAction="#add_allergy" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                  <TextField fx:id="chronicdiseaseTextfield" layoutX="157.0" layoutY="83.0" onAction="#addchronicdisease" prefHeight="25.0" prefWidth="84.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                  <TextField fx:id="btTextefield" layoutX="109.0" layoutY="129.0" onAction="#addbt" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
+                  <TextField fx:id="piTextfield" layoutX="123.0" layoutY="193.0" onAction="#addpiField" prefHeight="25.0" prefWidth="128.0" styleClass="textfield" stylesheets="@UserProfileDesign.css" />
                </children>
             </AnchorPane>
             <ScrollPane prefHeight="221.0" prefWidth="295.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground" stylesheets="@UserProfileDesign.css">
-                     <children>
-                        <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" stylesheets="@UserProfileDesign.css" text="Files" />
-                     </children>
+
                   </AnchorPane>
               </content>
                <VBox.margin>

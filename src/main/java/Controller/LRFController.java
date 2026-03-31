@@ -138,7 +138,6 @@ public class LRFController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/homepage.fxml"));
                         Parent root = loader.load();
 
-
                         //GET the controller from the loader
                         HomePageController controller = loader.getController();
 
@@ -335,7 +334,7 @@ public class LRFController {
 
                     }else{
                         //alert that password have been reset
-                        if(userRepo.change_password(username, password)){
+                        if(userRepo.change_password(Session.getInstance().getUserName(), password)){
                             alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Information Message");
                             alert.setHeaderText(null);

@@ -14,7 +14,9 @@ import DBHandling.UserRepository;
 import javafx.stage.Stage;
 import utils.Session;
 
+import javafx.scene.control.TextField;
 import java.io.IOException;
+import java.util.EventObject;
 import java.util.Objects;
 
 public class HomePageController {
@@ -48,14 +50,20 @@ public class HomePageController {
         mp_UserPageBtn.setText(user);
     }
 
-    //access to userpage, not yet made.
+    //access to userpage, Connected, to be tested
     @FXML
-    public void userpage() {
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("The user page will be displayed.");
-        alert.showAndWait();
+    public void userpage(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserProfile.fxml"));
+
+        Parent root = loader.load();
+
+        UserProfileController controller = loader.getController();
+        controller.initialize();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+
     }
 
     //access to information Page, Connected

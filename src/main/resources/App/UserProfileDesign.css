@@ -159,6 +159,9 @@
     -fx-font-weight: bold;
 }
 
+.event-box{
+    -fx-background-color: #d7b0a0;
+}
 /*scrollbar*/
 .scroll-bar > .thumb {
     -fx-background-color: #d7b0a0;
