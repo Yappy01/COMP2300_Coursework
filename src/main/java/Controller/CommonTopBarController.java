@@ -14,4 +14,8 @@ public class CommonTopBarController {
     public void userPage(ActionEvent event) {
 
     }
+    public void setUp(String title, String username) {
+        pageTitle.setText(title);
+        userPageBtn.setText(username);
+    }
 }

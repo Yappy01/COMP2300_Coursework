@@ -1,6 +1,5 @@
 package Controller;
 
-import DBHandling.ComPostDatabase;
 import DBHandling.UserRepository;
 import Models.Post;
 import Models.User;
@@ -11,12 +10,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import javafx.stage.Stage;
 import utils.Session;
 
 import java.io.IOException;
@@ -40,6 +37,10 @@ public class CommunityPageController {
     @FXML
     private ProgressIndicator loadingSpinner;
 
+    @FXML
+    private HBox commonTopBar;
+    private CommonTopBarController commonTopBarController;
+
     private List<Post> postsList = new ArrayList<>();
     private ComPageOverlayController comPageOverlayController;
 
@@ -49,6 +50,15 @@ public class CommunityPageController {
 
     @FXML
     public void initialize() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/commonTopBar.fxml"));
+            loader.load();
+            commonTopBarController = (CommonTopBarController) loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        commonTopBarController.setUp("Community Page", Session.getInstance().getUserName());
+
         OverlayBController overlayBController = null;
         loadingSpinner.setVisible(false);
         loadingSpinner.setProgress(-1);
@@ -240,17 +250,6 @@ public class CommunityPageController {
 
     @FXML
     public void goToHomepage(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(
-                getClass().getResource("/fxml/pages/homePage.fxml")
-        );
-
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
-
-        stage.setScene(new Scene(root));
-        stage.show();
+        HomePageController.goToHomepage(event);
     }
-
-
 }

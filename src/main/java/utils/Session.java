@@ -1,11 +1,6 @@
 package utils;
 
-import DBHandling.ComPostDatabase;
-import Models.Post;
 import Models.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
 
@@ -31,6 +26,9 @@ public class Session {
     public User getUser() {
         return user;
     }
+
+    // Get username
+    public String getUserName() { return user.getName();}
 
     // 🚪 End session (logout)
     public static void endSession() {

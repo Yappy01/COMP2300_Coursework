@@ -16,9 +16,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import utils.Session;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -47,11 +49,23 @@ public class InformationPageController {
     private TableColumn<StiEntry, Integer> stiRiskLevelColumn;
     @FXML
     private TextField filterField;
+    @FXML
+    private HBox commonTopBar;
+    private CommonTopBarController commonTopBarController;
     private ObservableList<StiEntry> masterData;
     private ArrayList<StiEntry> stis;
 
     @FXML
     public void initialize() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/commonTopBar.fxml"));
+            loader.load();
+            commonTopBarController = (CommonTopBarController) loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        commonTopBarController.setUp("Information Page", Session.getInstance().getUserName());
+
         progressIndicator.setVisible(true);
         progressIndicator.setProgress(-1);
         // Bind columns to model properties
@@ -208,15 +222,6 @@ public class InformationPageController {
 
     @FXML
     private void goToHomepage(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(
-                getClass().getResource("/fxml/pages/homePage.fxml")
-        );
-
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
-
-        stage.setScene(new Scene(root));
-        stage.show();
+        HomePageController.goToHomepage(event);
     }
 }

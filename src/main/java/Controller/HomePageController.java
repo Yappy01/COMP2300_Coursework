@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import DBHandling.UserRepository;
 import javafx.stage.Stage;
+import utils.Session;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -37,9 +38,9 @@ public class HomePageController {
     @FXML private StackPane homePagePane;
 
     //initiate the homePagePane
-    @FXML
-    public void init_mainpage() {
-        homePagePane.setVisible(true);
+    @FXML private void initialize() {
+        this.assign_usertag(Session.getInstance().getUserName());
+        this.setNoteToSelf();
     }
 
     //assign the username to the usertag on top right
@@ -50,13 +51,11 @@ public class HomePageController {
     //access to userpage, not yet made.
     @FXML
     public void userpage() {
-        homePagePane.setVisible(false);
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText("The user page will be displayed.");
         alert.showAndWait();
-        init_mainpage();
     }
 
     //access to information Page, Connected
@@ -77,13 +76,11 @@ public class HomePageController {
     //access to quiz Page, not yet made
     @FXML
     public void quizBtn() {
-        homePagePane.setVisible(false);
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText("The quiz page will be displayed.");
         alert.showAndWait();
-        init_mainpage();
 
     }
 
@@ -105,25 +102,21 @@ public class HomePageController {
     //access to today's fact, not yet connected
     @FXML
     public void todayFactBtn() {
-        homePagePane.setVisible(false);
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText("The today fact in information page will be displayed.");
         alert.showAndWait();
-        init_mainpage();
     }
 
     //access to today's quiz, not yet made
     @FXML
     public void todayQuizBtn() {
-        homePagePane.setVisible(false);
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText("The today quiz page will be displayed.");
         alert.showAndWait();
-        init_mainpage();
     }
 
     //when user types in notetoself textfield
@@ -164,5 +157,19 @@ public class HomePageController {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public static void goToHomepage(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                HomePageController.class.getResource("/fxml/pages/homePage.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
