@@ -1,6 +1,7 @@
 package Controller;
 
 import DBHandling.EventDatabase;
+import Service.EventService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,7 +15,7 @@ public class EventBoxController {
     @FXML private Label titleLabel;
     @FXML private Label descriptionLabel;
 
-    @FXML private final EventDatabase eventDatabase = new EventDatabase();
+    private final EventService eventService = new EventService();
      private UserProfileController userProfileController;
 
      public void setUserProfileController(UserProfileController userProfileController) {
@@ -30,28 +31,18 @@ public class EventBoxController {
 
     @FXML
     public void deleteEvent(MouseEvent mouseEvent) {
-         userProfileController.setProgressIndicatorVisible(true);
-         Task<Boolean> task = new Task<Boolean>() {
-            @Override
-            protected Boolean call() throws Exception {
-                return eventDatabase.deleteEvent(titleLabel.getText(), Session.getInstance().getUserID());
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            userProfileController.setProgressIndicatorVisible(false);
-            if (userProfileController != null) {
+        userProfileController.setProgressIndicatorVisible(true);
+        eventService.deleteEventAsync(
+            titleLabel.getText(),
+            Session.getInstance().getUserID(),
+            () -> { // Success Callback
+                userProfileController.setProgressIndicatorVisible(false);
                 userProfileController.refreshEvents();
+            },
+            (error) -> { // Error Callback
+                error.printStackTrace();
+                userProfileController.setProgressIndicatorVisible(false);
             }
-        });
-
-        task.setOnFailed(e -> {
-            e.getSource().getException().printStackTrace();
-            userProfileController.setProgressIndicatorVisible(false);
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
+        );
     }
 }

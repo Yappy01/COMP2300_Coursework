@@ -2,6 +2,7 @@ package Controller;
 
 import DBHandling.EventDatabase;
 import Models.User;
+import Service.EventService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,13 +32,17 @@ public class CalendarController implements Initializable {
     @FXML private ToggleGroup amPmGroup;
     @FXML private RadioButton pmRadio;
 
-    private final EventDatabase eventDatabase = new EventDatabase();
+    private final EventService eventService = new EventService();
     private UserProfileController userProfileController;
 
     private int selectedTypeId = 1;
 
     public void setInitialType(int typeId) {
         this.selectedTypeId = typeId;
+    }
+
+    public void setUserProfileController(UserProfileController userProfileController) {
+        this.userProfileController = userProfileController;
     }
 
     @Override
@@ -62,6 +67,7 @@ public class CalendarController implements Initializable {
         }
 
         try {
+            userProfileController.setProgressIndicatorVisible(true);
             //Time converted to 24hr format
             int hour = Integer.parseInt(hourBox.getValue());
             int minute = Integer.parseInt(minuteBox.getValue());
@@ -76,22 +82,28 @@ public class CalendarController implements Initializable {
             System.out.println(ldt);
 
             // Save to database
-            eventDatabase.saveEvent(
-                    eventTitle.getText(),
-                    eventDescription.getText(),
-                    sqlTimestamp,
-                    Session.getInstance().getUserID(),
-                    selectedTypeId
+            eventService.saveEventAsync(
+                eventTitle.getText(),
+                eventDescription.getText(),
+                sqlTimestamp,
+                Session.getInstance().getUserID(),
+                selectedTypeId,
+                () -> {
+                    userProfileController.setProgressIndicatorVisible(false);
+                    clearFields();
+                    System.out.println("Event Saved Successfully!");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Event Saved!");
+                    alert.showAndWait();
+                },
+                (error) -> {
+                    userProfileController.setProgressIndicatorVisible(false);
+                }
             );
 
-            clearFields();
-            System.out.println("Event Saved Successfully!");
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Event Saved!");
-            alert.showAndWait();
 
         } catch (Exception e) {
             e.printStackTrace();

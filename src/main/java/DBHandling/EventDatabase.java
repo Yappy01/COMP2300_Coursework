@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDatabase {
-    public void saveEvent(String title, String desc, Timestamp time,Integer userid, Integer typeid) {
+    public boolean saveEvent(String title, String desc, Timestamp time,Integer userid, Integer typeid) {
         String sql = "INSERT INTO events (name, description, date_time, fk_userid, fk_typeid) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
@@ -27,7 +27,9 @@ public class EventDatabase {
 
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+            return false;
         }
+        return true;
     }
 
 

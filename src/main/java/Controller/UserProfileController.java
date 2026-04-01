@@ -1,8 +1,8 @@
 package Controller;
 
-import DBHandling.EventDatabase;
 import DBHandling.UserRepository;
 import Models.UserEvent;
+import Service.EventService;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +35,7 @@ public class UserProfileController {
 
 
     private final UserRepository userRepo = new UserRepository();
-    private final EventDatabase eventDatabase = new EventDatabase();
+    private final EventService eventService = new EventService();
 
     @FXML private Label username_label;
 
@@ -399,46 +399,35 @@ public class UserProfileController {
         System.out.println("populating list of events");
         progressIndicator.setVisible(true);
         eventContainer.getChildren().clear();
+        UserProfileController currentController = this;
+        eventService.getAllEventsAsync(
+                (userEvents) -> {
+                    progressIndicator.setVisible(false);
+                    try {
+                        for (UserEvent userEvent : userEvents) {
+                            System.out.println("trying to load event");
+                            // Adding "/App/" before the filename
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
+                            Node node = loader.load();
 
-        Task<List<UserEvent>> task = new Task<List<UserEvent>>() {
-            @Override
-            protected List<UserEvent> call() throws Exception {
-                return eventDatabase.getAllEvents();
-            }
-        };
+                            //Access the controller of the specific EventBox to set its text
+                            EventBoxController controller = loader.getController();
+                            controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
+                            controller.setUserProfileController(currentController);
 
-        task.setOnSucceeded(e -> {
-            progressIndicator.setVisible(false);
-            List<UserEvent> userEvents = task.getValue();
-            try {
-                for (UserEvent userEvent : userEvents) {
-                    System.out.println("trying to load event");
-                    // Adding "/App/" before the filename
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
-                    Node node = loader.load();
+                            //Add the box to the main container
+                            eventContainer.getChildren().add(node);
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
 
-                    //Access the controller of the specific EventBox to set its text
-                    EventBoxController controller = loader.getController();
-                    controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
-                    controller.setUserProfileController(this);
-
-                    //Add the box to the main container
-                    eventContainer.getChildren().add(node);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    progressIndicator.setVisible(false);
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        });
-
-        task.setOnFailed(e -> {
-            e.getSource().getException().printStackTrace();
-            progressIndicator.setVisible(false);
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
-
+        );
     }
 
     //filter events as per future visits, past visits, planned treatments
@@ -467,45 +456,31 @@ public class UserProfileController {
 
     //updateUI when events are filtered
     private void updateUI(int typeId, String timeMode) {
+        UserProfileController currentController = this;
         eventContainer.getChildren().clear();
         progressIndicator.setVisible(true);
-        Task<List<UserEvent>> task = new Task<List<UserEvent>>() {
-            @Override
-            protected List<UserEvent> call() throws Exception {
-                return eventDatabase.getFilteredEvents(Session.getInstance().getUserID(), typeId, timeMode);
-            }
-        };
+        eventService.getFilteredEventsAsync(Session.getInstance().getUserID(), typeId, timeMode,
+            (filtered) -> {
+                progressIndicator.setVisible(false);
+                for (UserEvent userEvent : filtered) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
+                        Node node = loader.load();
 
-        task.setOnSucceeded(e -> {
-            progressIndicator.setVisible(false);
-            List<UserEvent> filtered = task.getValue();
-            for (UserEvent userEvent : filtered) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
-                    Node node = loader.load();
+                        EventBoxController controller = loader.getController();
+                        controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
+                        controller.setUserProfileController(currentController);
 
-                    EventBoxController controller = loader.getController();
-                    controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
-                    controller.setUserProfileController(this);
-
-                    eventContainer.getChildren().add(node);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                        eventContainer.getChildren().add(node);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-            }
-        });
-
-        task.setOnFailed(e -> {
-            e.getSource().getException().printStackTrace();
+            }, (error) -> {
+            error.printStackTrace();
             progressIndicator.setVisible(false);
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
-    }
-
-
+            });
+        }
     public void refreshEvents() {
         if (eventContainer == null) {
             System.err.println("Critical Error: eventContainer is null! Check FXML fx:id.");
@@ -535,6 +510,7 @@ public class UserProfileController {
             System.out.println("typeToCreate: " + typeToCreate);
 
             calendarController.setInitialType(typeToCreate);
+            calendarController.setUserProfileController(this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
