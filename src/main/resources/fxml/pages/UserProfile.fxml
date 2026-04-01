@@ -51,7 +51,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
             <children>
@@ -94,7 +94,7 @@
                         <Insets />
                     </VBox.margin>
                 </Button>
-                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list" >
+                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                     <children>
                         <ToggleButton fx:id="informationpageButton" mnemonicParsing="false" onAction="#gotoPIPage" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
                             <font>
@@ -103,11 +103,11 @@
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
-                            <toggleGroup>
-                                <ToggleGroup fx:id="informationPageButtons" />
-                            </toggleGroup>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="userToggle" />
+                     </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$userToggle" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -136,7 +136,7 @@
          <children>
             <VBox prefHeight="495.0" prefWidth="545.0">
                <children>
-                  <GridPane prefHeight="211.0" prefWidth="545.0" styleClass="mainBackground" >
+                  <GridPane prefHeight="211.0" prefWidth="545.0" styleClass="mainBackground">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -145,7 +145,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" >
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground">
                            <GridPane.margin>
                               <Insets right="60.0" top="10.0" />
                            </GridPane.margin>
@@ -179,9 +179,9 @@
                         </AnchorPane>
                      </children>
                   </GridPane>
-                  <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" >
+                  <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb">
                     <content>
-                        <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb" >
+                        <ScrollPane prefHeight="248.0" prefWidth="545.0" styleClass="thumb">
                             <content>
                                 <VBox fx:id="mainScrollContent" prefHeight="43.0" prefWidth="528.0" spacing="10.0" styleClass="sectionBackground">
                                     <children>
@@ -226,7 +226,7 @@
    <right>
       <VBox prefHeight="500.0" prefWidth="295.0" styleClass="mainBackground" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane prefHeight="235.0" prefWidth="252.0" styleClass="sectionBackground" >
+            <AnchorPane prefHeight="235.0" prefWidth="252.0" styleClass="sectionBackground">
                <VBox.margin>
                   <Insets bottom="10.0" left="5.0" right="20.0" top="19.0" />
                </VBox.margin>
