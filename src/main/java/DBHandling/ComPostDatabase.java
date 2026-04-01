@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class ComPostDatabase {
 
     // 1️⃣ Create (Insert Post)
-    public static void insertPost(Post post) {
+    public boolean insertPost(Post post) {
         String sql = "INSERT INTO posts (userId, content, likeCount, imageLink, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
@@ -37,7 +37,7 @@ public class ComPostDatabase {
     }
 
     // 2️⃣ Read (By ID)
-    public static Post findById(int id) {
+    public Post findById(int id) {
         String sql = "SELECT * FROM posts WHERE postId = ?";
         Post post = null;
 
@@ -59,7 +59,7 @@ public class ComPostDatabase {
     }
 
     // 3️⃣ Get All Posts
-    public static ArrayList<Post> getAll() {
+    public ArrayList<Post> getAll() {
         ArrayList<Post> list = new ArrayList<>();
         String sql = "SELECT * FROM posts ORDER BY createdAt DESC";
 
@@ -78,7 +78,7 @@ public class ComPostDatabase {
         return list;
     }
 
-    public static ArrayList<Post> getCard(int limit, String type) {
+    public ArrayList<Post> getCard(int limit, String type) {
         ArrayList<Post> list = new ArrayList<>();
         // Use '?' as a placeholder for the limit
         String orderBy ="createdAt";
@@ -113,7 +113,7 @@ public class ComPostDatabase {
         return list;
     }
 
-    public static ArrayList<Comment> getComment(int postId, int limit) {
+    public ArrayList<Comment> getComment(int postId, int limit) {
         ArrayList<Comment> list = new ArrayList<>();
         // Use '?' as a placeholder for the limit
         String sql = "SELECT * FROM comments where postId = ? ORDER BY createdAt DESC LIMIT ?";
@@ -145,7 +145,7 @@ public class ComPostDatabase {
         return list;
     }
 
-    public static ArrayList<Post> getRecentLiked(int userId, int limit) {
+    public ArrayList<Post> getRecentLiked(int userId, int limit) {
         ArrayList<Post> list = new ArrayList<>();
 
         // We JOIN posts and post_likes where the IDs match,
@@ -178,7 +178,7 @@ public class ComPostDatabase {
 
 
     // 4️⃣ Filter by User
-    public static ArrayList<Post> getPostsByUser(int userId) {
+    public ArrayList<Post> getPostsByUser(int userId) {
         ArrayList<Post> list = new ArrayList<>();
         String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC";
 
@@ -200,7 +200,7 @@ public class ComPostDatabase {
     }
 
     // 5️⃣ Search by Content (Keyword)
-    public static ArrayList<Post> searchByContent(String keyword) {
+    public ArrayList<Post> searchByContent(String keyword) {
         ArrayList<Post> list = new ArrayList<>();
         String sql = "SELECT * FROM posts WHERE content LIKE ? ORDER BY createdAt DESC";
 
@@ -222,7 +222,7 @@ public class ComPostDatabase {
     }
 
     // 6️⃣ Update Post
-    public static void update(Post post) {
+    public void update(Post post) {
         String sql = "UPDATE posts SET content=?, imageLink=?, updatedAt=? WHERE postId=?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -241,7 +241,7 @@ public class ComPostDatabase {
     }
 
     // 7️⃣ Delete Post
-    public static void delete(int id) {
+    public void delete(int id) {
         String sql = "DELETE FROM posts WHERE postId=?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -256,7 +256,7 @@ public class ComPostDatabase {
     }
 
     // 8️⃣ Like Post (Increment)
-    public static boolean toggleLike(int postId, int userId) {
+    public boolean toggleLike(int postId, int userId) {
         // We use a transaction so both SQL commands succeed or both fail
         String insertLike = "INSERT INTO post_likes (postId, userId) VALUES (?, ?)";
         String updateCount = "UPDATE posts SET likeCount = likeCount + 1 WHERE postId = ?";
@@ -290,7 +290,7 @@ public class ComPostDatabase {
         }
     }
 
-    public static boolean addComment(int postId, int userId, String content) {
+    public boolean addComment(int postId, int userId, String content) {
         String insertComment = "INSERT INTO comments (postid, userid, content) VALUES (?, ?, ?)";
         // Optional: If your 'posts' table has a 'commentCount' column to track totals
         String updatePostCount = "UPDATE posts SET commentCount = commentCount + 1 WHERE postId = ?";
@@ -325,7 +325,7 @@ public class ComPostDatabase {
     }
 
     // 🔧 Helper Method
-    private static Post extractPost(ResultSet rs) throws SQLException {
+    private Post extractPost(ResultSet rs) throws SQLException {
         return new Post(
                 rs.getInt("postId"),
                 rs.getInt("userId"),

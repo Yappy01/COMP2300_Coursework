@@ -43,9 +43,14 @@ public class CommunityPageController {
 
     private List<Post> postsList = new ArrayList<>();
     private ComPageOverlayController comPageOverlayController;
+    private final PostService postService = new PostService();
 
     public StackPane getAddPostPage() {
         return addPostPage;
+    }
+
+    public void setLoadingSpinnerVisibility(Boolean value) {
+        loadingSpinner.setVisible(value);
     }
 
     @FXML
@@ -110,90 +115,57 @@ public class CommunityPageController {
     public void filterRecent() {
         loadingSpinner.setVisible(true);
 
-        Task<ArrayList<Post>> task = new Task<>() {
-            @Override
-            protected ArrayList<Post> call() {
-                return PostService.getAllPosts("recent"); // background
-            }
-        };
+        postService.getAllPostsAsync("recent",
+                (allPost) -> {
+                    postsList.clear();
+                    cardTiles.getChildren().clear();
 
-        task.setOnSucceeded(e -> {
-            postsList.clear();
-            cardTiles.getChildren().clear();
-
-            postsList = task.getValue();
-            loadCards(); // UI update
-            loadingSpinner.setVisible(false);
-        });
-
-        task.setOnFailed(e -> {
-            System.out.println("Failed to load posts");
-            task.getException().printStackTrace();
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true); // optional: allows app to exit if this thread is running
-        thread.start();
+                    postsList = allPost;
+                    loadCards(); // UI update
+                    loadingSpinner.setVisible(false);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    loadingSpinner.setVisible(false);
+                });
     }
 
     @FXML
     public void filterLikeCount() {
         loadingSpinner.setVisible(true);
 
-        Task<ArrayList<Post>> task = new Task<>() {
-            @Override
-            protected ArrayList<Post> call() {
-                return PostService.getAllPosts("likes"); // background
-            }
-        };
+        postService.getAllPostsAsync("likes",
+                (allPost) -> {
+                    postsList.clear();
+                    cardTiles.getChildren().clear();
 
-        task.setOnSucceeded(e -> {
-            postsList.clear();
-            cardTiles.getChildren().clear();
-
-            postsList = task.getValue();
-            loadCards(); // UI update
-            loadingSpinner.setVisible(false);
-        });
-
-        task.setOnFailed(e -> {
-            System.out.println("Failed to load posts");
-            task.getException().printStackTrace();
-            loadingSpinner.setVisible(false);
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true); // optional: allows app to exit if this thread is running
-        thread.start();
+                    postsList = allPost;
+                    loadCards(); // UI update
+                    loadingSpinner.setVisible(false);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    loadingSpinner.setVisible(false);
+                });
     }
 
     @FXML
     public void filterCommentCount() {
         loadingSpinner.setVisible(true);
 
-        Task<ArrayList<Post>> task = new Task<>() {
-            @Override
-            protected ArrayList<Post> call() {
-                return PostService.getAllPosts("comments"); // background
-            }
-        };
+        postService.getAllPostsAsync("comments",
+                (allPost) -> {
+                    postsList.clear();
+                    cardTiles.getChildren().clear();
 
-        task.setOnSucceeded(e -> {
-            postsList.clear();
-            cardTiles.getChildren().clear();
-
-            postsList = task.getValue();
-            loadCards(); // UI update
-            loadingSpinner.setVisible(false);
-        });
-
-        task.setOnFailed(e -> {
-            System.out.println("Failed to load posts");
-            task.getException().printStackTrace();
-        });
-        Thread thread = new Thread(task);
-        thread.setDaemon(true); // optional: allows app to exit if this thread is running
-        thread.start();
+                    postsList = allPost;
+                    loadCards(); // UI update
+                    loadingSpinner.setVisible(false);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    loadingSpinner.setVisible(false);
+                });
     }
 
     public void loadCards() {
