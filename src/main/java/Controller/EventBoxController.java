@@ -1,6 +1,7 @@
 package Controller;
 
 import DBHandling.EventDatabase;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -27,12 +28,30 @@ public class EventBoxController {
         descriptionLabel.setText(description);
     }
 
-
     @FXML
     public void deleteEvent(MouseEvent mouseEvent) {
-        eventDatabase.deleteEvent(titleLabel.getText(), Session.getInstance().getUserID());
-        if (userProfileController != null) {
-            userProfileController.refreshEvents();
-        }
+         userProfileController.setProgressIndicatorVisible(true);
+         Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return eventDatabase.deleteEvent(titleLabel.getText(), Session.getInstance().getUserID());
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            userProfileController.setProgressIndicatorVisible(false);
+            if (userProfileController != null) {
+                userProfileController.refreshEvents();
+            }
+        });
+
+        task.setOnFailed(e -> {
+            e.getSource().getException().printStackTrace();
+            userProfileController.setProgressIndicatorVisible(false);
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

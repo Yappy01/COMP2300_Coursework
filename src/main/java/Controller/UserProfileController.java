@@ -3,6 +3,7 @@ package Controller;
 import DBHandling.EventDatabase;
 import DBHandling.UserRepository;
 import Models.UserEvent;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import utils.Session;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class UserProfileController {
     @FXML private TextField btTextefield;
     @FXML private TextField piTextfield;
     @FXML private VBox eventContainer;
+    @FXML private ProgressIndicator progressIndicator;
 
 
     private final UserRepository userRepo = new UserRepository();
@@ -36,10 +39,14 @@ public class UserProfileController {
 
     @FXML private Label username_label;
 
+    public void setProgressIndicatorVisible(Boolean value) {
+        progressIndicator.setVisible(value);
+    }
 
     @FXML
     public void initialize(){
         System.out.println("UserProfileController initialize");
+        progressIndicator.setVisible(false);
         populateProfileFields();
 
         visitsTreatments.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
@@ -51,7 +58,7 @@ public class UserProfileController {
         filterEvents();
         displayEventsFromDatabase();
         username_label.setText(Session.getInstance().getUserName());
-    };
+    }
 
     @FXML
     private void goToHomepage(ActionEvent event) throws IOException {
@@ -69,21 +76,41 @@ public class UserProfileController {
     }
 
     public void populateProfileFields() {
-        Map<String, String> data = userRepo.getUserFullProfile(Session.getInstance().getUserID());
+        progressIndicator.setVisible(true);
+        Task<Map<String, String>> task = new Task<Map<String, String>>() {
+            @Override
+            protected Map<String, String> call() throws Exception {
+                return userRepo.getUserFullProfile(Session.getInstance().getUserID());
+            }
+        };
 
-        if (!data.isEmpty()) {
-            // Use setText() for each respective field
-            pntextfield.setText(data.getOrDefault("phone", ""));
-            dateOfBirthField.setText(data.getOrDefault("dob", ""));
-            allergies_textfield.setText(data.getOrDefault("allergies", ""));
-            chronicdiseaseTextfield.setText(data.getOrDefault("chronic", ""));
-            btTextefield.setText(data.getOrDefault("blood", ""));
-            piTextfield.setText(data.getOrDefault("injuries", ""));
-        }
+        task.setOnSucceeded(e -> {
+            Map<String, String> data = task.getValue();
+            if (!data.isEmpty()) {
+                // Use setText() for each respective field
+                pntextfield.setText(data.getOrDefault("phone", ""));
+                dateOfBirthField.setText(data.getOrDefault("dob", ""));
+                allergies_textfield.setText(data.getOrDefault("allergies", ""));
+                chronicdiseaseTextfield.setText(data.getOrDefault("chronic", ""));
+                btTextefield.setText(data.getOrDefault("blood", ""));
+                piTextfield.setText(data.getOrDefault("injuries", ""));
+            }
+            progressIndicator.setVisible(false);
+        });
+
+        task.setOnFailed(e -> {
+            progressIndicator.setVisible(false);
+            e.getSource().getException().printStackTrace();
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); // optional: allows app to exit if this thread is running
+        thread.start();
     }
 
     //add phone number to database
     @FXML void addPhoneNumber(ActionEvent event) throws SQLException, ClassNotFoundException {
+        progressIndicator.setVisible(true);
         if (pntextfield.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
@@ -93,19 +120,39 @@ public class UserProfileController {
 
         }else{
             System.out.println();
-            if(userRepo.change_phonenumber(Session.getInstance().getUserID(), pntextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Phone number was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
+            progressIndicator.setVisible(true);
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_phonenumber(Session.getInstance().getUserID(), pntextfield.getText());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if(task.getValue()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Phone number was updated.");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something went wrong");
+                    alert.showAndWait();
+                }
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
     }
 
@@ -119,19 +166,39 @@ public class UserProfileController {
             alert.showAndWait();
 
         }else{
-            if(userRepo.change_date_of_birth(Session.getInstance().getUserID(), dateOfBirthField.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Date of Birth was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Date of Birth was not updated.");
-                alert.showAndWait();
-            }
+            progressIndicator.setVisible(true);
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_date_of_birth(Session.getInstance().getUserID(), dateOfBirthField.getText());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if(task.getValue()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Date of Birth was updated.");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Date of Birth was not updated.");
+                    alert.showAndWait();
+                }
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
     }
 
@@ -146,19 +213,39 @@ public class UserProfileController {
             alert.showAndWait();
 
         }else{
-            if(userRepo.change_allergies(Session.getInstance().getUserID(), allergies_textfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Allergy stored.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
+            progressIndicator.setVisible(true);
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_allergies(Session.getInstance().getUserID(), allergies_textfield.getText());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if(task.getValue()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Allergy stored.");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something went wrong");
+                    alert.showAndWait();
+                }
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
 
     }
@@ -174,19 +261,39 @@ public class UserProfileController {
             alert.showAndWait();
 
         }else{
-            if(userRepo.change_cd(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Chronic Disease list was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
+            progressIndicator.setVisible(true);
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_cd(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if(task.getValue()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Chronic Disease list was updated.");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something went wrong");
+                    alert.showAndWait();
+                }
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
 
     }
@@ -203,23 +310,43 @@ public class UserProfileController {
             alert.showAndWait();
 
         }else{
-            if(userRepo.change_blood_type(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Blood Type was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
+            progressIndicator.setVisible(true);
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_blood_type(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if(task.getValue()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Blood Type was updated.");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something went wrong");
+                    alert.showAndWait();
+                }
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
     }
 
-    //add past in daatabase
+    //add past in database
     @FXML
     public void addpiField() throws SQLException, ClassNotFoundException {
         if (piTextfield.getText().isEmpty()) {
@@ -230,19 +357,39 @@ public class UserProfileController {
             alert.showAndWait();
 
         }else{
-            if(userRepo.change_injuries_illness(Session.getInstance().getUserID(),chronicdiseaseTextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Illness and Injuries was not updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
+            progressIndicator.setVisible(true);
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_injuries_illness(Session.getInstance().getUserID(),chronicdiseaseTextfield.getText());
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                if(task.getValue()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Illness and Injuries was not updated.");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something went wrong");
+                    alert.showAndWait();
+                }
+                progressIndicator.setVisible(false);
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
     }
 
@@ -250,29 +397,48 @@ public class UserProfileController {
     //display all events unfiltered in database
     public void displayEventsFromDatabase() {
         System.out.println("populating list of events");
-
+        progressIndicator.setVisible(true);
         eventContainer.getChildren().clear();
 
-        List<UserEvent> userEvents = eventDatabase.getAllEvents();
-
-        try {
-            for (UserEvent userEvent : userEvents) {
-                System.out.println("trying to load event");
-                // Adding "/App/" before the filename
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
-                Node node = loader.load();
-
-                //Access the controller of the specific EventBox to set its text
-                EventBoxController controller = loader.getController();
-                controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
-                controller.setUserProfileController(this);
-
-                //Add the box to the main container
-                eventContainer.getChildren().add(node);
+        Task<List<UserEvent>> task = new Task<List<UserEvent>>() {
+            @Override
+            protected List<UserEvent> call() throws Exception {
+                return eventDatabase.getAllEvents();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        };
+
+        task.setOnSucceeded(e -> {
+            progressIndicator.setVisible(false);
+            List<UserEvent> userEvents = task.getValue();
+            try {
+                for (UserEvent userEvent : userEvents) {
+                    System.out.println("trying to load event");
+                    // Adding "/App/" before the filename
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
+                    Node node = loader.load();
+
+                    //Access the controller of the specific EventBox to set its text
+                    EventBoxController controller = loader.getController();
+                    controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
+                    controller.setUserProfileController(this);
+
+                    //Add the box to the main container
+                    eventContainer.getChildren().add(node);
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        task.setOnFailed(e -> {
+            e.getSource().getException().printStackTrace();
+            progressIndicator.setVisible(false);
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+
     }
 
     //filter events as per future visits, past visits, planned treatments
@@ -302,23 +468,41 @@ public class UserProfileController {
     //updateUI when events are filtered
     private void updateUI(int typeId, String timeMode) {
         eventContainer.getChildren().clear();
-
-        List<UserEvent> filtered = eventDatabase.getFilteredEvents(Session.getInstance().getUserID(), typeId, timeMode);
-
-        for (UserEvent userEvent : filtered) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
-                Node node = loader.load();
-
-                EventBoxController controller = loader.getController();
-                controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
-                controller.setUserProfileController(this);
-
-                eventContainer.getChildren().add(node);
-            } catch (IOException e) {
-                e.printStackTrace();
+        progressIndicator.setVisible(true);
+        Task<List<UserEvent>> task = new Task<List<UserEvent>>() {
+            @Override
+            protected List<UserEvent> call() throws Exception {
+                return eventDatabase.getFilteredEvents(Session.getInstance().getUserID(), typeId, timeMode);
             }
-        }
+        };
+
+        task.setOnSucceeded(e -> {
+            progressIndicator.setVisible(false);
+            List<UserEvent> filtered = task.getValue();
+            for (UserEvent userEvent : filtered) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
+                    Node node = loader.load();
+
+                    EventBoxController controller = loader.getController();
+                    controller.setEventData(userEvent.getDate(), userEvent.getTime(), userEvent.getTitle(), userEvent.getDescription());
+                    controller.setUserProfileController(this);
+
+                    eventContainer.getChildren().add(node);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        task.setOnFailed(e -> {
+            e.getSource().getException().printStackTrace();
+            progressIndicator.setVisible(false);
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
 

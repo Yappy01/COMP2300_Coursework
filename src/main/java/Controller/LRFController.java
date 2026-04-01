@@ -4,6 +4,7 @@ import Service.UserService;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
 
 
 public class LRFController {
+    @FXML private ProgressIndicator progressIndicator;
     //all textfields, passwordfields and button in the fxml has been recorded here
     //even if they are not all used
     @FXML private TextField si_username;
@@ -67,6 +69,9 @@ public class LRFController {
     private Alert alert;
 
     @FXML private void initialize() {
+        progressIndicator.setVisible(false);
+        progressIndicator.setProgress(-1);
+
         ObservableList<String> questions = FXCollections.observableArrayList(
                 "What was your first pet's name?",
                 "What street did you grow up on?",
@@ -108,20 +113,30 @@ public class LRFController {
 
     @FXML
     public void loginBtn(){
+        progressIndicator.setVisible(true);
         //if any of the textfields are empty
-            if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Please fill all blank fields");
-                alert.showAndWait();
+        if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
 
-            } else {
-                String username = this.si_username.getText().trim();
-                String password = this.si_password.getText().trim();
+        } else {
+            String username = this.si_username.getText().trim();
+            String password = this.si_password.getText().trim();
 
+            Task<Boolean> task = new Task<>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.secureLogin(username, password);
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
                 try{
-                    if (userRepo.secureLogin(username,password)){
+                    if (task.getValue()){
                         //alert for login
                         alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Information Message");
@@ -156,11 +171,20 @@ public class LRFController {
                         alert.setContentText("Incorrect Username/Password");
                         alert.showAndWait();
                     }
-
-                }catch(Exception e) {
-                    e.printStackTrace();
+                }catch(Exception e1) {
+                    e1.printStackTrace();
                 }
-            }
+            });
+
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
+        }
     }
 
 
@@ -206,7 +230,6 @@ public class LRFController {
 
         }else{
             try{
-
                 String answer = this.su_answer.getText().trim();
                 String username = this.su_username.getText();
                 String password = this.su_password.getText();
@@ -221,43 +244,67 @@ public class LRFController {
                     alert.showAndWait();
 
                 }else{
+                    progressIndicator.setVisible(true);
+
                     User user = new User(username,password,email,answer);
 
+                    Task<Boolean> task = new Task<Boolean>() {
+                        @Override
+                        protected Boolean call() throws Exception {
+                            return userRepo.register_user(user);
+                        }
+                    };
+
+
                     //successful registration alert
-                    if(userRepo.register_user(user)){
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Successfully registered Account!");
-                        alert.showAndWait();
+                    task.setOnSucceeded(e -> {
+                        try {
+                            if(task.getValue()){
+                                alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Information Message");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Successfully registered Account!");
+                                alert.showAndWait();
 
-                        su_username.clear();
-                        su_password.clear();
-                        su_email.clear();
+                                su_username.clear();
+                                su_password.clear();
+                                su_email.clear();
 
-                        TranslateTransition slider = new TranslateTransition();
+                                TranslateTransition slider = new TranslateTransition();
 
-                        slider.setNode(side_form);
-                        slider.setToX(0);
-                        slider.setDuration(Duration.seconds(.5));
+                                slider.setNode(side_form);
+                                slider.setToX(0);
+                                slider.setDuration(Duration.seconds(.5));
 
-                        slider.setOnFinished((ActionEvent e) -> {
-                            side_alreadyHave.setVisible(false);
-                            side_CreateBtn.setVisible(true);
-                        });
-                        slider.play();
-                    }
+                                slider.setOnFinished((ActionEvent e1) -> {
+                                    side_alreadyHave.setVisible(false);
+                                    side_CreateBtn.setVisible(true);
+                                });
+                                slider.play();
+                                progressIndicator.setVisible(false);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
 
+                    task.setOnFailed(e -> {
+                        progressIndicator.setVisible(false);
+                        e.getSource().getException().printStackTrace();
+                    });
+
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true); // optional: allows app to exit if this thread is running
+                    thread.start();
                 }
             }catch(Exception e){}
         }
-
     }
 
     //enter username and email to locate account to reset password
     @FXML
     public void proceedBtn(ActionEvent event) {
-
+        progressIndicator.setVisible(true);
         //check if username and email textfield are full
         if (fp_username.getText().isEmpty() || fp_email.getText().isEmpty()
         || fp_question.getSelectionModel().getSelectedItem() == null || fp_answer.getText().isEmpty()) {
@@ -270,14 +317,22 @@ public class LRFController {
 
         }else{
             //if username and email textfield are both filled
-            try{
-                String username = this.fp_username.getText();
-                String email = this.fp_email.getText();
-                String answer = this.fp_answer.getText();
+            String username = this.fp_username.getText();
+            String email = this.fp_email.getText();
+            String answer = this.fp_answer.getText();
 
-                //search for user
-                //if found user
-                if (this.userRepo.check_user(username, email, answer)) {
+            //search for user
+            //if found user
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.check_user(username, email, answer);
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if (task.getValue()) {
                     np_newPassForm.setVisible(true);// new password form visible
                     fp_questionForm.setVisible(false); //forgot password form removed
                 }else{
@@ -288,10 +343,16 @@ public class LRFController {
                     alert.setContentText("Incorrect Information");
                     alert.showAndWait();
                 }
+            });
 
-            }catch(SQLException|ClassNotFoundException e){
-                e.printStackTrace();
-            }
+            task.setOnFailed(e -> {
+                progressIndicator.setVisible(false);
+                e.getSource().getException().printStackTrace();
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true); // optional: allows app to exit if this thread is running
+            thread.start();
         }
     }
 
