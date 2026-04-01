@@ -301,14 +301,13 @@ public class UserProfileController {
 
     //add blood type to database
     @FXML
-    public void addbt(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (btTextefield.getText().isEmpty()) {
+    public void add_personalInformation(ActionEvent event) throws SQLException, ClassNotFoundException {
+        if (userRepo.change_personalInformation(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText())){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText(null);
             alert.setContentText("Please enter your blood type.");
             alert.showAndWait();
-
         }else{
             progressIndicator.setVisible(true);
             Task<Boolean> task = new Task<Boolean>() {
@@ -346,14 +345,15 @@ public class UserProfileController {
         }
     }
 
-    //add past in database
-    @FXML
-    public void addpiField() throws SQLException, ClassNotFoundException {
-        if (piTextfield.getText().isEmpty()) {
+
+
+    @FXML void add_anamnesis() throws SQLException, ClassNotFoundException {
+
+        if (userRepo.change_anamnesis(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText(null);
-            alert.setContentText("Please enter pass injuries and illnesses.");
+            alert.setContentText("Information successfully added.");
             alert.showAndWait();
 
         }else{

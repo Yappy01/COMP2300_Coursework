@@ -224,13 +224,14 @@ public class UserRepository {
         return false;
     }
 
-    public boolean change_phonenumber(Integer userid, String phone_number) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET phone_number = ? WHERE \"userId\" = ?";
+    public boolean change_personalInformation(Integer userid, String phone_number,String date_of_birth) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET phone_number = ?, date_of_birth = ? WHERE \"userId\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
             update_user_stmt.setString(1, phone_number.trim());
-            update_user_stmt.setInt(2,userid);
+            update_user_stmt.setString(2, date_of_birth.trim());
+            update_user_stmt.setInt(3,userid);
             update_user_stmt.executeUpdate();
             System.out.println("Note updated in the database successfully");
             return true;
@@ -242,13 +243,16 @@ public class UserRepository {
 
     }
 
-    public boolean change_date_of_birth(Integer userid, String date_of_birth) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET date_of_birth = ? WHERE \"userId\" = ?";
+    public boolean change_anamnesis(Integer userid, String allergies,String chronic_disease, String bloodtype, String injuriesillness ) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET allergies = ?, chronic_diseases= ?, blood_type = ?, injuries_illness = ?  WHERE \"userId\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
-            update_user_stmt.setString(1, date_of_birth.trim());
-            update_user_stmt.setInt(2, userid);
+            update_user_stmt.setString(1, allergies);
+            update_user_stmt.setString(2, chronic_disease);
+            update_user_stmt.setString(3,bloodtype);
+            update_user_stmt.setString(4, injuriesillness);
+            update_user_stmt.setInt(5, userid);
             update_user_stmt.executeUpdate();
             System.out.println("Note updated in the database successfully");
             return true;
@@ -257,74 +261,7 @@ public class UserRepository {
             e.printStackTrace();
         }
         return false;
-    }
 
-    public boolean change_allergies(Integer userid, String allergies) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET allergies = ? WHERE \"userId\" = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
-            update_user_stmt.setString(1, allergies.trim());
-            update_user_stmt.setInt(2, userid);
-            update_user_stmt.executeUpdate();
-            System.out.println("allergies updated in the database successfully");
-            return true;
-
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean change_cd(Integer userid,  String chronic_disease) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET chronic_diseases = ? WHERE \"userId\" = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
-            update_user_stmt.setString(1, chronic_disease.trim());
-            update_user_stmt.setInt(2, userid);
-            update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
-            return true;
-
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean change_blood_type(Integer userid, String blood_type) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET blood_type = ? WHERE \"userId\" = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
-            update_user_stmt.setString(1, blood_type.trim());
-            update_user_stmt.setInt(2, userid);
-            update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
-            return true;
-
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean change_injuries_illness(Integer userid,String injuries_illness) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET injuries_illness = ? WHERE \"userId\" = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
-            update_user_stmt.setString(1, injuries_illness.trim());
-            update_user_stmt.setInt(2,userid);
-            update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
-            return true;
-
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public Map<String, String> getUserFullProfile(int userId) {
