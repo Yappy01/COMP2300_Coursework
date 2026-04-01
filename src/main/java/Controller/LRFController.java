@@ -131,19 +131,15 @@ public class LRFController {
 
                         alert.setContentText("Login Successful");
 
+                        //call init, assign_usertag and setNoteToSelf
+                        Session.startSession(userService.searchByUsername(si_username.getText()));
+
                         // Create loader pointing to HomePage FXML file
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/homepage.fxml"));
                         Parent root = loader.load();
 
-
                         //GET the controller from the loader
                         HomePageController controller = loader.getController();
-
-                        //call init, assign_usertag and setNoteToSelf
-                        controller.init_mainpage();
-                        Session.startSession(userService.searchByUsername(si_username.getText()));
-                        controller.assign_usertag(si_username.getText());
-                        controller.setNoteToSelf();
 
                         //new Scene for HomePage
                         Scene scene = new Scene(root,UIConstant.main_width,UIConstant.main_height);
@@ -152,8 +148,6 @@ public class LRFController {
                         stage.setScene(scene);
                         stage.centerOnScreen();
                         stage.show();
-
-
                     }else{
                         //Incorrect credentials alert
                         alert = new Alert(Alert.AlertType.ERROR);

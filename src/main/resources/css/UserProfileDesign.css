@@ -1,0 +1,175 @@
+/* General format for list in sidebar*/
+.sidebar-list {
+    -fx-background-color: #fff7f4;
+    -fx-background-radius: 40;
+}
+
+/* Home button */
+.home-button {
+    -fx-background-color: #fff7f4;
+    -fx-text-fill: #D7B0A0;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-background-radius: 40;
+}
+
+.home-button:hover {
+    -fx-background-color: #f7cfc0;
+}
+
+.home-button:pressed {
+    -fx-background-color: #CF9784;
+}
+
+/* Toggle button for tag use in user profile page */
+.sidebar-title {
+    -fx-text-fill: #d7b0a0;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-max-width: infinity;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
+.sidebar-button-medium {
+    -fx-background-color: #6C4535;
+    -fx-text-fill: #fff7f4;
+    -fx-font-family: "Constantia";
+    -fx-font-size: 16px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+}
+
+.sidebar-button-medium:hover {
+    -fx-background-color: #f7cfc0;
+    -fx-text-fill: #261c1c;
+}
+
+.sidebar-button-medium:selected {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: #261c1c;
+}
+
+/*header design elements*/
+.headerBackground{
+    -fx-background-color: #000000;
+}
+
+.headerMain{
+    -fx-background-color: #fff;
+}
+
+.headerFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #361000;
+}
+
+.mainBackground{
+    -fx-background-color: #6c4535;
+}
+
+.main{
+    -fx-background-color: #d7b0a0;
+}
+
+/*section design elements*/
+.sectionBackground{
+    -fx-background-color: #fbe9e1;
+}
+
+.sectionTitleFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #361000;
+    -fx-font-size: 18px;
+}
+
+.sectionSubFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #361000;
+    -fx-font-size: 14px;
+}
+
+.textfield{
+    -fx-background-color: transparent;
+}
+
+.radius{
+    -fx-background-radius: 8px;
+}
+
+/*signout button*/
+.signout-button {
+    -fx-background-color: #361000;
+    -fx-text-fill: #d7b0a0;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-background-radius: 40;
+}
+
+.signout-button:hover {
+    -fx-background-color: #f7cfc0;
+}
+
+.signout-button:pressed {
+    -fx-background-color: #CF9784;
+}
+
+/*add button*/
+.add-button {
+    -fx-background-color: #6C4535;
+    -fx-text-fill: #fff7f4;
+    -fx-font-family: "Constantia";
+    -fx-font-size: 16px;
+    -fx-min-height: 20;
+    -fx-max-width: infinity;
+    -fx-background-radius: 50;
+}
+
+.add-button:hover {
+    -fx-background-color: #f7cfc0;
+    -fx-text-fill: #261c1c;
+}
+
+.add-button:pressed {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: #261c1c;
+}
+
+/*visit and treatment toggle buttons*/
+.visitTreatment-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #361000;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+}
+
+.visitTreatment-button:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d7b0a0;
+    -fx-font-weight: bold;
+}
+
+.event-box{
+    -fx-background-color: #d7b0a0;
+}
+/*scrollbar*/
+.scroll-bar > .thumb {
+    -fx-background-color: #d7b0a0;
+    -fx-background-radius: 5px; /* Optional: adds rounded corners */
+}
+.scroll-bar > .track {
+    -fx-background-color: #ffffff;
+}
+.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: #d7b0a0;
+}

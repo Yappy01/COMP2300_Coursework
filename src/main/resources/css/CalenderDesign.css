@@ -1,0 +1,242 @@
+/*background elements*/
+.sectionBackground{
+    -fx-background-color: #764834;
+    -fx-border-radius: 40;
+}
+
+.sectionCenter{
+    -fx-background-color: #fff7f4;
+    -fx-border-radius: 40;
+}
+
+/* Main text field of the DatePicker */
+.custom-datepicker {
+    -fx-control-inner-background: #6c4535; /* Matches your textfield color */
+    -fx-accent: #d7b0a0; /* Color of the highlighted 'today' date */
+}
+
+.date-picker-popup{
+    -fx-font-size: 12px;
+}
+/* The calendar popup container */
+.date-picker-popup > .month-year-pane {
+    -fx-background-color: #764834; /* Matches sectionBackground */
+    -fx-padding: 10px;
+
+}
+
+.date-picker-popup > .month-year-pane > .label {
+    -fx-font-size: 12px;
+}
+
+/* Calendar days background */
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: #fff7f4; /* Matches sectionCenter */
+}
+
+/* Styling individual days */
+.date-picker-popup > .calendar-grid > .day-cell {
+    -fx-min-width: 35px;
+    -fx-min-height: 35px;
+    -fx-font-family: "Constantia";
+    -fx-text-fill: #c89d7c;
+}
+
+.date-picker-popup > .calendar-grid > .today {
+    -fx-background-color: transparent;
+    -fx-border-color: #6c4535; /* Circle today in brown instead of blue */
+    -fx-border-width: 1;
+}
+.date-picker-popup > .calendar-grid > .day-cell:hover {
+    -fx-background-color: #d7b0a0;
+}
+
+/* Selected day */
+.date-picker-popup > .calendar-grid > .selected {
+    -fx-background-color: #6c4535;
+    -fx-text-fill: white;
+}
+
+/*!* 1. Style the main box text (what you see when NOT clicked) *!*/
+/*.time-button .cell {*/
+/*    -fx-text-fill: #a75353 !important;*/
+/*    -fx-alignment: CENTER;*/
+/*    -fx-font-family: "Constantia";*/
+/*}*/
+
+/*!* 2. Style the items inside the dropdown list *!*/
+/*.time-button .list-cell {*/
+/*    -fx-text-fill: #361000; !* Dark brown text for the list items *!*/
+/*    -fx-background-color:#a75353 ; !* Light cream background for the list *!*/
+/*    -fx-alignment: CENTER;*/
+/*}*/
+
+/*!* 3. Style the hover/selection color inside the list *!*/
+/*.time-button .list-cell:hover, .time-button .list-cell:selected {*/
+/*    -fx-background-color: #d7b0a0; !* Tan highlight when choosing *!*/
+/*    -fx-text-fill: #361000;*/
+/*}*/
+
+/* Unify the background color of the whole ComboBox */
+.time-button {
+    -fx-background-color: #6c4535;
+    -fx-border-color: #d7b0a0;
+    -fx-border-width: 30px;
+}
+
+/* Remove the separate background for the arrow section */
+.time-button .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* Style the individual numbers inside the dropdown list */
+.time-button .list-cell {
+    -fx-text-fill: #ffffff; /* Use white text so it's visible against the dark red/brown */
+    -fx-background-color: #6c4535; /* Matches your event-button/textfield color */
+    -fx-alignment: CENTER;
+    -fx-padding: 5px;
+}
+
+/* Change the background when you hover or select an item in the list */
+.time-button .list-cell:hover,
+.time-button .list-cell:selected {
+    -fx-background-color: #d7b0a0; /* Tan highlight */
+    -fx-text-fill: #361000; /* Dark brown text for the highlighted item */
+}
+
+/* Style the selection shown in the ComboBox when closed */
+.time-button .cell {
+    -fx-text-fill: #ffffff !important; /* Forces white text */
+    -fx-alignment: CENTER;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+}
+/*!*calender elements*!*/
+/*.Calender {*/
+/*    -fx-background-color: #6c4535;*/
+/*    -fx-border-color: #d7b0a0; -fx-border-width: 1px; -fx-border-style: solid;*/
+/*    -fx-font-family: "Constantia";*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-text-fill: #361000;*/
+/*    -fx-font-size: 18px;*/
+/*}*/
+
+/*.CalenderDate-Button {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-text-fill: #fff7f4;*/
+/*    -fx-font-family: "Constantia";*/
+/*    -fx-font-size: 18px;*/
+/*}*/
+
+/*.CalenderDate-Button:selected {*/
+/*    -fx-background-color: #fbe9e1;*/
+/*    -fx-text-fill: #261c1c;*/
+/*    -fx-background-radius: 50;*/
+/*}*/
+
+
+/*date button elements*/
+/*.dateFont {*/
+/*    -fx-font-family: "Constantia";*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-text-fill: #361000;*/
+/*    -fx-font-size: 18px;*/
+/*}*/
+
+/*.date-button:pressed {*/
+/*    -fx-background-color: #CF9784;*/
+/*}*/
+
+.arrow-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6c4535;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 25px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+}
+
+.arrow-button:pressed {
+    -fx-text-fill: #fff7f4;
+}
+
+.dateBackground {
+    -fx-background-color: #d7b0a0;
+    -fx-border-color: #7a4900;
+    -fx-border-width: 3px;
+    -fx-min-height: 10px;
+}
+
+/*event elements*/
+.textfield {
+    -fx-background-color: #6c4535;
+    -fx-border-color: #d7b0a0; -fx-border-width: 3px; -fx-border-style: solid;
+    -fx-font-size: 1.5em;
+    -fx-font-family: "Constantia";
+    -fx-prompt-text-fill: #ffffff;
+    -fx-text-fill: white; /* Changes text color to white */
+}
+
+/*time elements*/
+.timeFont {
+    -fx-font-family: "Constantia";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 35px;
+}
+
+/*time textfield*/
+.TimeTextfield {
+    -fx-background-color: #6c4535;
+    -fx-border-color: #d7b0a0; -fx-border-width: 3px; -fx-border-style: solid;
+    -fx-font-size: 2.75em;
+    -fx-font-family: "Constantia";
+    -fx-prompt-text-fill: #ffffff;
+    -fx-text-fill: white; /* Changes text color to white */
+}
+
+/*time toggle button: AM, PM*/
+.time-button {
+    -fx-background-color: #6c4535;
+    -fx-border-color: #d7b0a0; -fx-border-width: 3px; -fx-border-style: solid;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Constantia";
+    -fx-font-size: 16px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+}
+
+.time-button:selected {
+    -fx-background-color: #d7b0a0;
+    -fx-border-color: #6c4535; -fx-border-width: 3px; -fx-border-style: solid;
+    -fx-text-fill: #261c1c;
+}
+
+/* Button to add event */
+.event-button {
+    -fx-background-color: #6c4535;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Constantia";
+    -fx-font-size: 18px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+}
+
+.event-button:pressed {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: #261c1c;
+}
+
+/* Discard button */
+.discard-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #361000;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-min-height: 40;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+}

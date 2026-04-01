@@ -1,0 +1,21 @@
+/*section design elements*/
+.sectionBackground{
+    -fx-background-color: #d7b0a0;
+}
+
+.sectionCenter{
+    -fx-background-color: #6c4535;
+}
+
+.sectionTitleFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #fff7f4;
+    -fx-font-size: 16px;
+}
+
+.sectionDescriptionFont {
+    -fx-font-family: "Constantia";
+    -fx-text-fill: #fff7f4;
+    -fx-font-size: 12px;
+}
