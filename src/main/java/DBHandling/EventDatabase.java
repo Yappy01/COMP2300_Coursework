@@ -2,6 +2,7 @@ package DBHandling;
 
 import Models.UserEvent;
 import utils.DBConnection;
+import utils.Session;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class EventDatabase {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, 15);
+            stmt.setInt(1, Session.getInstance().getUserID());
             stmt.setInt(2, 1);
 
 

@@ -82,8 +82,14 @@ public class UserProfileController {
         }
     }
 
+    @FXML
+    public void add_personalInformation(ActionEvent event) throws SQLException, ClassNotFoundException {
+        ActionEvent event1 = event;
+        addPhoneNumber(event1);
+        addDateOfBirth(event1);
+    }
     //add phone number to database
-    @FXML void addPhoneNumber(ActionEvent event) throws SQLException, ClassNotFoundException {
+    @FXML boolean addPhoneNumber(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (pntextfield.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
@@ -94,11 +100,7 @@ public class UserProfileController {
         }else{
             System.out.println();
             if(userRepo.change_phonenumber(Session.getInstance().getUserID(), pntextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Phone number was updated.");
-                alert.showAndWait();
+                return true;
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Information");
@@ -107,6 +109,7 @@ public class UserProfileController {
                 alert.showAndWait();
             }
         }
+        return false;
     }
 
     //add date of birth to database
@@ -234,7 +237,7 @@ public class UserProfileController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);
-                alert.setContentText("Illness and Injuries was not updated.");
+                alert.setContentText("Illness and Injuries was updated.");
                 alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);

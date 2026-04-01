@@ -32,26 +32,14 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
             <children>
@@ -160,7 +148,7 @@
                                     <Font size="82.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="username_label" layoutX="63.0" layoutY="132.0" styleClass="sectionTitleFont" text="Username" />
+                              <Label fx:id="username_label" alignment="CENTER" layoutX="63.0" layoutY="132.0" styleClass="sectionTitleFont" text="Username" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sectionBackground" GridPane.columnIndex="1">
@@ -175,6 +163,7 @@
                               <Line endX="178.0" layoutX="115.0" layoutY="150.0" startX="-100.0" strokeWidth="2.0" />
                               <TextField fx:id="pntextfield" layoutX="144.0" layoutY="57.0" onAction="#addPhoneNumber" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" />
                               <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" onAction="#addDateOfBirth" promptText="DD/MM/YY" styleClass="textfield" />
+                              <Button fx:id="add_event_Button1" layoutX="227.0" layoutY="155.0" mnemonicParsing="false" onAction="#add_personalInformation" prefHeight="41.0" prefWidth="70.0" styleClass="add-button" text="Save" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -245,6 +234,7 @@
                   <TextField fx:id="chronicdiseaseTextfield" layoutX="157.0" layoutY="83.0" onAction="#addchronicdisease" prefHeight="25.0" prefWidth="84.0" styleClass="textfield" />
                   <TextField fx:id="btTextefield" layoutX="109.0" layoutY="129.0" onAction="#addbt" styleClass="textfield" />
                   <TextField fx:id="piTextfield" layoutX="123.0" layoutY="193.0" onAction="#addpiField" prefHeight="25.0" prefWidth="128.0" styleClass="textfield" />
+                  <Button fx:id="add_event_Button11" layoutX="193.0" layoutY="6.0" mnemonicParsing="false" onAction="#add_anamnesis" prefHeight="41.0" prefWidth="70.0" styleClass="add-button" text="Save" />
                </children>
             </AnchorPane>
             <ScrollPane prefHeight="221.0" prefWidth="295.0">
