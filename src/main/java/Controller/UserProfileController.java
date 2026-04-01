@@ -39,6 +39,9 @@ public class UserProfileController {
 
     @FXML private Label username_label;
 
+    public void setProgressIndicatorVisible(Boolean value) {
+        progressIndicator.setVisible(value);
+    }
 
     @FXML
     public void initialize(){
