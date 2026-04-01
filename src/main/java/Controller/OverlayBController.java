@@ -1,15 +1,12 @@
 package Controller;
 
-import DBHandling.ComPostDatabase;
 import Models.Post;
 import Models.User;
-import Service.UserService;
-import javafx.event.ActionEvent;
+import Service.PostService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +39,7 @@ public class OverlayBController {
     private Button uploadButton;
 
     private String imageLink = "";
+    private final PostService postService = new PostService();
 
     public void setParentController(CommunityPageController parentController) {
         this.parentController = parentController;
@@ -130,7 +128,14 @@ public class OverlayBController {
 
         // Create post with optional image path
         Post post = new Post(user.getUserId(), postText.getText(), savedPath);
-        ComPostDatabase.insertPost(post);
+        postService.insertPostAsync(post,
+            () -> {
+            parentController.setLoadingSpinnerVisibility(false);
+            },
+            (error) -> {
+            parentController.setLoadingSpinnerVisibility(false);
+            error.printStackTrace();
+            });
 
         // Clear temporary file reference after posting
         postText.clear();
