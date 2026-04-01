@@ -84,168 +84,39 @@ public class UserProfileController {
 
     @FXML
     public void add_personalInformation(ActionEvent event) throws SQLException, ClassNotFoundException {
-        ActionEvent event1 = event;
-        addPhoneNumber(event1);
-        addDateOfBirth(event1);
-    }
-    //add phone number to database
-    @FXML boolean addPhoneNumber(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (pntextfield.getText().isEmpty()) {
+        if (userRepo.change_personalInformation(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText())){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText(null);
-            alert.setContentText("Please enter phone number.");
+            alert.setContentText("Information successfully added.");
             alert.showAndWait();
-
         }else{
-            System.out.println();
-            if(userRepo.change_phonenumber(Session.getInstance().getUserID(), pntextfield.getText())){
-                return true;
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
-        }
-        return false;
-    }
-
-    //add date of birth to database
-    @FXML public void addDateOfBirth(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (dateOfBirthField.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Information");
             alert.setHeaderText(null);
-            alert.setContentText("Please enter allergy name.");
+            alert.setContentText("Something went wrong");
             alert.showAndWait();
-
-        }else{
-            if(userRepo.change_date_of_birth(Session.getInstance().getUserID(), dateOfBirthField.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Date of Birth was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Date of Birth was not updated.");
-                alert.showAndWait();
-            }
-        }
-    }
-
-    //add allergy to database
-    @FXML
-    public void add_allergy() throws SQLException, ClassNotFoundException {
-        if (allergies_textfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter allergy name.");
-            alert.showAndWait();
-
-        }else{
-            if(userRepo.change_allergies(Session.getInstance().getUserID(), allergies_textfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Allergy stored.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
         }
 
-    }
-
-    //add chronic diseases in the database
-    @FXML
-    public void addchronicdisease(ActionEvent event ) throws SQLException, ClassNotFoundException {
-        if (chronicdiseaseTextfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter chronic disease.");
-            alert.showAndWait();
-
-        }else{
-            if(userRepo.change_cd(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Chronic Disease list was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
-        }
 
     }
 
 
-    //add blood type to database
-    @FXML
-    public void addbt(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (btTextefield.getText().isEmpty()) {
+
+    @FXML void add_anamnesis() throws SQLException, ClassNotFoundException {
+
+        if (userRepo.change_anamnesis(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText(null);
-            alert.setContentText("Please enter your blood type.");
+            alert.setContentText("Information successfully added.");
             alert.showAndWait();
-
         }else{
-            if(userRepo.change_blood_type(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Blood Type was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
-        }
-    }
-
-    //add past in daatabase
-    @FXML
-    public void addpiField() throws SQLException, ClassNotFoundException {
-        if (piTextfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Information");
             alert.setHeaderText(null);
-            alert.setContentText("Please enter pass injuries and illnesses.");
+            alert.setContentText("Something went wrong");
             alert.showAndWait();
-
-        }else{
-            if(userRepo.change_injuries_illness(Session.getInstance().getUserID(),chronicdiseaseTextfield.getText())){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Illness and Injuries was updated.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
         }
     }
 

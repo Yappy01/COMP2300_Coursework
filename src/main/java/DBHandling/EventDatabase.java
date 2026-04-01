@@ -35,7 +35,7 @@ public class EventDatabase {
 
     public List<UserEvent> getAllEvents() {
         List<UserEvent> userEventList = new ArrayList<>();
-        String query = "SELECT date_time, name, description FROM events WHERE fk_userid = ? AND fk_typeid = ?";
+        String query = "SELECT date_time, name, description FROM events WHERE fk_userid = ? AND fk_typeid = ? ORDER BY date_time ASC ";
 
 
         try (Connection conn = DBConnection.getConnection();
