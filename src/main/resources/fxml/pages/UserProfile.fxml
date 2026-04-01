@@ -53,10 +53,9 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
    <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
           <top>
               <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
                   <children>
@@ -76,12 +75,11 @@
                               <Font name="Comic Sans MS Bold" size="40.0" />
                           </font>
                       </Label>
-                  <Button mnemonicParsing="false" styleClass="signout-button" text="Sign Out" />
+                      <Button mnemonicParsing="false" styleClass="signout-button" text="Sign Out" />
                   </children>
                   <padding>
                       <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
-                  </padding>
-            </HBox>
+                  </padding></HBox>
           </top>
           <left>
               <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
@@ -110,10 +108,10 @@
                                       <Insets />
                                   </opaqueInsets>
                                   <toggleGroup>
-                                      <ToggleGroup fx:id="informationPageButtons" />
+                                      <ToggleGroup fx:id="userToggle" />
                                   </toggleGroup>
                               </ToggleButton>
-                              <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" wrapText="true">
+                              <ToggleButton fx:id="userPostButton" mnemonicParsing="false" onAction="#postSearch" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$userToggle" wrapText="true">
                                   <font>
                                       <Font size="14.0" />
                                   </font>
@@ -133,7 +131,7 @@
                   <padding>
                       <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                   </padding>
-            </VBox>
+              </VBox>
           </left>
           <center>
               <VBox alignment="CENTER_RIGHT" prefHeight="500.0" prefWidth="556.0" spacing="15.0" style="-fx-background-color: #6C4535;" BorderPane.alignment="CENTER_RIGHT">
@@ -204,7 +202,7 @@
                                                       <Button fx:id="add_event_Button" layoutX="491.0" layoutY="4.0" mnemonicParsing="false" onAction="#openAddEventWindow" styleClass="add-button" text="+" />
                                                   </children>
                                               </AnchorPane>
-      
+
                                               <VBox fx:id="eventContainer" spacing="15.0" styleClass="event-box">
                                                   <padding>
                                                       <Insets left="10.0" right="10.0" />
@@ -256,9 +254,9 @@
                   </AnchorPane>
                   <ScrollPane prefHeight="221.0" prefWidth="295.0">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground">
 
-                  </AnchorPane>
+                      </AnchorPane>
                     </content>
                      <VBox.margin>
                         <Insets left="5.0" right="18.0" />
