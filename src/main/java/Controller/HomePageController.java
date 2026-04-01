@@ -1,5 +1,6 @@
 package Controller;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import DBHandling.UserRepository;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class HomePageController {
+    @FXML private ProgressIndicator progressIndicator;
     //all textfields, passwordfields and button in the fxml has been recorded here
     //even if they are not all used
 
@@ -124,21 +127,40 @@ public class HomePageController {
     //when user types in notetoself textfield
     @FXML
     public void noteToSelfBtn() {
+        progressIndicator.setVisible(true);
         String name = mp_UserPageBtn.getText();
         String note = mp_NoteToSelf.getText();
 
         try{
             //change the note in the database
-            if(userRepo.change_notetoself(name,note)){
-               setNoteToSelf();
-            }else{
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("The note was not changed.");
-                alert.showAndWait();
-            }
+            Task<Boolean> task = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return userRepo.change_notetoself(name,note);
+                }
+            };
 
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                if(task.getValue()){
+                    setNoteToSelf();
+                }else{
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("The note was not changed.");
+                    alert.showAndWait();
+                }
+            });
+
+            task.setOnFailed(e -> {
+                e.getSource().getException().printStackTrace();
+                progressIndicator.setVisible(false);
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -147,15 +169,34 @@ public class HomePageController {
     //fetch the note from the database
     public void setNoteToSelf() {
         try{
+            progressIndicator.setVisible(true);
             String name = mp_UserPageBtn.getText();
-            String note = userRepo.fetch_notetoself(name);
 
-            if (Objects.equals(note, null)) {
-                mp_NoteToSelf.clear();
-            }else{
-                mp_NoteToSelf.setText(note);
-            }
+            Task<String> task = new Task<String>() {
+                @Override
+                protected String call() throws Exception {
+                    return userRepo.fetch_notetoself(name);
+                }
+            };
 
+            task.setOnSucceeded(e -> {
+                progressIndicator.setVisible(false);
+                String note = task.getValue();
+                if (Objects.equals(note, null)) {
+                    mp_NoteToSelf.clear();
+                }else{
+                    mp_NoteToSelf.setText(note);
+                }
+            });
+
+            task.setOnFailed(e -> {
+                e.getSource().getException().printStackTrace();
+                progressIndicator.setVisible(false);
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
         }catch(Exception e){
             e.printStackTrace();
         }
