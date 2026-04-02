@@ -110,6 +110,8 @@ public class CalendarController implements Initializable {
             userProfileController.setProgressIndicatorVisible(false);
         });
 
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void clearFields() {
