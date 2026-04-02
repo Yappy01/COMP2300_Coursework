@@ -312,6 +312,7 @@ public class UserProfileController {
             Parent root = loader.load();
 
             CalendarController calendarController = loader.getController();
+            calendarController.setUserProfileController(this);
 
             // Type ID based on selection
             ToggleButton selected = (ToggleButton) visitsTreatments.getSelectedToggle();
