@@ -22,13 +22,20 @@ public class PostService {
         postDatabase.addComment(post.getPostId(), post.getUserId(), content);
     }
 
-    public ArrayList<Comment> getComments(Post post) {
-        try {
-            return postDatabase.getComment(post.getPostId(), 12);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<Comment>();
-        }
+    public void getCommentsAsync(Post post, Consumer<ArrayList<Comment>> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<ArrayList<Comment>> task = new Task<ArrayList<Comment>>() {
+            @Override
+            protected ArrayList<Comment> call() throws Exception {
+                return postDatabase.getComment(post.getPostId(), 12);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            onSucceeded.accept(task.getValue());
+        });
+        task.setOnFailed(e -> {
+            onFailed.accept(task.getException());
+        });
     }
 
     public void getAllPostsAsync(String type, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
