@@ -1,153 +1,318 @@
 package Service;
 
+import DBHandling.UserRepository;
+import Models.User;
+import javafx.application.Platform;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import Models.User;
-import DBHandling.UserRepository;
-import org.junit.jupiter.api.*;
-import org.mockito.MockedStatic;
-
 class UserServiceTest {
 
-    private UserService userService;
-    private MockedStatic<UserRepository> mockedRepo;
+    private UserService service;
+
+    @Mock
+    private UserRepository mockRepo;
+
+    @Mock
+    private User mockUser;
+
+    @BeforeAll
+    static void initJFX() {
+        // Starts the JavaFX Platform
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {
+            // Platform already started
+        }
+    }
 
     @BeforeEach
-    void setUp() {
-        userService = new UserService();
-        mockedRepo = mockStatic(UserRepository.class);
+    void setUp() throws Exception {
+        MockitoAnnotations.openMocks(this);
+
+        service = new UserService();
+
+        // Inject mock repository (reflection)
+        var field = UserService.class.getDeclaredField("userRepository");
+        field.setAccessible(true);
+        field.set(service, mockRepo);
     }
 
-    @AfterEach
-    void tearDown() {
-        mockedRepo.close();
-    }
-
-    // --- 1. UNIT TESTING (HAPPY PATH) ---
+    // =====================================================
+    // 🟩 searchByUsername — Boundary + Partition
+    // =====================================================
 
     @Test
-    @DisplayName("Unit: Should return user when username exists")
-    void testSearchByUsernameFound() {
-        User mockUser = mock(User.class);
-        when(mockUser.getName()).thenReturn("java_expert");
+    void searchByUsername_valid_shouldReturnUser() {
+        when(mockRepo.getUser("john")).thenReturn(mockUser);
 
-        mockedRepo.when(() -> UserRepository.getUser("java_expert"))
-                .thenReturn(mockUser);
-
-        User result = userService.searchByUsername("java_expert");
+        User result = service.searchByUsername("john");
 
         assertNotNull(result);
-        assertEquals("java_expert", result.getName());
     }
 
-    // --- 2. PARTITION TESTING (COMPLETED) ---
-
     @Test
-    @DisplayName("Partition: Username not found")
-    void testSearchByUsernameNotFound() {
-        mockedRepo.when(() -> UserRepository.getUser("non_existent"))
-                .thenReturn(null);
+    void searchByUsername_null_shouldReturnNull() {
+        when(mockRepo.getUser(null)).thenReturn(null);
 
-        User result = userService.searchByUsername("non_existent");
+        User result = service.searchByUsername(null);
 
         assertNull(result);
     }
 
     @Test
-    @DisplayName("Partition: Empty username")
-    void testSearchByEmptyString() {
-        mockedRepo.when(() -> UserRepository.getUser(""))
-                .thenReturn(null);
+    void searchByUsername_empty_shouldReturnNull() {
+        when(mockRepo.getUser("")).thenReturn(null);
 
-        User result = userService.searchByUsername("");
+        assertNull(service.searchByUsername(""));
+    }
 
-        assertNull(result);
-        mockedRepo.verify(() -> UserRepository.getUser(""));
+    // =====================================================
+    // 🟩 getUserName — Boundary
+    // =====================================================
+
+    @Test
+    void getUserName_valid_shouldReturnName() {
+        when(mockRepo.getUserName(1)).thenReturn("John");
+
+        assertEquals("John", service.getUserName(1));
     }
 
     @Test
-    @DisplayName("Partition: Null username")
-    void testSearchByNullKeyword() {
-        mockedRepo.when(() -> UserRepository.getUser(null))
-                .thenReturn(null);
+    void getUserName_invalidId_shouldReturnNull() {
+        when(mockRepo.getUserName(-1)).thenReturn(null);
 
-        assertDoesNotThrow(() -> userService.searchByUsername(null));
+        assertNull(service.getUserName(-1));
+    }
 
-        mockedRepo.verify(() -> UserRepository.getUser(null));
+    // =====================================================
+    // 🟩 secureLoginAsync — Partition + Boundary
+    // =====================================================
+
+    @Test
+    void secureLogin_valid_shouldSucceed() throws InterruptedException {
+        try {
+            when(mockRepo.secureLogin("user", "pass")).thenReturn(true);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.secureLoginAsync("user", "pass",
+                result -> {
+                    assertTrue(result);
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
     }
 
     @Test
-    @DisplayName("Partition: Special characters input")
-    void testSearchBySpecialCharacters() {
-        String input = "admin'--";
+    void secureLogin_invalid_shouldReturnFalse() throws InterruptedException {
+        try {
+            when(mockRepo.secureLogin("user", "wrong")).thenReturn(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        mockedRepo.when(() -> UserRepository.getUser(input))
-                .thenReturn(null);
+        CountDownLatch latch = new CountDownLatch(1);
 
-        User result = userService.searchByUsername(input);
+        service.secureLoginAsync("user", "wrong",
+                result -> {
+                    assertFalse(result);
+                    latch.countDown();
+                },
+                e -> fail());
 
-        assertNull(result);
-        mockedRepo.verify(() -> UserRepository.getUser(input));
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
     }
 
     @Test
-    @DisplayName("Partition: Case sensitivity check")
-    void testSearchByCaseSensitivity() {
-        mockedRepo.when(() -> UserRepository.getUser("Java_Expert"))
-                .thenReturn(null);
+    void secureLogin_nullInput_shouldFail() throws InterruptedException {
+        try {
+            when(mockRepo.secureLogin(null, null))
+                    .thenThrow(new RuntimeException());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        User result = userService.searchByUsername("Java_Expert");
+        CountDownLatch latch = new CountDownLatch(1);
 
-        assertNull(result);
+        service.secureLoginAsync(null, null,
+                r -> fail(),
+                e -> latch.countDown());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // =====================================================
+    // 🟩 change_password — Exception Handling
+    // =====================================================
+
+    @Test
+    void changePassword_valid_shouldReturnTrue() throws Exception {
+        when(mockRepo.change_password("user", "pass")).thenReturn(true);
+
+        assertTrue(service.change_password("user", "pass"));
     }
 
     @Test
-    @DisplayName("Partition: Leading/trailing spaces")
-    void testSearchByWhitespaceInput() {
-        mockedRepo.when(() -> UserRepository.getUser(" java_expert "))
-                .thenReturn(null);
+    void changePassword_sqlException_shouldThrowRuntime() throws Exception {
+        when(mockRepo.change_password(any(), any()))
+                .thenThrow(new SQLException());
 
-        User result = userService.searchByUsername(" java_expert ");
-
-        assertNull(result);
+        assertThrows(RuntimeException.class, () ->
+                service.change_password("user", "pass"));
     }
 
-    // --- 3. LIMIT TESTING (ADDED) ---
+    // =====================================================
+    // 🟩 register_userAsync — Boundary + Partition
+    // =====================================================
 
     @Test
-    @DisplayName("Limit: Very long username input")
-    void testSearchByVeryLongUsername() {
-        String longInput = "a".repeat(10000);
+    void registerUser_valid_shouldSucceed() throws InterruptedException {
+        try {
+            when(mockRepo.register_user(mockUser)).thenReturn(true);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        mockedRepo.when(() -> UserRepository.getUser(longInput))
-                .thenReturn(null);
+        CountDownLatch latch = new CountDownLatch(1);
 
-        User result = userService.searchByUsername(longInput);
+        service.register_userAsync(mockUser,
+                result -> {
+                    assertTrue(result);
+                    latch.countDown();
+                },
+                e -> fail());
 
-        assertNull(result);
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
     }
 
     @Test
-    @DisplayName("Limit: Single character username")
-    void testSearchBySingleCharacter() {
-        mockedRepo.when(() -> UserRepository.getUser("a"))
-                .thenReturn(null);
+    void registerUser_null_shouldFail() throws InterruptedException {
+        try {
+            when(mockRepo.register_user(null))
+                    .thenThrow(new RuntimeException());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        User result = userService.searchByUsername("a");
+        CountDownLatch latch = new CountDownLatch(1);
 
-        assertNull(result);
+        service.register_userAsync(null,
+                r -> fail(),
+                e -> latch.countDown());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
     }
 
-    // --- 4. NEGATIVE / ERROR HANDLING ---
+    // =====================================================
+    // 🟩 checkUserExist / checkEmailExist — Partition
+    // =====================================================
 
     @Test
-    @DisplayName("Error: Database failure handling")
-    void testSearchByUsernameDatabaseError() {
-        mockedRepo.when(() -> UserRepository.getUser(anyString()))
-                .thenThrow(new RuntimeException("Database Connection Failed"));
+    void checkUserExist_valid() {
+        when(mockRepo.checkUserExist("user")).thenReturn(true);
 
-        assertThrows(RuntimeException.class,
-                () -> userService.searchByUsername("anyUser"));
+        assertTrue(service.checkUserExist("user"));
+    }
+
+    @Test
+    void checkEmailExist_invalid() {
+        when(mockRepo.checkEmailExist("bad@email")).thenReturn(false);
+
+        assertFalse(service.checkEmailExist("bad@email"));
+    }
+
+    // =====================================================
+    // 🟩 getUserFullProfileAsync — Limit + Async
+    // =====================================================
+
+    @Test
+    void getUserProfile_largeData_shouldHandle() throws InterruptedException {
+        Map<String, String> profile = new HashMap<>();
+        for (int i = 0; i < 1000; i++) {
+            profile.put("key" + i, "value" + i);
+        }
+
+        when(mockRepo.getUserFullProfile(1)).thenReturn(profile);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.getUserFullProfileAsync(1,
+                result -> {
+                    assertEquals(1000, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // =====================================================
+    // 🟩 change_notetoselfAsync — Boundary
+    // =====================================================
+
+    @Test
+    void changeNote_valid_shouldSucceed() throws InterruptedException {
+        try {
+            when(mockRepo.change_notetoself("user", "note")).thenReturn(true);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.change_notetoselfAsync("user", "note",
+                result -> {
+                    assertTrue(result);
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // =====================================================
+    // 🟩 Async Edge Case
+    // =====================================================
+
+    @Test
+    void nullCallbacks_shouldNotCrash() {
+        try {
+            when(mockRepo.register_user(any())).thenReturn(true);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertDoesNotThrow(() ->
+                service.register_userAsync(mockUser, null, null)
+        );
     }
 }

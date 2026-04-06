@@ -19,13 +19,13 @@ public class General {
     public static <T> void setTask(Task<T> task, Consumer<T> onSucceeded, Consumer<Throwable> onFailed, ExecutorService executor) {
         task.setOnSucceeded(e -> {onSucceeded.accept(task.getValue());});
         task.setOnFailed(e -> {onFailed.accept(task.getException());});
-        executor.submit(task);
+        executor.execute(task);
     }
 
     public static <T> void setTask(Task<T> task, Runnable onSucceeded, Consumer<Throwable> onFailed, ExecutorService executor) {
         task.setOnSucceeded(e -> {onSucceeded.run();});
         task.setOnFailed(e -> {onFailed.accept(task.getException());});
-        executor.submit(task);
+        executor.execute(task);
     }
 
     public static void getInfoAlert(String text) {

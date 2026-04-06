@@ -1,147 +1,314 @@
 package Service;
 
+import DBHandling.StiDatabase;
 import Models.StiEntry;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import static org.junit.jupiter.api.Assertions.*;
+import javafx.application.Platform;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class StiServiceTest {
+
     private StiService service;
-    private List<StiEntry> fakeData;
+
+    @Mock
+    private StiDatabase mockDatabase;
+
+    @Mock
+    private StiEntry entry1;
+
+    @Mock
+    private StiEntry entry2;
+
+    @BeforeAll
+    static void initJFX() {
+        // Starts the JavaFX Platform
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {
+            // Platform already started
+        }
+    }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
+        MockitoAnnotations.openMocks(this);
+
         service = new StiService();
 
-        fakeData = List.of(
-                new StiEntry(1, "HIV", "fever, chills", "...", "...", 5),
-                new StiEntry(2, "HPV", "warts", "...", "...", 3),
-                new StiEntry(3, "Syphilis", "rash, fever", "...", "...", 4)
+        // Inject mock database (reflection)
+        var field = StiService.class.getDeclaredField("stiDatabase");
+        field.setAccessible(true);
+        field.set(service, mockDatabase);
+
+        when(entry1.getName()).thenReturn("HIV");
+        when(entry1.getSymptoms()).thenReturn("Fever cough");
+        when(entry1.getRiskLevel()).thenReturn(3);
+
+        when(entry2.getName()).thenReturn("Chlamydia");
+        when(entry2.getSymptoms()).thenReturn("Pain discharge");
+        when(entry2.getRiskLevel()).thenReturn(1);
+    }
+
+    // =====================================================
+    // 🟩 searchByNameAsync — Boundary + Partition
+    // =====================================================
+
+    @Test
+    void searchByName_validKeyword_shouldFilter() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1, entry2);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByNameAsync(data, "hiv",
+                result -> {
+                    assertEquals(1, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchByName_nullKeyword_shouldReturnAll() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1, entry2);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByNameAsync(data, null,
+                result -> {
+                    assertEquals(2, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchByName_emptyKeyword_shouldReturnAll() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1, entry2);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByNameAsync(data, "",
+                result -> {
+                    assertEquals(2, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchByName_caseInsensitive_shouldWork() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByNameAsync(data, "HIV",
+                result -> {
+                    assertEquals(1, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // =====================================================
+    // 🟩 searchBySymptomsAsync — Boundary + Partition
+    // =====================================================
+
+    @Test
+    void searchBySymptoms_validKeyword_shouldFilter() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1, entry2);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchBySymptomsAsync(data, "fever",
+                result -> {
+                    assertEquals(1, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchBySymptoms_nullKeyword_shouldReturnAll() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchBySymptomsAsync(data, null,
+                result -> {
+                    assertEquals(1, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchBySymptoms_invalidKeyword_shouldReturnEmpty() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchBySymptomsAsync(data, "xyz",
+                result -> {
+                    assertTrue(result.isEmpty());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // ⚠️ BUG TEST
+    @Test
+    void searchBySymptoms_nullSymptoms_shouldThrowException() throws InterruptedException {
+        when(entry1.getSymptoms()).thenReturn(null);
+
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchBySymptomsAsync(data, "fever",
+                r -> fail(),
+                e -> latch.countDown());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // =====================================================
+    // 🟩 searchByRiskLevelAsync — Boundary + Partition
+    // =====================================================
+
+    @Test
+    void searchByRiskLevel_valid_shouldFilter() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1, entry2);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByRiskLevelAsync(data, "3",
+                result -> {
+                    assertEquals(1, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchByRiskLevel_invalidNumber_shouldReturnEmpty() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByRiskLevelAsync(data, "abc",
+                result -> {
+                    assertTrue(result.isEmpty());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchByRiskLevel_nullKeyword_shouldReturnAll() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByRiskLevelAsync(data, null,
+                result -> {
+                    assertEquals(1, result.size());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void searchByRiskLevel_negative_shouldReturnEmpty() throws InterruptedException {
+        List<StiEntry> data = List.of(entry1);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.searchByRiskLevelAsync(data, "-1",
+                result -> {
+                    assertTrue(result.isEmpty());
+                    latch.countDown();
+                },
+                e -> fail());
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
+    }
+
+    // =====================================================
+    // 🟩 getAllAsync — Limit + Async
+    // =====================================================
+
+    @Test
+    void getAllAsync_largeDataset_shouldHandle() throws InterruptedException {
+        ArrayList<StiEntry> bigList = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            bigList.add(mock(StiEntry.class));
+        }
+
+        when(mockDatabase.getAll()).thenReturn(bigList);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.getAllAsync(
+                list -> {
+                    assertEquals(10000, list.size());
+                    latch.countDown();
+                },
+                e -> fail()
         );
-    }
 
-    // --- 1. FUNCTIONAL TESTING ---
-
-    @Test
-    void searchByName_shouldReturnMatch() {
-        List<StiEntry> result = service.searchByName(fakeData, "hiv");
-        assertEquals(1, result.size());
-        assertEquals("HIV", result.get(0).getName());
+        assertTrue(latch.await(3, TimeUnit.SECONDS));
     }
 
     @Test
-    void searchByRiskLevel_shouldReturnCorrectRisk() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "3");
-        assertEquals(1, result.size());
-        assertEquals(3, result.get(0).getRiskLevel());
+    void getAllAsync_dbFailure_shouldTriggerOnFailed() throws InterruptedException {
+        when(mockDatabase.getAll()).thenThrow(new RuntimeException());
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        service.getAllAsync(
+                list -> fail(),
+                e -> latch.countDown()
+        );
+
+        assertTrue(latch.await(2, TimeUnit.SECONDS));
     }
 
-    @Test
-    void searchByRiskLevel_invalidInput_shouldReturnEmptyList() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "abc");
-        assertTrue(result.isEmpty());
-    }
-
-    // --- 2. PARTITION TESTING ---
+    // =====================================================
+    // 🟩 Async Edge Case
+    // =====================================================
 
     @Test
-    @DisplayName("Partition: Null keyword (name search)")
-    void searchByName_nullKeyword_returnsAll() {
-        List<StiEntry> result = service.searchByName(fakeData, null);
-        assertEquals(fakeData.size(), result.size());
-    }
-
-    @Test
-    @DisplayName("Partition: Empty keyword")
-    void searchByName_emptyKeyword_returnsAll() {
-        List<StiEntry> result = service.searchByName(fakeData, "");
-        assertEquals(fakeData.size(), result.size());
-    }
-
-    @Test
-    @DisplayName("Partition: Whitespace keyword")
-    void searchBySymptoms_blankKeyword_returnsAll() {
-        List<StiEntry> result = service.searchBySymptoms(fakeData, "   ");
-        assertEquals(fakeData.size(), result.size());
-    }
-
-    @Test
-    @DisplayName("Partition: Special characters")
-    void searchByName_specialCharacters() {
-        assertDoesNotThrow(() -> service.searchByName(fakeData, "!@#$%^&*()"));
-        List<StiEntry> result = service.searchByName(fakeData, "!!!");
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Partition: Case insensitivity")
-    void searchBySymptoms_caseInsensitive() {
-        List<StiEntry> result = service.searchBySymptoms(fakeData, "FEVER");
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    @DisplayName("Partition: Partial match")
-    void searchByName_partialMatch() {
-        List<StiEntry> result = service.searchByName(fakeData, "syph");
-        assertEquals(1, result.size());
-    }
-
-    // --- 3. LIMIT TESTING ---
-
-    @Test
-    @DisplayName("Limit: Empty dataset")
-    void search_onEmptyList_returnsEmpty() {
-        List<StiEntry> emptyList = new ArrayList<>();
-        List<StiEntry> result = service.searchByName(emptyList, "HIV");
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Limit: No matching results")
-    void searchByRiskLevel_noMatch_returnsEmpty() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "1");
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Limit: Very large keyword input")
-    void searchByName_veryLongInput() {
-        String longInput = "A".repeat(10000);
-        assertDoesNotThrow(() -> service.searchByName(fakeData, longInput));
-    }
-
-    @Test
-    @DisplayName("Limit: Very large numeric input for risk level")
-    void searchByRiskLevel_largeNumber() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "9999999999999999");
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Limit: Minimum valid risk level")
-    void searchByRiskLevel_minBoundary() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "0");
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Limit: Maximum valid risk level in dataset")
-    void searchByRiskLevel_maxBoundary() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, "5");
-        assertEquals(1, result.size());
-    }
-
-    // --- 4. NEGATIVE TESTING ---
-
-    @Test
-    @DisplayName("Negative: Null input for risk level")
-    void searchByRiskLevel_nullInput() {
-        List<StiEntry> result = service.searchByRiskLevel(fakeData, null);
-        assertTrue(result.equals(fakeData));
+    void nullCallbacks_shouldNotCrash() {
+        assertDoesNotThrow(() ->
+                service.getAllAsync(null, null)
+        );
     }
 }
