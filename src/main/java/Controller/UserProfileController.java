@@ -1,8 +1,8 @@
 package Controller;
 
-import DBHandling.UserRepository;
 import Models.UserEvent;
 import Service.EventService;
+import Service.UserService;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,8 +17,6 @@ import utils.Session;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 public class UserProfileController {
@@ -34,7 +32,7 @@ public class UserProfileController {
     @FXML private ProgressIndicator progressIndicator;
 
 
-    private final UserRepository userRepo = new UserRepository();
+    private final UserService userService = new UserService();
     private final EventService eventService = new EventService();
 
     @FXML private Label username_label;
@@ -77,15 +75,7 @@ public class UserProfileController {
 
     public void populateProfileFields() {
         progressIndicator.setVisible(true);
-        Task<Map<String, String>> task = new Task<Map<String, String>>() {
-            @Override
-            protected Map<String, String> call() throws Exception {
-                return userRepo.getUserFullProfile(Session.getInstance().getUserID());
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            Map<String, String> data = task.getValue();
+        userService.getUserFullProfileAsync(Session.getInstance().getUserID(), (data) -> {
             if (!data.isEmpty()) {
                 // Use setText() for each respective field
                 pntextfield.setText(data.getOrDefault("phone", ""));
@@ -96,30 +86,17 @@ public class UserProfileController {
                 piTextfield.setText(data.getOrDefault("injuries", ""));
             }
             progressIndicator.setVisible(false);
-        });
-
-        task.setOnFailed(e -> {
+        }, (error) -> {
             progressIndicator.setVisible(false);
-            e.getSource().getException().printStackTrace();
+            error.printStackTrace();
         });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true); // optional: allows app to exit if this thread is running
-        thread.start();
     }
 
     @FXML
-    public void add_personalInformation(ActionEvent event) throws SQLException, ClassNotFoundException {
+    public void add_personalInformation() throws SQLException, ClassNotFoundException {
         progressIndicator.setVisible(true);
-        Task<Boolean> task = new Task<Boolean>() {
-            @Override
-            protected Boolean call() throws Exception {
-                return userRepo.change_personalInformation(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText());
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            if (task.getValue()){
+        userService.change_personalInformationAsync(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText(), (value) -> {
+            if (value){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);
@@ -133,54 +110,36 @@ public class UserProfileController {
                 alert.showAndWait();
             }
             progressIndicator.setVisible(false);
-        });
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
+        }, (error) -> {
+            error.printStackTrace();
             progressIndicator.setVisible(false);
         });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
     }
 
 
 
     @FXML void add_anamnesis() throws SQLException, ClassNotFoundException {
         progressIndicator.setVisible(true);
-        Task<Boolean> task = new Task<Boolean>() {
-            @Override
-            protected Boolean call() throws Exception {
-                return userRepo.change_anamnesis(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText());
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            if (task.getValue()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Information successfully added.");
-                alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
-            }
-            progressIndicator.setVisible(false);
-        });
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            progressIndicator.setVisible(false);
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
+        userService.change_anamnesisAsync(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText(),
+                (value) -> {
+                    if (value) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Information successfully added.");
+                        alert.showAndWait();
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Information");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Something went wrong");
+                        alert.showAndWait();
+                    }
+                    progressIndicator.setVisible(false);
+                }, (error) -> {
+                    error.printStackTrace();
+                    progressIndicator.setVisible(false);
+                });
     }
 
     //display all events unfiltered in database

@@ -1,6 +1,5 @@
 package Controller;
 
-import DBHandling.UserRepository;
 import Models.Post;
 import Models.User;
 import Service.PostService;
@@ -44,6 +43,7 @@ public class CommunityPageController {
     private List<Post> postsList = new ArrayList<>();
     private ComPageOverlayController comPageOverlayController;
     private final PostService postService = new PostService();
+    private final UserService userService = new UserService();
 
     public StackPane getAddPostPage() {
         return addPostPage;
@@ -185,7 +185,7 @@ public class CommunityPageController {
                 Task<String> task = new Task<String>() {
                     @Override
                     protected String call() throws Exception {
-                        return UserRepository.getUserName(post.getUserId());
+                        return userService.getUserName(post.getUserId());
                     }
                 };
 

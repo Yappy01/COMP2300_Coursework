@@ -1,5 +1,4 @@
 package DBHandling;
-import Models.StiEntry;
 import Models.User; //import the model of user
 import utils.DBConnection; //import the dbconnector
 import java.sql.*;
@@ -167,7 +166,7 @@ public class UserRepository {
         return false;
     }
 
-    public static User getUser(String username) {
+    public User getUser(String username) {
         String query = "SELECT * FROM users WHERE name = ?";
         User user = null;
         try (Connection conn = DBConnection.getConnection();
@@ -190,7 +189,7 @@ public class UserRepository {
         return null;
     }
 
-    public static String getUserName(Integer userId) {
+    public String getUserName(Integer userId) {
         String query = "SELECT name FROM users WHERE \"userId\" = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement count_stmt = conn.prepareStatement(query)) {

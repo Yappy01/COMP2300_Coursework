@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import DBHandling.UserRepository;
 import utils.Session;
 import utils.UIConstant;
 
@@ -63,9 +62,6 @@ public class LRFController {
     @FXML private Button si_loginBtn;
 
     private final UserService userService = new UserService();
-
-
-    private final UserRepository userRepo = new UserRepository();
     private Alert alert;
 
     @FXML private void initialize() {
@@ -126,17 +122,10 @@ public class LRFController {
             String username = this.si_username.getText().trim();
             String password = this.si_password.getText().trim();
 
-            Task<Boolean> task = new Task<>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.secureLogin(username, password);
-                }
-            };
-
-            task.setOnSucceeded(e -> {
+            userService.secureLoginAsync(username, password, (value) -> {
                 progressIndicator.setVisible(false);
                 try{
-                    if (task.getValue()){
+                    if (value){
                         //alert for login
                         alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Information Message");
@@ -152,9 +141,6 @@ public class LRFController {
                         // Create loader pointing to HomePage FXML file
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/homepage.fxml"));
                         Parent root = loader.load();
-
-                        //GET the controller from the loader
-                        HomePageController controller = loader.getController();
 
                         //new Scene for HomePage
                         Scene scene = new Scene(root,UIConstant.main_width,UIConstant.main_height);
@@ -174,16 +160,10 @@ public class LRFController {
                 }catch(Exception e1) {
                     e1.printStackTrace();
                 }
-            });
-
-            task.setOnFailed(e -> {
+            }, (error) -> {
                 progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
+                error.printStackTrace();
             });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
         }
     }
 
@@ -213,7 +193,7 @@ public class LRFController {
             alert.showAndWait();
 
             //check if username is unique
-        }else if (userRepo.checkUserExist(su_username.getText())) {
+        }else if (userService.checkUserExist(su_username.getText())) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
@@ -221,7 +201,7 @@ public class LRFController {
             alert.showAndWait();
 
             //check if email is unique(email should be unique)
-        }else if(userRepo.checkEmailExist(su_email.getText())){
+        }else if(userService.checkEmailExist(su_email.getText())){
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
@@ -248,18 +228,9 @@ public class LRFController {
 
                     User user = new User(username,password,email,answer);
 
-                    Task<Boolean> task = new Task<Boolean>() {
-                        @Override
-                        protected Boolean call() throws Exception {
-                            return userRepo.register_user(user);
-                        }
-                    };
-
-
-                    //successful registration alert
-                    task.setOnSucceeded(e -> {
+                    userService.register_userAsync(user, (value) -> {
                         try {
-                            if(task.getValue()){
+                            if(value){
                                 alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Information Message");
                                 alert.setHeaderText(null);
@@ -286,18 +257,12 @@ public class LRFController {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-                    });
-
-                    task.setOnFailed(e -> {
+                    }, (error) -> {
                         progressIndicator.setVisible(false);
-                        e.getSource().getException().printStackTrace();
+                        error.printStackTrace();
                     });
-
-                    Thread thread = new Thread(task);
-                    thread.setDaemon(true); // optional: allows app to exit if this thread is running
-                    thread.start();
                 }
-            }catch(Exception e){}
+            }catch(Exception e){e.printStackTrace();}
         }
     }
 
@@ -321,18 +286,9 @@ public class LRFController {
             String email = this.fp_email.getText();
             String answer = this.fp_answer.getText();
 
-            //search for user
-            //if found user
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.check_user(username, email, answer);
-                }
-            };
-
-            task.setOnSucceeded(e -> {
+            userService.check_userAsync(username, email, answer, (value) -> {
                 progressIndicator.setVisible(false);
-                if (task.getValue()) {
+                if (value) {
                     np_newPassForm.setVisible(true);// new password form visible
                     fp_questionForm.setVisible(false); //forgot password form removed
                 }else{
@@ -343,16 +299,10 @@ public class LRFController {
                     alert.setContentText("Incorrect Information");
                     alert.showAndWait();
                 }
-            });
-
-            task.setOnFailed(e -> {
+            }, (error) -> {
                 progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
+                error.printStackTrace();
             });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
         }
     }
 
@@ -365,7 +315,6 @@ public class LRFController {
 
         fp_username.clear();
         fp_email.clear();
-
     }
 
     //change password form
@@ -381,47 +330,44 @@ public class LRFController {
         }else{
             //check if both textfields have the same contents
             if (np_newPassword.getText().equals(np_confirmPassword.getText())) {
-                try{
-                    String password = this.np_newPassword.getText();
-                    String username= this.fp_username.getText();
 
-                    //check if the length is less than 8
-                    if (password.length()<8){
+                String password = this.np_newPassword.getText();
+                String username= this.fp_username.getText();
+
+                //check if the length is less than 8
+                if (password.length()<8){
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Invalid Password, at least 8 characters are needed");
+                    alert.showAndWait();
+
+                }else{
+                    //alert that password have been reset
+                    if(userService.change_password(username, password)){
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully changed Password!");
+                        alert.showAndWait();
+
+                        si_loginForm.setVisible(true);
+                        np_newPassForm.setVisible(false);
+
+                        // TO CLEAR FIELDS
+                        np_confirmPassword.setText("");
+                        np_newPassword.setText("");
+                        fp_email.setText("");
+                        fp_username.setText("");
+
+                    }else{
+                        //password hasn't been reset
                         alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Message");
                         alert.setHeaderText(null);
-                        alert.setContentText("Invalid Password, at least 8 characters are needed");
+                        alert.setContentText("Passwords do not match");
                         alert.showAndWait();
-
-                    }else{
-                        //alert that password have been reset
-                        if(userRepo.change_password(username, password)){
-                            alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Information Message");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Successfully changed Password!");
-                            alert.showAndWait();
-
-                            si_loginForm.setVisible(true);
-                            np_newPassForm.setVisible(false);
-
-                            // TO CLEAR FIELDS
-                            np_confirmPassword.setText("");
-                            np_newPassword.setText("");
-                            fp_email.setText("");
-                            fp_username.setText("");
-
-                        }else{
-                            //password hasn't been reset
-                            alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Error Message");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Passwords do not match");
-                            alert.showAndWait();
-                        }
                     }
-                }catch(SQLException|ClassNotFoundException e){
-                    e.printStackTrace();
                 }
             }else{
                 alert = new Alert(Alert.AlertType.ERROR);

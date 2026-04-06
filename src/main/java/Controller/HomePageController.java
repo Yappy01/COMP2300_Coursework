@@ -1,6 +1,6 @@
 package Controller;
 
-import javafx.concurrent.Task;
+import Service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-import DBHandling.UserRepository;
 import javafx.stage.Stage;
 import utils.Session;
 
@@ -35,7 +34,7 @@ public class HomePageController {
 
     @FXML private TextField mp_NoteToSelf;
 
-    private final UserRepository userRepo = new UserRepository();
+    private final UserService userService = new UserService();
     private Alert alert;
 
     @FXML private StackPane homePagePane;
@@ -131,75 +130,39 @@ public class HomePageController {
         String name = mp_UserPageBtn.getText();
         String note = mp_NoteToSelf.getText();
 
-        try{
-            //change the note in the database
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_notetoself(name,note);
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                if(task.getValue()){
-                    setNoteToSelf();
-                }else{
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("The note was not changed.");
-                    alert.showAndWait();
-                }
-            });
-
-            task.setOnFailed(e -> {
-                e.getSource().getException().printStackTrace();
-                progressIndicator.setVisible(false);
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            thread.start();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        userService.change_notetoselfAsync(name,note, (value) -> {
+            progressIndicator.setVisible(false);
+            if(value){
+                setNoteToSelf();
+            }else{
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("The note was not changed.");
+                alert.showAndWait();
+            }
+        }, (error) -> {
+            error.printStackTrace();
+            progressIndicator.setVisible(false);
+        });
     }
 
     //fetch the note from the database
     public void setNoteToSelf() {
-        try{
-            progressIndicator.setVisible(true);
-            String name = mp_UserPageBtn.getText();
+        progressIndicator.setVisible(true);
+        String name = mp_UserPageBtn.getText();
 
-            Task<String> task = new Task<String>() {
-                @Override
-                protected String call() throws Exception {
-                    return userRepo.fetch_notetoself(name);
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                String note = task.getValue();
-                if (Objects.equals(note, null)) {
-                    mp_NoteToSelf.clear();
-                }else{
-                    mp_NoteToSelf.setText(note);
-                }
-            });
-
-            task.setOnFailed(e -> {
-                e.getSource().getException().printStackTrace();
-                progressIndicator.setVisible(false);
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            thread.start();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        userService.fetch_notetoselfAsync(name, (note) -> {
+            progressIndicator.setVisible(false);
+            if (Objects.equals(note, null)) {
+                mp_NoteToSelf.clear();
+            }else{
+                mp_NoteToSelf.setText(note);
+            }
+        }, (error) -> {
+            error.printStackTrace();
+            progressIndicator.setVisible(false);
+        });
     }
 
     @FXML
