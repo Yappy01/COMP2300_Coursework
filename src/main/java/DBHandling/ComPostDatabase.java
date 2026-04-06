@@ -30,10 +30,11 @@ public class ComPostDatabase {
             if (rs.next()) {
                 post.setPostId(rs.getInt(1));
             }
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // 2️⃣ Read (By ID)

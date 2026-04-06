@@ -1,8 +1,6 @@
 package Controller;
 
-import DBHandling.EventDatabase;
 import Service.EventService;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
