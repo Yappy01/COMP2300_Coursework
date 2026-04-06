@@ -2,9 +2,7 @@ package Service;
 
 import DBHandling.UserRepository;
 import Models.User;
-import com.sun.source.util.TaskListener;
 import javafx.concurrent.Task;
-import net.bytebuddy.implementation.bytecode.Throw;
 import utils.General;
 
 import java.sql.SQLException;

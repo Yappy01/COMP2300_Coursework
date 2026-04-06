@@ -3,6 +3,7 @@ package Service;
 import DBHandling.StiDatabase;
 import Models.StiEntry;
 import javafx.concurrent.Task;
+import utils.General;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +27,7 @@ public class StiService {
                         .collect(Collectors.toCollection(ArrayList::new));
             }
         };
-        task.setOnSucceeded(e -> {
-            onSucceeded.accept(task.getValue());
-        });
-        task.setOnFailed(e -> {
-            onFailed.accept(task.getException());
-        });
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void searchBySymptomsAsync(List<StiEntry> data, String keyword, Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -46,13 +41,7 @@ public class StiService {
                         .collect(Collectors.toCollection(ArrayList::new));
             }
         };
-        task.setOnSucceeded(e -> {
-            onSucceeded.accept(task.getValue());
-        });
-        task.setOnFailed(e -> {
-            onFailed.accept(task.getException());
-        });
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void searchByRiskLevelAsync(List<StiEntry> data, String keyword, Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -72,13 +61,7 @@ public class StiService {
                 }
             }
         };
-        task.setOnSucceeded(e -> {
-            onSucceeded.accept(task.getValue());
-        });
-        task.setOnFailed(e -> {
-            onFailed.accept(task.getException());
-        });
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void getAllAsync(Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed){
@@ -88,12 +71,6 @@ public class StiService {
                 return stiDatabase.getAll();
             }
         };
-        task.setOnSucceeded(e -> {
-            onSucceeded.accept(task.getValue());
-        });
-        task.setOnFailed(e -> {
-            onFailed.accept(task.getException());
-        });
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 }

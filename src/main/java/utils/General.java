@@ -20,4 +20,10 @@ public class General {
         task.setOnFailed(e -> {onFailed.accept(task.getException());});
         executor.submit(task);
     }
+
+    public static <T> void setTask(Task<T> task, Runnable onSucceeded, Consumer<Throwable> onFailed, ExecutorService executor) {
+        task.setOnSucceeded(e -> {onSucceeded.run();});
+        task.setOnFailed(e -> {onFailed.accept(task.getException());});
+        executor.submit(task);
+    }
 }

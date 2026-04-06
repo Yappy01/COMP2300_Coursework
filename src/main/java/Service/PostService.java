@@ -4,6 +4,7 @@ import DBHandling.ComPostDatabase;
 import Models.Comment;
 import Models.Post;
 import javafx.concurrent.Task;
+import utils.General;
 import utils.Session;
 
 import java.util.ArrayList;
@@ -34,14 +35,7 @@ public class PostService {
             }
         };
 
-        task.setOnSucceeded(e -> {
-            onSucceeded.accept(task.getValue());
-        });
-        task.setOnFailed(e -> {
-            onFailed.accept(task.getException());
-        });
-
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void getAllPostsAsync(String type, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -51,10 +45,7 @@ public class PostService {
                 return postDatabase.getCard(12, type);
             }
         };
-
-        task.setOnSucceeded(e -> onSucceeded.accept(task.getValue()));
-        task.setOnFailed(e -> onFailed.accept(task.getException()));
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void insertPostAsync(Post post, Runnable onSucceeded, Consumer<Throwable> onFailed) {
@@ -65,8 +56,6 @@ public class PostService {
             }
         };
 
-        task.setOnSucceeded(e -> onSucceeded.run());
-        task.setOnFailed(e -> onFailed.accept(task.getException()));
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 }

@@ -3,6 +3,7 @@ package Service;
 import DBHandling.EventDatabase;
 import Models.UserEvent;
 import javafx.concurrent.Task;
+import utils.General;
 import utils.Session;
 
 import java.sql.Timestamp;
@@ -26,10 +27,7 @@ public class EventService {
             }
         };
 
-        task.setOnSucceeded(e -> onSucceeded.run());
-        task.setOnFailed(e -> onFailed.accept(task.getException()));
-
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
 
@@ -42,9 +40,7 @@ public class EventService {
             }
         };
 
-        task.setOnSucceeded(e -> onSucceeded.run());
-        task.setOnFailed(e -> onFailed.accept(task.getException()));
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void getAllEventsAsync(Consumer<List<UserEvent>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -54,10 +50,7 @@ public class EventService {
                 return database.getAllEvents();
             }
         };
-
-        task.setOnSucceeded(e -> onSucceeded.accept(task.getValue()));
-        task.setOnFailed(e -> onFailed.accept(task.getException()));
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void getFilteredEventsAsync(int userId, int typeId, String timeMode, Consumer<List<UserEvent>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -68,8 +61,6 @@ public class EventService {
             }
         };
 
-        task.setOnSucceeded(e -> onSucceeded.accept(task.getValue()));
-        task.setOnFailed(e -> onFailed.accept(task.getException()));
-        executor.submit(task);
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 }
