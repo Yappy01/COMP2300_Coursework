@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import utils.General;
 import utils.Session;
 
 import java.net.URL;
@@ -85,11 +86,7 @@ public class CalendarController implements Initializable {
                     userProfileController.setProgressIndicatorVisible(false);
                     clearFields();
                     System.out.println("Event Saved Successfully!");
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Event Saved!");
-                    alert.showAndWait();
+                    General.getInfoAlert("Event Saved!");
                 },
                 (error) -> {
                     userProfileController.setProgressIndicatorVisible(false);

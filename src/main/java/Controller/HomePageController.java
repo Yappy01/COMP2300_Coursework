@@ -7,12 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import utils.General;
 import utils.Session;
 
 import java.io.IOException;
@@ -35,7 +35,6 @@ public class HomePageController {
     @FXML private TextField mp_NoteToSelf;
 
     private final UserService userService = new UserService();
-    private Alert alert;
 
     @FXML private StackPane homePagePane;
 
@@ -80,12 +79,7 @@ public class HomePageController {
     //access to quiz Page, not yet made
     @FXML
     public void quizBtn() {
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("The quiz page will be displayed.");
-        alert.showAndWait();
-
+        General.getInfoAlert("The quiz page will be displayed.");
     }
 
     //access to community page
@@ -106,21 +100,13 @@ public class HomePageController {
     //access to today's fact, not yet connected
     @FXML
     public void todayFactBtn() {
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("The today fact in information page will be displayed.");
-        alert.showAndWait();
+        General.getInfoAlert("The today fact in information page will be displayed.");
     }
 
     //access to today's quiz, not yet made
     @FXML
     public void todayQuizBtn() {
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("The today quiz page will be displayed.");
-        alert.showAndWait();
+        General.getInfoAlert("The today quiz page will be displayed.");
     }
 
     //when user types in notetoself textfield
@@ -135,11 +121,7 @@ public class HomePageController {
             if(value){
                 setNoteToSelf();
             }else{
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("The note was not changed.");
-                alert.showAndWait();
+                General.getInfoAlert("The note was not changed.");
             }
         }, (error) -> {
             error.printStackTrace();

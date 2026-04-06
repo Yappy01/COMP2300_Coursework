@@ -38,7 +38,6 @@ public class OverlayBController {
     @FXML
     private Button uploadButton;
 
-    private String imageLink = "";
     private final PostService postService = new PostService();
 
     public void setParentController(CommunityPageController parentController) {

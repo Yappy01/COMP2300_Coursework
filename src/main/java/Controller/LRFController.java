@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utils.General;
 import utils.Session;
 import utils.UIConstant;
 
@@ -62,7 +63,6 @@ public class LRFController {
     @FXML private Button si_loginBtn;
 
     private final UserService userService = new UserService();
-    private Alert alert;
 
     @FXML private void initialize() {
         progressIndicator.setVisible(false);
@@ -84,11 +84,7 @@ public class LRFController {
         su_question.setOnShowing(event -> {
             su_answer.setEditable(true);
 
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Remember this question.\nIt will be asked to change your password");
-            alert.showAndWait();
+            General.getInfoAlert("Remember this question.\nIt will be asked to change your password");
 
             su_answer.requestFocus();
         });
@@ -96,12 +92,7 @@ public class LRFController {
 
         fp_question.setOnShowing(event -> {
             fp_answer.setEditable(true);
-
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Select the question selected during registration");
-            alert.showAndWait();
+            General.getInfoAlert("Select the question selected during registration");
 
             fp_answer.requestFocus();
         });
@@ -112,12 +103,7 @@ public class LRFController {
         progressIndicator.setVisible(true);
         //if any of the textfields are empty
         if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill all blank fields");
-            alert.showAndWait();
-
+            General.getErrorAlert("Please fill all blank fields");
         } else {
             String username = this.si_username.getText().trim();
             String password = this.si_password.getText().trim();
@@ -127,13 +113,8 @@ public class LRFController {
                 try{
                     if (value){
                         //alert for login
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Successfully Login!");
-                        alert.showAndWait();
-
-                        alert.setContentText("Login Successful");
+                        General.getInfoAlert("Successfully Login!");
+                        General.getInfoAlert("Login Successful");
 
                         //call init, assign_usertag and setNoteToSelf
                         Session.startSession(userService.searchByUsername(si_username.getText()));
@@ -151,11 +132,7 @@ public class LRFController {
                         stage.show();
                     }else{
                         //Incorrect credentials alert
-                        alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Incorrect Username/Password");
-                        alert.showAndWait();
+                        General.getErrorAlert("Incorrect Username/Password");
                     }
                 }catch(Exception e1) {
                     e1.printStackTrace();
@@ -186,27 +163,15 @@ public class LRFController {
         if (su_username.getText().isEmpty() || su_password.getText().isEmpty()
                 || su_email.getText().isEmpty()||su_answer.getText().isEmpty()
                 || su_question.getSelectionModel().getSelectedItem() == null) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill all blank fields");
-            alert.showAndWait();
+            General.getErrorAlert("Please fill all blank fields");
 
             //check if username is unique
         }else if (userService.checkUserExist(su_username.getText())) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("username already exist. Please choose another username");
-            alert.showAndWait();
+            General.getErrorAlert("username already exist. Please choose another username");
 
             //check if email is unique(email should be unique)
-        }else if(userService.checkEmailExist(su_email.getText())){
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("email already exist. Please login using this email");
-            alert.showAndWait();
+        }else if(userService.checkEmailExist(su_email.getText())) {
+            General.getErrorAlert("email already exist. Please login using this email");
 
         }else{
             try{
@@ -217,11 +182,7 @@ public class LRFController {
 
                 //too short password alert
                 if(password.length()<8){
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Invalid Password, at least 8 characters are needed");
-                    alert.showAndWait();
+                    General.getErrorAlert("Invalid Password, at least 8 characters are needed");
 
                 }else{
                     progressIndicator.setVisible(true);
@@ -231,12 +192,7 @@ public class LRFController {
                     userService.register_userAsync(user, (value) -> {
                         try {
                             if(value){
-                                alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Information Message");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Successfully registered Account!");
-                                alert.showAndWait();
-
+                                General.getInfoAlert("Successfully registered Account!");
                                 su_username.clear();
                                 su_password.clear();
                                 su_email.clear();
@@ -274,12 +230,7 @@ public class LRFController {
         if (fp_username.getText().isEmpty() || fp_email.getText().isEmpty()
         || fp_question.getSelectionModel().getSelectedItem() == null || fp_answer.getText().isEmpty()) {
 
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill all blank fields");
-            alert.showAndWait();
-
+            General.getErrorAlert("Please fill all blank fields");
         }else{
             //if username and email textfield are both filled
             String username = this.fp_username.getText();
@@ -293,11 +244,7 @@ public class LRFController {
                     fp_questionForm.setVisible(false); //forgot password form removed
                 }else{
                     //if user is not found
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Incorrect Information");
-                    alert.showAndWait();
+                    General.getErrorAlert("Incorrect Information");
                 }
             }, (error) -> {
                 progressIndicator.setVisible(false);
@@ -322,11 +269,7 @@ public class LRFController {
     public void changePassBtn(){
         //if textfields are empty
         if (np_newPassword.getText().isEmpty() || np_confirmPassword.getText().isEmpty()) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill all blank fields");
-            alert.showAndWait();
+            General.getErrorAlert("Please fill all blank fields");
         }else{
             //check if both textfields have the same contents
             if (np_newPassword.getText().equals(np_confirmPassword.getText())) {
@@ -336,20 +279,12 @@ public class LRFController {
 
                 //check if the length is less than 8
                 if (password.length()<8){
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Invalid Password, at least 8 characters are needed");
-                    alert.showAndWait();
+                    General.getErrorAlert("Invalid Password, at least 8 characters are needed");
 
                 }else{
                     //alert that password have been reset
                     if(userService.change_password(username, password)){
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Successfully changed Password!");
-                        alert.showAndWait();
+                        General.getInfoAlert("Successfully changed Password!");
 
                         si_loginForm.setVisible(true);
                         np_newPassForm.setVisible(false);
@@ -362,19 +297,12 @@ public class LRFController {
 
                     }else{
                         //password hasn't been reset
-                        alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Passwords do not match");
-                        alert.showAndWait();
+                        General.getErrorAlert("Passwords do not match");
+
                     }
                 }
             }else{
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Passwords do not match");
-                alert.showAndWait();
+                General.getErrorAlert("Passwords do not match");
             }
         }
     }

@@ -3,7 +3,6 @@ package Controller;
 import Models.UserEvent;
 import Service.EventService;
 import Service.UserService;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import utils.General;
 import utils.Session;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class UserProfileController {
 
@@ -97,17 +96,9 @@ public class UserProfileController {
         progressIndicator.setVisible(true);
         userService.change_personalInformationAsync(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText(), (value) -> {
             if (value){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Information successfully added.");
-                alert.showAndWait();
+                General.getInfoAlert("Information successfully added.");
             }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Information");
-                alert.setHeaderText(null);
-                alert.setContentText("Something went wrong");
-                alert.showAndWait();
+                General.getErrorAlert("Something went wrong");
             }
             progressIndicator.setVisible(false);
         }, (error) -> {
@@ -122,18 +113,10 @@ public class UserProfileController {
         progressIndicator.setVisible(true);
         userService.change_anamnesisAsync(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText(),
                 (value) -> {
-                    if (value) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Information successfully added.");
-                        alert.showAndWait();
+                    if (value){
+                        General.getInfoAlert("Information successfully added.");
                     }else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Information");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Something went wrong");
-                        alert.showAndWait();
+                        General.getErrorAlert("Something went wrong");
                     }
                     progressIndicator.setVisible(false);
                 }, (error) -> {

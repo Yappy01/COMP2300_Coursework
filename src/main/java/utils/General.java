@@ -1,6 +1,7 @@
 package utils;
 
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
 
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
@@ -25,5 +26,21 @@ public class General {
         task.setOnSucceeded(e -> {onSucceeded.run();});
         task.setOnFailed(e -> {onFailed.accept(task.getException());});
         executor.submit(task);
+    }
+
+    public static void getInfoAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    public static void getErrorAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Message");
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 }

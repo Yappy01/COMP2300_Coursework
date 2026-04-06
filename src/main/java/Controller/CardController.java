@@ -41,6 +41,7 @@ public class CardController {
     private ComPageOverlayController comPageOverlayController;
 
     private Post post;
+    private final PostService postService = new PostService();
 
     public void setParentController(CommunityPageController parentController) {
         this.parentController = parentController;
@@ -75,7 +76,7 @@ public class CardController {
 
     // This button likes the post directly
     public void likeClicked() {
-        PostService.likePost(post);
+        postService.likePost(post);
     }
 
     // This button allows user to directly comment without looking at other people's comment.
