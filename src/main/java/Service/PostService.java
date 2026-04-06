@@ -7,10 +7,14 @@ import javafx.concurrent.Task;
 import utils.Session;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 public class PostService {
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
     private final ComPostDatabase postDatabase = new ComPostDatabase();
+
     public void likePost(Post post) {
         postDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
     }
@@ -36,6 +40,8 @@ public class PostService {
         task.setOnFailed(e -> {
             onFailed.accept(task.getException());
         });
+
+        executor.submit(task);
     }
 
     public void getAllPostsAsync(String type, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -48,6 +54,7 @@ public class PostService {
 
         task.setOnSucceeded(e -> onSucceeded.accept(task.getValue()));
         task.setOnFailed(e -> onFailed.accept(task.getException()));
+        executor.submit(task);
     }
 
     public void insertPostAsync(Post post, Runnable onSucceeded, Consumer<Throwable> onFailed) {
@@ -60,5 +67,6 @@ public class PostService {
 
         task.setOnSucceeded(e -> onSucceeded.run());
         task.setOnFailed(e -> onFailed.accept(task.getException()));
+        executor.submit(task);
     }
 }

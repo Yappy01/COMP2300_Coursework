@@ -6,11 +6,15 @@ import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class StiService {
-    StiDatabase stiDatabase = new StiDatabase();
+    private final StiDatabase stiDatabase = new StiDatabase();
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+
     public void searchByNameAsync(List<StiEntry> data, String keyword, Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed) {
         Task<ArrayList<StiEntry>> task = new Task<ArrayList<StiEntry>>() {
             @Override
@@ -28,7 +32,7 @@ public class StiService {
         task.setOnFailed(e -> {
             onFailed.accept(task.getException());
         });
-
+        executor.submit(task);
     }
 
     public void searchBySymptomsAsync(List<StiEntry> data, String keyword, Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -48,6 +52,7 @@ public class StiService {
         task.setOnFailed(e -> {
             onFailed.accept(task.getException());
         });
+        executor.submit(task);
     }
 
     public void searchByRiskLevelAsync(List<StiEntry> data, String keyword, Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -73,6 +78,7 @@ public class StiService {
         task.setOnFailed(e -> {
             onFailed.accept(task.getException());
         });
+        executor.submit(task);
     }
 
     public void getAllAsync(Consumer<ArrayList<StiEntry>> onSucceeded, Consumer<Throwable> onFailed){
@@ -88,6 +94,6 @@ public class StiService {
         task.setOnFailed(e -> {
             onFailed.accept(task.getException());
         });
-
+        executor.submit(task);
     }
 }

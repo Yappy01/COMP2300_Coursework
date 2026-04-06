@@ -44,6 +44,7 @@ public class EventService {
 
         task.setOnSucceeded(e -> onSucceeded.run());
         task.setOnFailed(e -> onFailed.accept(task.getException()));
+        executor.submit(task);
     }
 
     public void getAllEventsAsync(Consumer<List<UserEvent>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -56,6 +57,7 @@ public class EventService {
 
         task.setOnSucceeded(e -> onSucceeded.accept(task.getValue()));
         task.setOnFailed(e -> onFailed.accept(task.getException()));
+        executor.submit(task);
     }
 
     public void getFilteredEventsAsync(int userId, int typeId, String timeMode, Consumer<List<UserEvent>> onSucceeded, Consumer<Throwable> onFailed) {
@@ -68,5 +70,6 @@ public class EventService {
 
         task.setOnSucceeded(e -> onSucceeded.accept(task.getValue()));
         task.setOnFailed(e -> onFailed.accept(task.getException()));
+        executor.submit(task);
     }
 }
