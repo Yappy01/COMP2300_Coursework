@@ -3,6 +3,7 @@ package Controller;
 import DBHandling.EventDatabase;
 import Models.User;
 import Service.EventService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,20 +67,19 @@ public class CalendarController implements Initializable {
             return;
         }
 
-        try {
-            userProfileController.setProgressIndicatorVisible(true);
-            //Time converted to 24hr format
-            int hour = Integer.parseInt(hourBox.getValue());
-            int minute = Integer.parseInt(minuteBox.getValue());
-            boolean isPM = pmRadio.isSelected();
+        userProfileController.setProgressIndicatorVisible(true);
+        //Time converted to 24hr format
+        int hour = Integer.parseInt(hourBox.getValue());
+        int minute = Integer.parseInt(minuteBox.getValue());
+        boolean isPM = pmRadio.isSelected();
 
-            if (isPM && hour < 12) hour += 12;
-            else if (!isPM && hour == 12) hour = 0;
+        if (isPM && hour < 12) hour += 12;
+        else if (!isPM && hour == 12) hour = 0;
 
-            //Create LocalDateTime then convert to SQL Timestamp
-            LocalDateTime ldt = LocalDateTime.of(date, LocalTime.of(hour, minute));
-            Timestamp sqlTimestamp = Timestamp.valueOf(ldt);
-            System.out.println(ldt);
+        //Create LocalDateTime then convert to SQL Timestamp
+        LocalDateTime ldt = LocalDateTime.of(date, LocalTime.of(hour, minute));
+        Timestamp sqlTimestamp = Timestamp.valueOf(ldt);
+        System.out.println(ldt);
 
             // Save to database
             eventService.saveEventAsync(
@@ -104,10 +104,6 @@ public class CalendarController implements Initializable {
             );
 
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void clearFields() {

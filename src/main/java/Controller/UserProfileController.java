@@ -108,291 +108,80 @@ public class UserProfileController {
         thread.start();
     }
 
-    //add phone number to database
-    @FXML void addPhoneNumber(ActionEvent event) throws SQLException, ClassNotFoundException {
+    @FXML
+    public void add_personalInformation(ActionEvent event) throws SQLException, ClassNotFoundException {
         progressIndicator.setVisible(true);
-        if (pntextfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter phone number.");
-            alert.showAndWait();
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return userRepo.change_personalInformation(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText());
+            }
+        };
 
-        }else{
-            System.out.println();
-            progressIndicator.setVisible(true);
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_phonenumber(Session.getInstance().getUserID(), pntextfield.getText());
-                }
-            };
+        task.setOnSucceeded(e -> {
+            if (task.getValue()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("Information successfully added.");
+                alert.showAndWait();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("Something went wrong");
+                alert.showAndWait();
+            }
+            progressIndicator.setVisible(false);
+        });
 
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                if(task.getValue()){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Phone number was updated.");
-                    alert.showAndWait();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Something went wrong");
-                    alert.showAndWait();
-                }
-            });
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+            progressIndicator.setVisible(false);
+        });
 
-            task.setOnFailed(e -> {
-                progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
-        }
-    }
-
-    //add date of birth to database
-    @FXML public void addDateOfBirth(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (dateOfBirthField.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter allergy name.");
-            alert.showAndWait();
-
-        }else{
-            progressIndicator.setVisible(true);
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_date_of_birth(Session.getInstance().getUserID(), dateOfBirthField.getText());
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                if(task.getValue()){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Date of Birth was updated.");
-                    alert.showAndWait();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Date of Birth was not updated.");
-                    alert.showAndWait();
-                }
-            });
-
-            task.setOnFailed(e -> {
-                progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
-        }
-    }
-
-    //add allergy to database
-    @FXML
-    public void add_allergy() throws SQLException, ClassNotFoundException {
-        if (allergies_textfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter allergy name.");
-            alert.showAndWait();
-
-        }else{
-            progressIndicator.setVisible(true);
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_allergies(Session.getInstance().getUserID(), allergies_textfield.getText());
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                if(task.getValue()){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Allergy stored.");
-                    alert.showAndWait();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Something went wrong");
-                    alert.showAndWait();
-                }
-            });
-
-            task.setOnFailed(e -> {
-                progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
-        }
-
-    }
-
-    //add chronic diseases in the database
-    @FXML
-    public void addchronicdisease(ActionEvent event ) throws SQLException, ClassNotFoundException {
-        if (chronicdiseaseTextfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter chronic disease.");
-            alert.showAndWait();
-
-        }else{
-            progressIndicator.setVisible(true);
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_cd(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText());
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                if(task.getValue()){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Chronic Disease list was updated.");
-                    alert.showAndWait();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Something went wrong");
-                    alert.showAndWait();
-                }
-            });
-
-            task.setOnFailed(e -> {
-                progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
-        }
-
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
 
-    //add blood type to database
-    @FXML
-    public void addbt(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (btTextefield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter your blood type.");
-            alert.showAndWait();
 
-        }else{
-            progressIndicator.setVisible(true);
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_blood_type(Session.getInstance().getUserID(), chronicdiseaseTextfield.getText());
-                }
-            };
+    @FXML void add_anamnesis() throws SQLException, ClassNotFoundException {
+        progressIndicator.setVisible(true);
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return userRepo.change_anamnesis(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText());
+            }
+        };
 
-            task.setOnSucceeded(e -> {
-                progressIndicator.setVisible(false);
-                if(task.getValue()){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Blood Type was updated.");
-                    alert.showAndWait();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Something went wrong");
-                    alert.showAndWait();
-                }
-            });
+        task.setOnSucceeded(e -> {
+            if (task.getValue()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("Information successfully added.");
+                alert.showAndWait();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText("Something went wrong");
+                alert.showAndWait();
+            }
+            progressIndicator.setVisible(false);
+        });
 
-            task.setOnFailed(e -> {
-                progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
-            });
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+            progressIndicator.setVisible(false);
+        });
 
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
-        }
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
-
-    //add past in database
-    @FXML
-    public void addpiField() throws SQLException, ClassNotFoundException {
-        if (piTextfield.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter pass injuries and illnesses.");
-            alert.showAndWait();
-
-        }else{
-            progressIndicator.setVisible(true);
-            Task<Boolean> task = new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    return userRepo.change_injuries_illness(Session.getInstance().getUserID(),chronicdiseaseTextfield.getText());
-                }
-            };
-
-            task.setOnSucceeded(e -> {
-                if(task.getValue()){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Illness and Injuries was not updated.");
-                    alert.showAndWait();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Information");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Something went wrong");
-                    alert.showAndWait();
-                }
-                progressIndicator.setVisible(false);
-            });
-
-            task.setOnFailed(e -> {
-                progressIndicator.setVisible(false);
-                e.getSource().getException().printStackTrace();
-            });
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true); // optional: allows app to exit if this thread is running
-            thread.start();
-        }
-    }
-
 
     //display all events unfiltered in database
     public void displayEventsFromDatabase() {
@@ -498,6 +287,7 @@ public class UserProfileController {
             Parent root = loader.load();
 
             CalendarController calendarController = loader.getController();
+            calendarController.setUserProfileController(this);
 
             // Type ID based on selection
             ToggleButton selected = (ToggleButton) visitsTreatments.getSelectedToggle();

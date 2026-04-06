@@ -2,6 +2,7 @@ package DBHandling;
 
 import Models.UserEvent;
 import utils.DBConnection;
+import utils.Session;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -24,25 +25,25 @@ public class EventDatabase {
 
             pstmt.executeUpdate();
             System.out.println("Event successfully recorded!");
+            return true;
 
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
-            return false;
         }
-        return true;
+        return false;
     }
 
 
 
     public List<UserEvent> getAllEvents() {
         List<UserEvent> userEventList = new ArrayList<>();
-        String query = "SELECT date_time, name, description FROM events WHERE fk_userid = ? AND fk_typeid = ?";
+        String query = "SELECT date_time, name, description FROM events WHERE fk_userid = ? AND fk_typeid = ? ORDER BY date_time ASC ";
 
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, 15);
+            stmt.setInt(1, Session.getInstance().getUserID());
             stmt.setInt(2, 1);
 
 
