@@ -48,7 +48,8 @@ public class InformationPageController {
     @FXML
     private TextField filterField;
     @FXML
-    private HBox commonTopBar;
+    private Parent commonTopBar;
+    @FXML
     private CommonTopBarController commonTopBarController;
     private ObservableList<StiEntry> masterData;
     private ArrayList<StiEntry> stis;
@@ -56,13 +57,6 @@ public class InformationPageController {
 
     @FXML
     public void initialize() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/commonTopBar.fxml"));
-            loader.load();
-            commonTopBarController = (CommonTopBarController) loader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         commonTopBarController.setUp("Information Page", Session.getInstance().getUserName());
 
         progressIndicator.setVisible(true);
@@ -86,7 +80,11 @@ public class InformationPageController {
             stis = allStis;
             masterData = FXCollections.observableArrayList(stis);
             stiContentTable.setItems(masterData);
-            stiContentTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            for (TableColumn<?, ?> col : stiContentTable.getColumns()) {
+                col.setResizable(false);
+                col.setReorderable(false);
+                col.setSortable(false);
+            }
             searchButton.setOnAction(e1 -> {
                 switch (searchMode) {
                     case "name" -> searchName();
