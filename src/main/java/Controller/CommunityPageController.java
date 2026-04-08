@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -37,7 +38,8 @@ public class CommunityPageController {
     private ProgressIndicator loadingSpinner;
 
     @FXML
-    private HBox commonTopBar;
+    private Parent commonTopBar;
+    @FXML
     private CommonTopBarController commonTopBarController;
 
     private List<Post> postsList = new ArrayList<>();
@@ -55,26 +57,11 @@ public class CommunityPageController {
 
     @FXML
     public void initialize() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/commonTopBar.fxml"));
-            loader.load();
-            commonTopBarController = (CommonTopBarController) loader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         commonTopBarController.setUp("Community Page", Session.getInstance().getUserName());
 
         OverlayBController overlayBController = null;
         loadingSpinner.setVisible(false);
         loadingSpinner.setProgress(-1);
-
-        //Remember to remove this after
-        if (!Session.isLoggedIn()){
-            UserService service = new UserService();
-            User user = service.searchByUsername("Yappy");
-            Session.startSession(user);
-        }
-        //This is just testing example user session
 
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
