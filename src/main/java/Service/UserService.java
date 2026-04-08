@@ -19,8 +19,14 @@ public class UserService {
         return userRepository.getUser(keyword);
     }
 
-    public String getUserName(Integer userId) {
-        return userRepository.getUserName(userId);
+    public void getUserName(Integer userId, Consumer<String> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return userRepository.getUserName(userId);
+            }
+        };
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void change_notetoselfAsync(String username, String note, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {

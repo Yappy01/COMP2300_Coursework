@@ -147,7 +147,7 @@ public class CommunityPageController {
 
                     postsList = allPost;
                     loadCards(); // UI update
-                    loadingSpinner.setVisible(false);
+//                    loadingSpinner.setVisible(false);
                 },
                 (error) -> {
                     error.printStackTrace();
@@ -169,37 +169,21 @@ public class CommunityPageController {
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
                 String tsString = sdf.format(post.getCreatedAt());
 
-                Task<String> task = new Task<String>() {
-                    @Override
-                    protected String call() throws Exception {
-                        return userService.getUserName(post.getUserId());
-                    }
-                };
-
-                task.setOnSucceeded(e -> {
-                    String name = task.getValue();
+                userService.getUserName(post.getUserId(), (name) -> {
                     controller.setComPageOverlayController(comPageOverlayController);
                     controller.setPost(postsList.get(index));
                     controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+                    cardTiles.getChildren().add(card);
 
                     if (index == postsList.size()) {
                         loadingSpinner.setVisible(false);
                     }
-                });
-
-                task.setOnFailed(e -> {
-                    task.getException().printStackTrace();
-
+                }, (error) -> {
+                    error.printStackTrace();
                     if (index == postsList.size()) {
                         loadingSpinner.setVisible(false);
                     }
                 });
-
-                Thread thread = new Thread(task);
-                thread.setDaemon(true); // optional: allows app to exit if this thread is running
-                thread.start();
-
-                cardTiles.getChildren().add(card);
             } catch (IOException e) {
                 e.printStackTrace();
             }
