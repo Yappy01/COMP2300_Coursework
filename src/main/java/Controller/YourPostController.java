@@ -44,7 +44,7 @@ public class YourPostController implements PostParent{
     }
 
     public void onAddButtonClick() {
-        communityPageController.onAddButtonClick();
+        setOverlayBVisibility(true);
     }
 
     public void setProgressIndicatorVisibility(Boolean value) {
@@ -96,7 +96,7 @@ public class YourPostController implements PostParent{
     }
 
     public void initialize(){
-        commonTopBarController.setUp("Community Page", Session.getInstance().getUserName());
+        commonTopBarController.setUp("Your Post Page", Session.getInstance().getUserName());
         System.out.println("yourPostController initialize");
         progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
@@ -136,12 +136,9 @@ public class YourPostController implements PostParent{
                 controller.setParentController(this);
                 Post post = postsList.get(i);
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-                String tsString = sdf.format(post.getCreatedAt());
-
                 controller.setComPageOverlayController(comPageOverlayController);
                 controller.setPost(postsList.get(index));
-                controller.setData(Session.getInstance().getUserName(), post.getContent(), tsString, post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+                controller.setData(Session.getInstance().getUserName(), post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());
                 cardTiles.getChildren().add(card);
 
                 if (index == postsList.size()) {

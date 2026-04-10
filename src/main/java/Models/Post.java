@@ -11,10 +11,11 @@ public class Post {
     private String imageLink;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private String publicId;
 
     // Constructor (full)
     public Post(int postId, int userId, String content, int likeCount,
-                String imageLink, Timestamp createdAt, Timestamp updatedAt, int commentCount) {
+                String imageLink, Timestamp createdAt, Timestamp updatedAt, int commentCount, String publicId) {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
@@ -23,13 +24,15 @@ public class Post {
         this.imageLink = imageLink;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.publicId = publicId;
     }
 
     // Constructor (for new post)
-    public Post(int userId, String content, String imageLink) {
+    public Post(int userId, String content, String imageLink, String publicId) {
         this.userId = userId;
         this.content = content;
         this.imageLink = imageLink;
+        this.publicId = publicId;
         this.likeCount = 0;
         this.commentCount = 0;
         this.createdAt = new Timestamp(System.currentTimeMillis());
@@ -99,5 +102,13 @@ public class Post {
 
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 }

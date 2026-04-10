@@ -117,7 +117,7 @@
                 </VBox>
             </left>
             <center>
-                <StackPane styleClass="community-content-area" BorderPane.alignment="CENTER">
+                <StackPane styleClass="community-content-area" fx:id="addPostPage" BorderPane.alignment="CENTER">
                     <children>
                         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="382.0" prefWidth="764.0" style="-fx-border-color: transparent; -fx-border-width: 0;">
                             <content>

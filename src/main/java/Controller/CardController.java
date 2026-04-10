@@ -1,7 +1,9 @@
 package Controller;
 
 import Models.Post;
+import Models.User;
 import Service.PostService;
+import Service.UserService;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,8 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import utils.General;
+import utils.Session;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 
 public class CardController {
@@ -39,12 +44,17 @@ public class CardController {
     @FXML
     private ButtonBar buttonBar;
     @FXML
+    private Button editButton;
+    @FXML
+    private Button deleteButton;
+    @FXML
     private PostParent parentController;
 
     private ComPageOverlayController comPageOverlayController;
 
     private Post post;
     private final PostService postService = new PostService();
+    private final UserService userService = new UserService();
 
     public void setParentController(PostParent parentController) {
         this.parentController = parentController;
@@ -55,10 +65,15 @@ public class CardController {
     }
 
     // Use this to set the data and contain of each card.
-    public void setData(String name, String content, String date, Integer likeCount, Integer commentCount, String filePath) {
+    public void setData(String name, String content, Timestamp date, Integer likeCount, Integer commentCount, String filePath) {
+        parentController.setProgressIndicatorVisibility(true);
         this.nameLabel.setText(name);
         this.contentLabel.setText(content);
-        this.dateLabel.setText(date);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+        String tsString = sdf.format(post.getCreatedAt());
+
+        this.dateLabel.setText(tsString);
         this.likeNumLabel.setText(General.formatLikes(likeCount));
         this.commentNumLabel.setText(General.formatLikes(commentCount));
 
@@ -72,6 +87,30 @@ public class CardController {
             contentImage.setVisible(true);
             contentImage.setManaged(true);
         }
+        postService.searchPostAsync(Session.getInstance().getUserID(), content, date, likeCount, commentCount, filePath,
+                (postList) -> {
+                    System.out.println(postList.size());
+                    parentController.setProgressIndicatorVisibility(true);
+                    deleteButton.setOnAction(e -> {
+                        parentController.setProgressIndicatorVisibility(true);
+                        postService.deletePostAsync(postList.get(0), (value) -> {
+                            if (value) {
+                                System.out.println("Successfully deleted");
+                            }
+                            parentController.setProgressIndicatorVisibility(false);
+                            parentController.reloadCards();
+
+                        }, (error) -> {
+                            error.printStackTrace();
+                            parentController.setProgressIndicatorVisibility(false);
+                        });
+                    });
+                    parentController.setProgressIndicatorVisibility(false);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    parentController.setProgressIndicatorVisibility(false);
+                });
     }
 
     // View the entire content of the card / Bringing a small box up.
@@ -92,17 +131,4 @@ public class CardController {
     public void setComPageOverlayController(ComPageOverlayController comPageOverlayController) {
         this.comPageOverlayController = comPageOverlayController;
     }
-
-//    @FXML
-//    private void initialize() {
-//        // This detects if the data contains an image to showcase allowing it to change between text and image.
-//        if (contentImage.getImage() == null) {
-//            contentImage.setVisible(false);
-//            contentImage.setManaged(false);
-//        } else  {
-//            System.out.println("visible");
-//            contentImage.setVisible(true);
-//            contentImage.setManaged(true);
-//        }
-//    }
 }

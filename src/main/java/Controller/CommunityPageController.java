@@ -176,13 +176,10 @@ public class CommunityPageController implements PostParent {
                 controller.setParentController(this);
                 Post post = postsList.get(i);
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-                String tsString = sdf.format(post.getCreatedAt());
-
                 userService.getUserName(post.getUserId(), (name) -> {
                     controller.setComPageOverlayController(comPageOverlayController);
                     controller.setPost(postsList.get(index));
-                    controller.setData(name, post.getContent(), tsString, post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+                    controller.setData(name, post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());
                     cardTiles.getChildren().add(card);
 
                     if (index == postsList.size()) {

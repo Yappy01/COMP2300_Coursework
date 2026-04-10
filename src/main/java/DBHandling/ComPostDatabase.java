@@ -210,7 +210,7 @@ public class ComPostDatabase {
     }
 
     // 7️⃣ Delete Post
-    public void delete(int id) {
+    public Boolean delete(int id) {
         String sql = "DELETE FROM posts WHERE postId=?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -218,10 +218,46 @@ public class ComPostDatabase {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ArrayList<Post> searchPosts(
+            Integer userId,
+            String content,
+            Timestamp date,
+            Integer likeCount,
+            Integer commentCount,
+            String filePath
+    ) {
+        ArrayList<Post> results = new ArrayList<>();
+
+        String sql = "SELECT * FROM posts WHERE userid = ? AND content = ? AND createdat = ? AND imagelink = ? AND commentCount = ? AND likeCount = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, content);
+            pstmt.setTimestamp(3, date);
+            pstmt.setString(4, filePath);
+            pstmt.setInt(5, commentCount);
+            pstmt.setInt(6, likeCount);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                results.add(extractPost(rs)); // assumes you already implemented this
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return results;
     }
 
     // 8️⃣ Like Post (Increment)
@@ -303,7 +339,8 @@ public class ComPostDatabase {
                 rs.getString("imageLink"),
                 rs.getTimestamp("createdAt"),
                 rs.getTimestamp("updatedAt"),
-                rs.getInt("commentCount")
+                rs.getInt("commentCount"),
+                rs.getString("postId")
         );
     }
 }

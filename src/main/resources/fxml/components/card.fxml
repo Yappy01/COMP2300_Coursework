@@ -43,8 +43,8 @@
                      <bottom>
                         <ButtonBar fx:id="buttonBar" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <buttons>
-                            <Button mnemonicParsing="false" text="edit" />
-                              <Button mnemonicParsing="false" text="delete" />
+                            <Button fx:id="editButton" mnemonicParsing="false" text="edit" />
+                              <Button fx:id="deleteButton" mnemonicParsing="false" text="delete" />
                           </buttons>
                         </ButtonBar>
                      </bottom>

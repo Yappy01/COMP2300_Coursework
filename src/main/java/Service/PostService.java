@@ -6,14 +6,19 @@ import Models.Post;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import javafx.concurrent.Task;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
+import net.bytebuddy.implementation.bytecode.Throw;
 import utils.DBConnection;
 import utils.General;
 import utils.Session;
 
+import javax.swing.text.TableView;
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -73,9 +78,53 @@ public class PostService {
                     Map uploadResult = cloudinary.uploader().upload(selectedFile, ObjectUtils.emptyMap());
 
                     String imageUrl = (String) uploadResult.get("secure_url");
+                    String publicId = (String) uploadResult.get("public_id");
                     post.setImageLink(imageUrl); // 🔥 store URL, not file path
+                    post.setPublicId(publicId);
                 }
                 return postDatabase.insertPost(post);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void deletePostAsync(Post post, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                if (!post.getPublicId().isEmpty()) {
+                    Map result = cloudinary.uploader().destroy(post.getPublicId(), ObjectUtils.emptyMap());
+                    System.out.println(result);
+                }
+                return postDatabase.delete(post.getPostId());
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void searchPostAsync(
+            Integer userId,
+            String content,
+            Timestamp date,
+            Integer likeCount,
+            Integer commentCount,
+            String filePath,
+            Consumer<ArrayList<Post>> onSucceeded,
+            Consumer<Throwable> onFailed
+    ) {
+        Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
+            @Override
+            protected ArrayList<Post> call() throws Exception {
+                return postDatabase.searchPosts(
+                        userId,
+                        content,
+                        date,
+                        likeCount,
+                        commentCount,
+                        filePath
+                );
             }
         };
 

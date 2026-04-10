@@ -97,7 +97,6 @@ public class OverlayBController {
     @FXML
     public void insertPost() {
         User user = Session.getInstance().getUser();
-        String imageLink = "";
 
         if (selectedFile != null) {
             uploadButton.setVisible(true);
@@ -106,22 +105,23 @@ public class OverlayBController {
         // Create post with optional image path
         if (postText.getText().isEmpty() && selectedFile == null) {
             General.getErrorAlert("Cannot upload empty post");
+            return ;
         }
-        Post post = new Post(user.getUserId(), postText.getText(), "");
+        Post post = new Post(user.getUserId(), postText.getText(), "", "");
         postService.insertPostAsync(post, selectedFile,
             () -> {
-            parentController.setProgressIndicatorVisibility(false);
+                parentController.setProgressIndicatorVisibility(false);
+                parentController.reloadCards();
             },
             (error) -> {
-            parentController.setProgressIndicatorVisibility(false);
-            error.printStackTrace();
+                parentController.setProgressIndicatorVisibility(false);
+                error.printStackTrace();
             });
 
         // Clear temporary file reference after posting
         postText.clear();
         selectedFile = null;
         imageArea.getChildren().clear();
-        parentController.reloadCards();
         clickExitButton();
     }
 
