@@ -55,6 +55,16 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
+    public void getPostByUserAsync(Integer userId, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
+            @Override
+            protected ArrayList<Post> call() throws Exception {
+                return postDatabase.getPostsByUser(userId);
+            }
+        };
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
     public void insertPostAsync(Post post, File selectedFile, Runnable onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task<Boolean>() {
             @Override

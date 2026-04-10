@@ -24,14 +24,14 @@ public class ComPageOverlayController {
     @FXML
     private ImageView imageArea;
     @FXML
-    private CommunityPageController parentController;
+    private PostParent parentController;
     @FXML
     private VBox commentBox;
 
     private Post post;
     private final PostService postService = new PostService();
 
-    public void setParentController(CommunityPageController parentController) {
+    public void setParentController(PostParent parentController) {
         this.parentController = parentController;
     }
 

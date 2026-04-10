@@ -36,14 +36,14 @@ public class CardController {
     @FXML
     private ImageView contentImage;
     @FXML
-    private CommunityPageController parentController;
+    private PostParent parentController;
 
     private ComPageOverlayController comPageOverlayController;
 
     private Post post;
     private final PostService postService = new PostService();
 
-    public void setParentController(CommunityPageController parentController) {
+    public void setParentController(PostParent parentController) {
         this.parentController = parentController;
     }
 

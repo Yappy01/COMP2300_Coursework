@@ -25,7 +25,7 @@ import java.util.UUID;
 
 public class OverlayBController {
     @FXML
-    private CommunityPageController parentController;
+    private PostParent parentController;
 
     @FXML
     private TextArea postText;
@@ -41,7 +41,7 @@ public class OverlayBController {
 
     private final PostService postService = new PostService();
 
-    public void setParentController(CommunityPageController parentController) {
+    public void setParentController(PostParent parentController) {
         this.parentController = parentController;
     }
 

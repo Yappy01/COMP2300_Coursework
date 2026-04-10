@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityPageController {
+public class CommunityPageController implements PostParent {
     @FXML
     private TilePane cardTiles;
 
