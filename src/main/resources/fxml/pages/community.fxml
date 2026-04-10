@@ -140,7 +140,7 @@
                 </StackPane>
             </center>
         </BorderPane>
-      <ProgressIndicator fx:id="loadingSpinner" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
+      <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
 <!--        <fx:include fx:id="overlayB" source="../components/comPostOverlay2.fxml" />-->
 <!--        <fx:include fx:id="overlayA" source="../components/comPostOverlay.fxml" />-->
     </children>
