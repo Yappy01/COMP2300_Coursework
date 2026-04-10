@@ -32,7 +32,7 @@ public class CommunityPageController implements PostParent {
     private StackPane addPostPage;
 
     @FXML
-    private ProgressIndicator loadingSpinner;
+    private ProgressIndicator progressIndicator;
 
     @FXML
     private Parent commonTopBar;
@@ -49,8 +49,8 @@ public class CommunityPageController implements PostParent {
         return addPostPage;
     }
 
-    public void setLoadingSpinnerVisibility(Boolean value) {
-        loadingSpinner.setVisible(value);
+    public void setProgressIndicatorVisibility(Boolean value) {
+        progressIndicator.setVisible(value);
     }
 
     @FXML
@@ -58,8 +58,8 @@ public class CommunityPageController implements PostParent {
         commonTopBarController.setUp("Community Page", Session.getInstance().getUserName());
 
         OverlayBController overlayBController = null;
-        loadingSpinner.setVisible(false);
-        loadingSpinner.setProgress(-1);
+        progressIndicator.setVisible(false);
+        progressIndicator.setProgress(-1);
 
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
@@ -98,7 +98,7 @@ public class CommunityPageController implements PostParent {
 
     @FXML
     public void filterRecent() {
-        loadingSpinner.setVisible(true);
+        progressIndicator.setVisible(true);
         type = "recent";
         postService.getAllPostsAsync("recent",
                 (allPost) -> {
@@ -107,17 +107,17 @@ public class CommunityPageController implements PostParent {
 
                     postsList = allPost;
                     loadCards(); // UI update
-                    loadingSpinner.setVisible(false);
+                    progressIndicator.setVisible(false);
                 },
                 (error) -> {
                     error.printStackTrace();
-                    loadingSpinner.setVisible(false);
+                    progressIndicator.setVisible(false);
                 });
     }
 
     @FXML
     public void filterLikeCount() {
-        loadingSpinner.setVisible(true);
+        progressIndicator.setVisible(true);
         type = "likes";
 
         postService.getAllPostsAsync("likes",
@@ -127,17 +127,17 @@ public class CommunityPageController implements PostParent {
 
                     postsList = allPost;
                     loadCards(); // UI update
-                    loadingSpinner.setVisible(false);
+                    progressIndicator.setVisible(false);
                 },
                 (error) -> {
                     error.printStackTrace();
-                    loadingSpinner.setVisible(false);
+                    progressIndicator.setVisible(false);
                 });
     }
 
     @FXML
     public void filterCommentCount() {
-        loadingSpinner.setVisible(true);
+        progressIndicator.setVisible(true);
         type = "comments";
 
         postService.getAllPostsAsync("comments",
@@ -147,11 +147,11 @@ public class CommunityPageController implements PostParent {
 
                     postsList = allPost;
                     loadCards(); // UI update
-//                    loadingSpinner.setVisible(false);
+//                    progressIndicator.setVisible(false);
                 },
                 (error) -> {
                     error.printStackTrace();
-                    loadingSpinner.setVisible(false);
+                    progressIndicator.setVisible(false);
                 });
     }
 
@@ -186,12 +186,12 @@ public class CommunityPageController implements PostParent {
                     cardTiles.getChildren().add(card);
 
                     if (index == postsList.size()) {
-                        loadingSpinner.setVisible(false);
+                        progressIndicator.setVisible(false);
                     }
                 }, (error) -> {
                     error.printStackTrace();
                     if (index == postsList.size()) {
-                        loadingSpinner.setVisible(false);
+                        progressIndicator.setVisible(false);
                     }
                 });
             } catch (IOException e) {

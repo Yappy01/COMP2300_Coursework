@@ -1,6 +1,11 @@
 package Controller;
 
+import javafx.scene.layout.StackPane;
+
 public interface PostParent {
-    public void setOverlayVisibility(Boolean visibility);
-    public void setOverlayBVisibility(Boolean visibility);
+    void setOverlayVisibility(Boolean visibility);
+    void setOverlayBVisibility(Boolean visibility);
+    void setProgressIndicatorVisibility(Boolean visibility);
+    StackPane getAddPostPage();
+    void reloadCards();
 }

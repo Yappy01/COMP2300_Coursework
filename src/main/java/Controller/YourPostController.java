@@ -1,6 +1,7 @@
 package Controller;
 
 import Models.Post;
+import Service.PostService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,7 @@ public class YourPostController implements PostParent{
     private CommonTopBarController commonTopBarController;
     private ComPageOverlayController comPageOverlayController;
     private List<Post> postsList = new ArrayList<>();
+    private final PostService postService = new PostService();
     private final CommunityPageController communityPageController = new CommunityPageController();
 
     public void goToHomepage(ActionEvent event) throws IOException {
@@ -43,6 +45,36 @@ public class YourPostController implements PostParent{
 
     public void onAddButtonClick() {
         communityPageController.onAddButtonClick();
+    }
+
+    public void setProgressIndicatorVisibility(Boolean value) {
+        progressIndicator.setVisible(value);
+    }
+
+    public StackPane getAddPostPage() {
+        return addPostPage;
+    }
+
+    public void reloadCards() {
+        getPosts();
+    }
+
+    public void getPosts() {
+        progressIndicator.setVisible(true);
+
+        postService.getPostByUserAsync(Session.getInstance().getUserID(),
+                (allPost) -> {
+                    postsList.clear();
+                    cardTiles.getChildren().clear();
+
+                    postsList = allPost;
+                    loadCards(); // UI update
+                    progressIndicator.setVisible(false);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    progressIndicator.setVisible(false);
+                });
     }
 
     @FXML
@@ -89,6 +121,8 @@ public class YourPostController implements PostParent{
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+
+        reloadCards();
     }
 
     public void loadCards() {

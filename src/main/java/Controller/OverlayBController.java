@@ -110,10 +110,10 @@ public class OverlayBController {
         Post post = new Post(user.getUserId(), postText.getText(), "");
         postService.insertPostAsync(post, selectedFile,
             () -> {
-            parentController.setLoadingSpinnerVisibility(false);
+            parentController.setProgressIndicatorVisibility(false);
             },
             (error) -> {
-            parentController.setLoadingSpinnerVisibility(false);
+            parentController.setProgressIndicatorVisibility(false);
             error.printStackTrace();
             });
 

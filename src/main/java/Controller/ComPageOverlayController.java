@@ -65,7 +65,7 @@ public class ComPageOverlayController {
     }
 
     public void setCommentSection() {
-        parentController.setLoadingSpinnerVisibility(true);
+        parentController.setProgressIndicatorVisibility(true);
         postService.getCommentsAsync(post, (comments) -> {
             for (int i = 0; i < comments.size(); i++) {
                 comments.get(i);
@@ -80,10 +80,10 @@ public class ComPageOverlayController {
                     e.printStackTrace();
                 }
             }
-            parentController.setLoadingSpinnerVisibility(false);
+            parentController.setProgressIndicatorVisibility(false);
         }, (error) -> {
             error.printStackTrace();
-            parentController.setLoadingSpinnerVisibility(false);
+            parentController.setProgressIndicatorVisibility(false);
         });
     }
 }

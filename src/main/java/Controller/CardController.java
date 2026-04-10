@@ -5,6 +5,7 @@ import Service.PostService;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,6 +37,8 @@ public class CardController {
     @FXML
     private ImageView contentImage;
     @FXML
+    private ButtonBar buttonBar;
+    @FXML
     private PostParent parentController;
 
     private ComPageOverlayController comPageOverlayController;
@@ -59,6 +62,9 @@ public class CardController {
         this.likeNumLabel.setText(General.formatLikes(likeCount));
         this.commentNumLabel.setText(General.formatLikes(commentCount));
 
+        if (parentController instanceof CommunityPageController) {
+            buttonBar.setVisible(false);
+        }
         if (!filePath.equals("")) {
             System.out.println(filePath);
             Image image = new Image(filePath);
