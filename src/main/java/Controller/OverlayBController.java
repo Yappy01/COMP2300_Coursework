@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import utils.General;
 import utils.Session;
 
 import java.io.File;
@@ -103,6 +104,9 @@ public class OverlayBController {
         }
 
         // Create post with optional image path
+        if (postText.getText().isEmpty() && selectedFile == null) {
+            General.getErrorAlert("Cannot upload empty post");
+        }
         Post post = new Post(user.getUserId(), postText.getText(), "");
         postService.insertPostAsync(post, selectedFile,
             () -> {
