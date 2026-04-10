@@ -96,38 +96,15 @@ public class OverlayBController {
     @FXML
     public void insertPost() {
         User user = Session.getInstance().getUser();
-        String savedPath = null;
+        String imageLink = "";
 
         if (selectedFile != null) {
-            try {
-                // Create uploads folder if it doesn't exist
-                Path uploadsDir = Paths.get("uploads/images");
-                if (!Files.exists(uploadsDir)) {
-                    Files.createDirectories(uploadsDir);
-                }
-
-                // Generate a unique filename
-                String extension = selectedFile.getName()
-                        .substring(selectedFile.getName().lastIndexOf("."));
-                String uniqueName = UUID.randomUUID().toString() + extension;
-
-                Path destination = uploadsDir.resolve(uniqueName);
-
-                // Copy file now
-                Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
-                savedPath = destination.toString();
-
-                System.out.println("File saved to: " + savedPath);
-                uploadButton.setVisible(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Failed to save the file.");
-            }
+            uploadButton.setVisible(true);
         }
 
         // Create post with optional image path
-        Post post = new Post(user.getUserId(), postText.getText(), savedPath);
-        postService.insertPostAsync(post,
+        Post post = new Post(user.getUserId(), postText.getText(), "");
+        postService.insertPostAsync(post, selectedFile,
             () -> {
             parentController.setLoadingSpinnerVisibility(false);
             },

@@ -146,38 +146,6 @@ public class ComPostDatabase {
         return list;
     }
 
-    public ArrayList<Post> getRecentLiked(int userId, int limit) {
-        ArrayList<Post> list = new ArrayList<>();
-
-        // We JOIN posts and post_likes where the IDs match,
-        // then filter by the specific User ID.
-        String sql = "SELECT p.* FROM posts p " +
-                "JOIN post_likes pl ON p.id = pl.postid " +
-                "WHERE pl.userid = ? " +
-                "ORDER BY p.createdAt DESC LIMIT ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            // 1. Set the User ID to filter the likes
-            stmt.setInt(1, userId);
-            // 2. Set the Limit
-            stmt.setInt(2, limit);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    list.add(extractPost(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-
     // 4️⃣ Filter by User
     public ArrayList<Post> getPostsByUser(int userId) {
         ArrayList<Post> list = new ArrayList<>();

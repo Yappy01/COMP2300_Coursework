@@ -58,8 +58,10 @@ public class CardController {
         this.dateLabel.setText(date);
         this.likeNumLabel.setText(General.formatLikes(likeCount));
         this.commentNumLabel.setText(General.formatLikes(commentCount));
+
         if (!filePath.equals("")) {
-            Image image = new Image(new File(filePath).toURI().toString());
+            System.out.println(filePath);
+            Image image = new Image(filePath);
             this.contentImage.setImage(image);
             contentImage.setVisible(true);
             contentImage.setManaged(true);
