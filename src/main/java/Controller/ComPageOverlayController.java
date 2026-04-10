@@ -52,6 +52,7 @@ public class ComPageOverlayController {
     public void clickExitButton() {
         parentController.setOverlayVisibility(false);
         commentBox.getChildren().clear();
+        imageArea.setImage(null);
     }
 
     public void likeClicked() {
