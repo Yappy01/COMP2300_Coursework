@@ -7,12 +7,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="cardBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #6C4535; -fx-background-radius: 30;" stylesheets="@../../css/card.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CardController">
+<VBox fx:id="cardBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #6C4535; -fx-background-radius: 30;" stylesheets="@../../css/card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CardController">
    <children>
       <VBox fx:id="cardBoxContent" onMouseClicked="#cardClicked" prefHeight="200.0" prefWidth="250.0" spacing="5.0" styleClass="community-card-content">
          <children>
@@ -25,16 +24,16 @@
                   </Group>
                </graphic>
             </Label>
-            <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <HBox>
                <children>
                   <Label fx:id="contentLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="community-card-text" text="Insert Text or Image Here" wrapText="true" />
-                  <ImageView fx:id="contentImage" fitHeight="94.0" fitWidth="213.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="contentImage" fitHeight="94.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                      <viewport>
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
                </children>
-            </StackPane>
+            </HBox>
          </children>
          <VBox.margin>
             <Insets left="8.0" right="8.0" top="12.0" />
