@@ -43,6 +43,7 @@ public class CommunityPageController {
     private ComPageOverlayController comPageOverlayController;
     private final PostService postService = new PostService();
     private final UserService userService = new UserService();
+    private String type;
 
     public StackPane getAddPostPage() {
         return addPostPage;
@@ -98,7 +99,7 @@ public class CommunityPageController {
     @FXML
     public void filterRecent() {
         loadingSpinner.setVisible(true);
-
+        type = "recent";
         postService.getAllPostsAsync("recent",
                 (allPost) -> {
                     postsList.clear();
@@ -117,6 +118,7 @@ public class CommunityPageController {
     @FXML
     public void filterLikeCount() {
         loadingSpinner.setVisible(true);
+        type = "likes";
 
         postService.getAllPostsAsync("likes",
                 (allPost) -> {
@@ -136,6 +138,7 @@ public class CommunityPageController {
     @FXML
     public void filterCommentCount() {
         loadingSpinner.setVisible(true);
+        type = "comments";
 
         postService.getAllPostsAsync("comments",
                 (allPost) -> {
@@ -150,6 +153,16 @@ public class CommunityPageController {
                     error.printStackTrace();
                     loadingSpinner.setVisible(false);
                 });
+    }
+
+    public void reloadCards() {
+        if (type.equals("likes")) {
+            filterLikeCount();
+        } else if (type.equals("recent")) {
+            filterRecent();
+        } else if (type.equals("comments")) {
+            filterCommentCount();
+        }
     }
 
     public void loadCards() {

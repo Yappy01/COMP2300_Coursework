@@ -117,6 +117,7 @@ public class OverlayBController {
         postText.clear();
         selectedFile = null;
         imageArea.getChildren().clear();
+        parentController.reloadCards();
         clickExitButton();
     }
 
