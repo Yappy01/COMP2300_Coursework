@@ -58,18 +58,27 @@ public class UserProfileController {
     }
 
     @FXML
-    private void goToHomepage(ActionEvent event) throws IOException {
+    public void goToHomepage(ActionEvent event) throws IOException {
         HomePageController.goToHomepage(event);
     }
 
-
-    @FXML //go to the personal information toggle page
-    public void gotoPIPage(ActionEvent event) {
-        initialize();
+    @FXML
+    public void goToYourPost(ActionEvent event) throws IOException {
+        YourPostController.goToYourPost(event);
     }
 
-    @FXML //go to the post page toggle page, not completed
-    public void postSearch(ActionEvent event) {
+    @FXML //go to the personal information toggle page
+    public static void gotoPIPage(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                HomePageController.class.getResource("/fxml/pages/UserProfile.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     public void populateProfileFields() {

@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommunityPageController">
+<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.YourPostController">
     <children>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css">
             <top>
@@ -39,7 +39,7 @@
                         </Button>
                         <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                             <children>
-                                <ToggleButton fx:id="informationPageButton" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
+                                <ToggleButton fx:id="informationPageButton" onAction="#goToPIPage" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -96,6 +96,6 @@
                 </StackPane>
             </center>
         </BorderPane>
-        <ProgressIndicator fx:id="loadingSpinner" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
+        <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
     </children>
 </StackPane>
