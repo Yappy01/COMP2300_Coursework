@@ -151,9 +151,11 @@ public class OverlayBController {
 
         Post post = new Post(user.getUserId(), postText.getText(), "", "");
         postService.insertPostAsync(post, selectedFile,
-            () -> {
-                parentController.setProgressIndicatorVisibility(false);
-                parentController.reloadCards();
+            (value) -> {
+                if (value) {
+                    parentController.setProgressIndicatorVisibility(false);
+                    parentController.reloadCards();
+                }
             },
             (error) -> {
                 parentController.setProgressIndicatorVisibility(false);

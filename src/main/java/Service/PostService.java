@@ -17,6 +17,7 @@ import javax.swing.text.TableView;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +28,23 @@ public class PostService {
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
     private final ComPostDatabase postDatabase = new ComPostDatabase();
     private final Cloudinary cloudinary = DBConnection.cloudinary();
+    private final Map<Integer, Long> lastPostTime = new HashMap<>();
+
+    public boolean canPost(Integer userId) {
+        long now = System.currentTimeMillis();
+
+        if (lastPostTime.containsKey(userId)) {
+            long last = lastPostTime.get(userId);
+
+            if (now - last < 3000) { // 3 sec cooldown
+                return false;
+            }
+        }
+
+        lastPostTime.put(userId, now);
+        return true;
+    }
+
 
     public void likePost(Post post) {
         postDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
@@ -70,10 +88,14 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void insertPostAsync(Post post, File selectedFile, Runnable onSucceeded, Consumer<Throwable> onFailed) {
+    public void insertPostAsync(Post post, File selectedFile, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
+                if (!canPost(post.getUserId())) {
+                    return false;
+                }
+
                 if (selectedFile != null) {
                     Map uploadResult = cloudinary.uploader().upload(selectedFile, ObjectUtils.emptyMap());
 
