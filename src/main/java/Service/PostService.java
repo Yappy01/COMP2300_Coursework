@@ -41,6 +41,10 @@ public class PostService {
             }
         }
 
+        if (postDatabase.countPostsToday(Session.getInstance().getUser()) >= 5) {
+            return false;
+        }
+
         lastPostTime.put(userId, now);
         return true;
     }

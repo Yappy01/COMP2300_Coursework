@@ -155,6 +155,8 @@ public class OverlayBController {
                 if (value) {
                     parentController.setProgressIndicatorVisibility(false);
                     parentController.reloadCards();
+                } else {
+                    General.getErrorAlert("Don't spam upload");
                 }
             },
             (error) -> {

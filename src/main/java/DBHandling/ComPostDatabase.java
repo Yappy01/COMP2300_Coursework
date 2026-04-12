@@ -2,12 +2,31 @@ package DBHandling;
 
 import Models.Comment;
 import Models.Post;
+import Models.User;
 import utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ComPostDatabase {
+
+    public Integer countPostsToday(User user) {
+        String sql = "SELECT COUNT(*) FROM posts WHERE user_id = ? AND created_at >= CURRENT_DATE;";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setInt(1, user.getUserId());
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     // 1️⃣ Create (Insert Post)
     public boolean insertPost(Post post) {
