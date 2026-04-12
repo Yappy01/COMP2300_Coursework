@@ -11,7 +11,7 @@ public class ComPostDatabase {
 
     // 1️⃣ Create (Insert Post)
     public boolean insertPost(Post post) {
-        String sql = "INSERT INTO posts (userId, content, likeCount, imageLink, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO posts (userId, content, likeCount, imageLink, createdAt, updatedAt, publicid) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -22,6 +22,7 @@ public class ComPostDatabase {
             stmt.setString(4, post.getImageLink());
             stmt.setTimestamp(5, post.getCreatedAt());
             stmt.setTimestamp(6, post.getUpdatedAt());
+            stmt.setString(7, post.getPublicId());
 
             stmt.executeUpdate();
 
@@ -191,7 +192,7 @@ public class ComPostDatabase {
     }
 
     // 6️⃣ Update Post
-    public void update(Post post) {
+    public Boolean update(Post post) {
         String sql = "UPDATE posts SET content=?, imageLink=?, updatedAt=? WHERE postId=?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -203,10 +204,11 @@ public class ComPostDatabase {
             stmt.setInt(4, post.getPostId());
 
             stmt.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // 7️⃣ Delete Post
@@ -340,7 +342,7 @@ public class ComPostDatabase {
                 rs.getTimestamp("createdAt"),
                 rs.getTimestamp("updatedAt"),
                 rs.getInt("commentCount"),
-                rs.getString("postId")
+                rs.getString("publicId")
         );
     }
 }
