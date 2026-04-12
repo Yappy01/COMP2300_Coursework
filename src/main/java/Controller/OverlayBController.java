@@ -183,6 +183,7 @@ public class OverlayBController {
         if (oriPost.getContent().equals(postText.getText()) && selectedFile == null) {
             return ;
         } else {
+            parentController.setProgressIndicatorVisibility(true);
             oriPost.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             oriPost.setContent(postText.getText());
             postService.editPostAsync(oriPost, selectedFile,

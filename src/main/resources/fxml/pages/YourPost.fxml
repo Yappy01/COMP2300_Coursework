@@ -75,9 +75,20 @@
             <center>
                 <StackPane styleClass="community-content-area" BorderPane.alignment="CENTER">
                     <children>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="382.0" prefWidth="764.0" style="-fx-border-color: transparent; -fx-border-width: 0;">
+                        <ScrollPane fx:id="postScrollPage" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="382.0" prefWidth="764.0" style="-fx-border-color: transparent; -fx-border-width: 0;">
                             <content>
-                                <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
+                                <BorderPane style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" >
+                                    <center>
+                                        <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
+                                    </center>
+                                    <bottom>
+                                        <Button fx:id="loadMoreButton" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" text="Load More" styleClass="sidebar-button-medium" BorderPane.alignment="CENTER">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                        </Button>
+                                    </bottom>
+                                </BorderPane>
                             </content>
                         </ScrollPane>
                         <Button mnemonicParsing="false" onAction="#onAddButtonClick" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">

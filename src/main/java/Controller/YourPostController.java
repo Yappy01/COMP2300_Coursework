@@ -8,7 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -29,6 +31,10 @@ public class YourPostController implements PostParent{
     private StackPane addPostPage;
     @FXML
     private ProgressIndicator progressIndicator;
+    @FXML
+    private ScrollPane postScrollPage;
+    @FXML
+    private Button loadMoreButton;
     @FXML
     private Parent commonTopBar;
     @FXML
@@ -97,7 +103,7 @@ public class YourPostController implements PostParent{
 
     public void initialize(){
         commonTopBarController.setUp("Your Post Page", Session.getInstance().getUserName());
-        System.out.println("yourPostController initialize");
+        loadMoreButton.setVisible(false);
         progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
 
@@ -121,6 +127,15 @@ public class YourPostController implements PostParent{
         }
 
         reloadCards();
+        postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.doubleValue() == 1.0) {
+                System.out.println("At the bottom!");
+                loadMoreButton.setVisible(true);
+            }
+            else {
+                loadMoreButton.setVisible(false);
+            }
+        });
     }
 
     public void loadCards() {

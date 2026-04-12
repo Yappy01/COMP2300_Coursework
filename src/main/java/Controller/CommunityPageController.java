@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import utils.Session;
@@ -20,20 +22,19 @@ import java.util.List;
 
 public class CommunityPageController implements PostParent {
     @FXML
+    private ScrollPane postScrollPage;
+    @FXML
     private TilePane cardTiles;
-
     @FXML
     private StackPane comPageArea;
-
     @FXML
     private StackPane mainPostPage;
-
     @FXML
     private StackPane addPostPage;
-
     @FXML
     private ProgressIndicator progressIndicator;
-
+    @FXML
+    private Button loadMoreButton;
     @FXML
     private Parent commonTopBar;
     @FXML
@@ -55,6 +56,7 @@ public class CommunityPageController implements PostParent {
 
     @FXML
     public void initialize() {
+        loadMoreButton.setVisible(false);
         commonTopBarController.setUp("Community Page", Session.getInstance().getUserName());
 
         OverlayBController overlayBController = null;
@@ -81,6 +83,12 @@ public class CommunityPageController implements PostParent {
         }
 
         filterRecent();
+        postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.doubleValue() == 1.0) {
+                System.out.println("At the bottom!");
+                loadMoreButton.setVisible(true);
+            }
+        });
     }
 
     public void setOverlayVisibility(Boolean visibility) {
