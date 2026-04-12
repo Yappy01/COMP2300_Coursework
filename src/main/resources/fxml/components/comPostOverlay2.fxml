@@ -45,7 +45,7 @@
                                     </VBox>
                                  </content></ScrollPane>
                               <Button mnemonicParsing="false" fx:id="uploadButton" onAction="#uploadImage" styleClass="sidebar-button-medium" text="Upload Image" />
-                              <Button mnemonicParsing="false" onAction="#insertPost" styleClass="sidebar-button-medium" text="Post" />
+                              <Button mnemonicParsing="false" fx:id="insertButton" onAction="#insertPost" styleClass="sidebar-button-medium" text="Post" />
                            </children>
                            <padding>
                               <Insets bottom="15.0" left="20.0" right="20.0" top="20.0" />

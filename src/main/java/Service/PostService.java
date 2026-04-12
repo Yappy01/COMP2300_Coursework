@@ -81,6 +81,7 @@ public class PostService {
                     String publicId = (String) uploadResult.get("public_id");
                     post.setImageLink(imageUrl); // 🔥 store URL, not file path
                     post.setPublicId(publicId);
+                    System.out.println(publicId + " there  HELLLLOOO\n");
                 }
                 return postDatabase.insertPost(post);
             }
@@ -95,9 +96,42 @@ public class PostService {
             protected Boolean call() throws Exception {
                 if (!post.getPublicId().isEmpty()) {
                     Map result = cloudinary.uploader().destroy(post.getPublicId(), ObjectUtils.emptyMap());
+                    String status = (String) result.get("result");
+
+                    // 🔥 Check if deletion succeeded
+                    if (!"ok".equals(status) && !"not found".equals(status)) {
+                        throw new RuntimeException("Cloudinary deletion failed: " + status);
+                    }
+                    System.out.println("PUBLiC ID =" + post.getPublicId());
                     System.out.println(result);
                 }
                 return postDatabase.delete(post.getPostId());
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void editPostAsync(Post post, File selectedFile, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                if (selectedFile != null) {
+                    if (!post.getPublicId().isEmpty()) {
+                        Map result = cloudinary.uploader().destroy(post.getPublicId(), ObjectUtils.emptyMap());
+                        System.out.println(result);
+                    }
+
+                    Map uploadResult = cloudinary.uploader().upload(selectedFile, ObjectUtils.emptyMap());
+
+                    String imageUrl = (String) uploadResult.get("secure_url");
+                    String publicId = (String) uploadResult.get("public_id");
+                    post.setImageLink(imageUrl); // 🔥 store URL, not file path
+                    post.setPublicId(publicId);
+                    post.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+                }
+
+                return postDatabase.update(post);
             }
         };
 

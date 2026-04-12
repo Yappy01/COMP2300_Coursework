@@ -51,10 +51,10 @@ public class CardController {
     private PostParent parentController;
 
     private ComPageOverlayController comPageOverlayController;
+    private OverlayBController overlayBController;
 
     private Post post;
     private final PostService postService = new PostService();
-    private final UserService userService = new UserService();
 
     public void setParentController(PostParent parentController) {
         this.parentController = parentController;
@@ -87,30 +87,26 @@ public class CardController {
             contentImage.setVisible(true);
             contentImage.setManaged(true);
         }
-        postService.searchPostAsync(Session.getInstance().getUserID(), content, date, likeCount, commentCount, filePath,
-                (postList) -> {
-                    System.out.println(postList.size());
-                    parentController.setProgressIndicatorVisibility(true);
-                    deleteButton.setOnAction(e -> {
-                        parentController.setProgressIndicatorVisibility(true);
-                        postService.deletePostAsync(postList.get(0), (value) -> {
-                            if (value) {
-                                System.out.println("Successfully deleted");
-                            }
-                            parentController.setProgressIndicatorVisibility(false);
-                            parentController.reloadCards();
+        parentController.setProgressIndicatorVisibility(true);
+        deleteButton.setOnAction(e -> {
+            parentController.setProgressIndicatorVisibility(true);
 
-                        }, (error) -> {
-                            error.printStackTrace();
-                            parentController.setProgressIndicatorVisibility(false);
-                        });
-                    });
-                    parentController.setProgressIndicatorVisibility(false);
-                },
-                (error) -> {
-                    error.printStackTrace();
-                    parentController.setProgressIndicatorVisibility(false);
-                });
+            postService.deletePostAsync(post, (value) -> {
+                if (value) {
+                    System.out.println("Successfully deleted");
+                }
+                parentController.setProgressIndicatorVisibility(false);
+                parentController.reloadCards();
+            }, (error) -> {
+                error.printStackTrace();
+                parentController.setProgressIndicatorVisibility(false);
+            });
+        });
+        editButton.setOnAction(e -> {
+            parentController.setOverlayBVisibility(true);
+            overlayBController.setOriPost(post);
+            overlayBController.setData();
+        });
     }
 
     // View the entire content of the card / Bringing a small box up.
@@ -130,5 +126,9 @@ public class CardController {
 
     public void setComPageOverlayController(ComPageOverlayController comPageOverlayController) {
         this.comPageOverlayController = comPageOverlayController;
+    }
+
+    public void setOverlayBController(OverlayBController overlayBController) {
+        this.overlayBController = overlayBController;
     }
 }

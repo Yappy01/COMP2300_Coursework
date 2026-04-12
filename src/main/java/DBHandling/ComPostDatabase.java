@@ -193,7 +193,7 @@ public class ComPostDatabase {
 
     // 6️⃣ Update Post
     public Boolean update(Post post) {
-        String sql = "UPDATE posts SET content=?, imageLink=?, updatedAt=? WHERE postId=?";
+        String sql = "UPDATE posts SET content=?, imageLink=?, updatedAt=?, publicId = ? WHERE postId=?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -201,7 +201,8 @@ public class ComPostDatabase {
             stmt.setString(1, post.getContent());
             stmt.setString(2, post.getImageLink());
             stmt.setTimestamp(3, post.getUpdatedAt());
-            stmt.setInt(4, post.getPostId());
+            stmt.setString(4, post.getPublicId());
+            stmt.setInt(5, post.getPostId());
 
             stmt.executeUpdate();
             return true;

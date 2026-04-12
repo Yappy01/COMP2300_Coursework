@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import utils.Session;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class YourPostController implements PostParent{
     @FXML
     private CommonTopBarController commonTopBarController;
     private ComPageOverlayController comPageOverlayController;
+    private OverlayBController overlayBController;
     private List<Post> postsList = new ArrayList<>();
     private final PostService postService = new PostService();
     private final CommunityPageController communityPageController = new CommunityPageController();
@@ -101,8 +101,6 @@ public class YourPostController implements PostParent{
         progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
 
-        OverlayBController overlayBController = null;
-
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
             mainPostPage = overlayLoader.load();
@@ -137,6 +135,7 @@ public class YourPostController implements PostParent{
                 Post post = postsList.get(i);
 
                 controller.setComPageOverlayController(comPageOverlayController);
+                controller.setOverlayBController(overlayBController);
                 controller.setPost(postsList.get(index));
                 controller.setData(Session.getInstance().getUserName(), post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());
                 cardTiles.getChildren().add(card);

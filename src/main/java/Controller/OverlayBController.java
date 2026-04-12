@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 public class OverlayBController {
@@ -39,7 +40,18 @@ public class OverlayBController {
     @FXML
     private Button uploadButton;
 
+    @FXML
+    private Button insertButton;
+
     private final PostService postService = new PostService();
+
+    private File selectedFile; // store the chosen file temporarily
+
+    private Post oriPost;
+
+    public void setOriPost(Post oriPost) {
+        this.oriPost = oriPost;
+    }
 
     public void setParentController(PostParent parentController) {
         this.parentController = parentController;
@@ -51,10 +63,40 @@ public class OverlayBController {
         imagePreview.setVisible(false);
         imagePreview.setManaged(false);
         uploadButton.setVisible(true);
+        imageArea.getChildren().clear();
         postText.clear();
+        insertButton.setOnAction(e -> {
+            insertPost();
+        });
     }
 
-    private File selectedFile; // store the chosen file temporarily
+    public void setData() {
+        postText.setText(oriPost.getContent());
+        try {
+            FXMLLoader fileLabelLoader = new FXMLLoader(getClass().getResource("/fxml/components/fileLabel.fxml"));
+            Node fileLabel = fileLabelLoader.load();
+            FileLabelController controller = fileLabelLoader.getController();
+            controller.setImageLabel(oriPost.getImageLink());
+            controller.setFileLabelArea(imageArea);
+            controller.setUploadButton(uploadButton);
+            controller.setImagePreview(imagePreview);
+            insertButton.setText("edit");
+            insertButton.setOnAction(e -> {
+                System.out.println("SUCCESSFULLY EDITED");
+                editPost();
+            });
+
+            Image image = new Image(oriPost.getImageLink());
+            imagePreview.setVisible(true);
+            imagePreview.setManaged(true);
+            imagePreview.setImage(image);
+            imageArea.getChildren().add(fileLabel);
+            uploadButton.setVisible(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load file label UI.");
+        }
+    }
 
     @FXML
     public void uploadImage() {
@@ -65,7 +107,6 @@ public class OverlayBController {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
 
-        // Just select the file; don't copy yet
         selectedFile = fileChooser.showOpenDialog(parentController.getAddPostPage().getScene().getWindow());
 
         if (selectedFile != null) {
@@ -107,6 +148,7 @@ public class OverlayBController {
             General.getErrorAlert("Cannot upload empty post");
             return ;
         }
+
         Post post = new Post(user.getUserId(), postText.getText(), "", "");
         postService.insertPostAsync(post, selectedFile,
             () -> {
@@ -117,6 +159,45 @@ public class OverlayBController {
                 parentController.setProgressIndicatorVisibility(false);
                 error.printStackTrace();
             });
+
+        // Clear temporary file reference after posting
+        postText.clear();
+        selectedFile = null;
+        imageArea.getChildren().clear();
+        clickExitButton();
+    }
+
+    @FXML
+    public void editPost() {
+
+        if (selectedFile != null) {
+            uploadButton.setVisible(true);
+        }
+
+        // Create post with optional image path
+        if (postText.getText().isEmpty() && selectedFile == null) {
+            General.getErrorAlert("Cannot upload empty post");
+            return ;
+        }
+
+        if (oriPost.getContent().equals(postText.getText()) && selectedFile == null) {
+            return ;
+        } else {
+            oriPost.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            oriPost.setContent(postText.getText());
+            postService.editPostAsync(oriPost, selectedFile,
+                    (value) -> {
+                        if (value) {
+                            parentController.setProgressIndicatorVisibility(false);
+                            parentController.reloadCards();
+                        }
+                    },
+                    (error) -> {
+                        parentController.setProgressIndicatorVisibility(false);
+                        error.printStackTrace();
+                    });
+        }
+
 
         // Clear temporary file reference after posting
         postText.clear();
