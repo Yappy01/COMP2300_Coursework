@@ -66,7 +66,6 @@ public class CardController {
 
     // Use this to set the data and contain of each card.
     public void setData(String name, String content, Timestamp date, Integer likeCount, Integer commentCount, String filePath) {
-        parentController.setProgressIndicatorVisibility(true);
         this.nameLabel.setText(name);
         this.contentLabel.setText(content);
 
@@ -87,7 +86,6 @@ public class CardController {
             contentImage.setVisible(true);
             contentImage.setManaged(true);
         }
-        parentController.setProgressIndicatorVisibility(true);
         deleteButton.setOnAction(e -> {
             parentController.setProgressIndicatorVisibility(true);
 

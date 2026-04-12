@@ -126,7 +126,7 @@
                                       <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
                            </center>
                            <bottom>
-                              <Button fx:id="loadMoreButton" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" text="Load More" styleClass="sidebar-button-medium" BorderPane.alignment="CENTER">
+                              <Button fx:id="loadMoreButton" onAction="#onLoadMoreButtonClick" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" text="Load More" styleClass="sidebar-button-medium" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font size="17.0" />
                                  </font>

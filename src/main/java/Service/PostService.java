@@ -50,21 +50,21 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void getAllPostsAsync(String type, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+    public void getAllPostsAsync(String type, Integer limit, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
         Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
             @Override
             protected ArrayList<Post> call() throws Exception {
-                return postDatabase.getCard(12, type);
+                return postDatabase.getCard(limit, type);
             }
         };
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void getPostByUserAsync(Integer userId, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+    public void getPostByUserAsync(Integer userId, Integer limit, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
         Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
             @Override
             protected ArrayList<Post> call() throws Exception {
-                return postDatabase.getPostsByUser(userId);
+                return postDatabase.getPostsByUser(userId, limit);
             }
         };
         General.setTask(task, onSucceeded, onFailed, executor);

@@ -14,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
+import utils.General;
 import utils.Session;
 
 import java.io.IOException;
@@ -53,6 +54,16 @@ public class YourPostController implements PostParent{
         setOverlayBVisibility(true);
     }
 
+    @FXML
+    public void onLoadMoreButtonClick(){
+        if (postsList.size() == Session.getInstance().getLoadedPostNum()) {
+            Session.getInstance().setLoadedPostNum(Session.getInstance().getLoadedPostNum() + 12);
+            reloadCards();
+        } else {
+            General.getInfoAlert("No more Posts");
+        }
+    }
+
     public void setProgressIndicatorVisibility(Boolean value) {
         progressIndicator.setVisible(value);
     }
@@ -68,7 +79,7 @@ public class YourPostController implements PostParent{
     public void getPosts() {
         progressIndicator.setVisible(true);
 
-        postService.getPostByUserAsync(Session.getInstance().getUserID(),
+        postService.getPostByUserAsync(Session.getInstance().getUserID(), Session.getInstance().getLoadedPostNum(),
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
@@ -127,6 +138,7 @@ public class YourPostController implements PostParent{
         }
 
         reloadCards();
+
         postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() == 1.0) {
                 System.out.println("At the bottom!");

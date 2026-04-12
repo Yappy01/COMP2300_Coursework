@@ -13,6 +13,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import utils.General;
 import utils.Session;
 
 import java.io.IOException;
@@ -105,10 +106,20 @@ public class CommunityPageController implements PostParent {
     }
 
     @FXML
+    public void onLoadMoreButtonClick(){
+        if (postsList.size() == Session.getInstance().getLoadedPostNum()) {
+            Session.getInstance().setLoadedPostNum(Session.getInstance().getLoadedPostNum() + 12);
+            reloadCards();
+        } else {
+            General.getInfoAlert("No more Posts");
+        }
+    }
+
+    @FXML
     public void filterRecent() {
         progressIndicator.setVisible(true);
         type = "recent";
-        postService.getAllPostsAsync("recent",
+        postService.getAllPostsAsync("recent", Session.getInstance().getLoadedPostNum(),
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
@@ -128,7 +139,7 @@ public class CommunityPageController implements PostParent {
         progressIndicator.setVisible(true);
         type = "likes";
 
-        postService.getAllPostsAsync("likes",
+        postService.getAllPostsAsync("likes", Session.getInstance().getLoadedPostNum(),
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
@@ -148,14 +159,15 @@ public class CommunityPageController implements PostParent {
         progressIndicator.setVisible(true);
         type = "comments";
 
-        postService.getAllPostsAsync("comments",
+        postService.getAllPostsAsync("comments", Session.getInstance().getLoadedPostNum(),
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
 
                     postsList = allPost;
+                    Session.getInstance().setLoadedPostNum(postsList.size());
                     loadCards(); // UI update
-//                    progressIndicator.setVisible(false);
+                    progressIndicator.setVisible(false);
                 },
                 (error) -> {
                     error.printStackTrace();

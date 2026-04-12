@@ -148,14 +148,15 @@ public class ComPostDatabase {
     }
 
     // 4️⃣ Filter by User
-    public ArrayList<Post> getPostsByUser(int userId) {
+    public ArrayList<Post> getPostsByUser(Integer userId, Integer limit) {
         ArrayList<Post> list = new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC";
+        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC LIMIT ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
+            stmt.setInt(2, limit);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {

@@ -6,6 +6,7 @@ public class Session {
 
     private static Session instance; // single session
     private User user;
+    private Integer loadedPostNum = 12;
 
     // private constructor (important for singleton)
     private Session(User user) {
@@ -32,6 +33,14 @@ public class Session {
 
     // Get username
     public String getUserName() { return user.getName();}
+
+    public Integer getLoadedPostNum() {
+        return loadedPostNum;
+    }
+
+    public void setLoadedPostNum(Integer loadedPostNum) {
+        this.loadedPostNum = loadedPostNum;
+    }
 
     // 🚪 End session (logout)
     public static void endSession() {
