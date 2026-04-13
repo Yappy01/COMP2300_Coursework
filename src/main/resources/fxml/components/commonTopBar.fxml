@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="commonTopBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="1100.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommonTopBarController">
+<HBox fx:id="commonTopBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="1100.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommonTopBarController">
    <children>
       <Label alignment="CENTER" minWidth="100.0" text="♛" textAlignment="CENTER" textFill="#361000">
          <font>
@@ -19,7 +19,7 @@
       </Label>
       <Label fx:id="pageTitle" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Page Title" textAlignment="CENTER" textFill="#6c4535" HBox.hgrow="ALWAYS">
          <font>
-            <Font name="Comic Sans MS Bold" size="40.0" />
+            <Font name="Constantia Bold" size="40.0" />
          </font>
       </Label>
       <Button fx:id="userPageBtn" alignment="CENTER" contentDisplay="TOP" minWidth="100.0" mnemonicParsing="false" onAction="#userPage" styleClass="topbar-button-user" text="Username" textFill="#a1a1a1">

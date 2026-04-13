@@ -3,7 +3,7 @@
     -fx-background-radius: 20;
     -fx-cursor: hand;
     -fx-text-fill: black;
-    -fx-font-family: "Cambria";
+    -fx-font-family: "Constantia";
     -fx-font-size: 16;
     -fx-border-color: transparent;
     -fx-border-width: 1px;
@@ -30,7 +30,7 @@
     -fx-background-radius: 40;
     -fx-text-fill: #fff7f4;
     -fx-font-size: 16px;
-    -fx-font-family: "constantia";
+    -fx-font-family: "Constantia";
     -fx-padding: 3 3 3 3;
 }
 
@@ -38,7 +38,7 @@
 .sidebar-button-large {
     -fx-background-color: #fff7f4;
     -fx-text-fill: #D7B0A0;
-    -fx-font-family: "Comic Sans MS";
+    -fx-font-family: "Constantia";
     -fx-font-weight: bold;
     -fx-font-size: 28px;
     -fx-background-radius: 40;
