@@ -1,0 +1,67 @@
+.main{
+    -fx-background-color: #fbe9e1;
+}
+
+.giraffeBackground{
+    -fx-background-color: #fff7f4;
+    -fx-background-radius: 40;
+}
+
+.giraffeMessageBackground{
+    -fx-background-color: #d7b0a0;
+    -fx-background-radius: 40;
+}
+
+/* 1. The Main MenuButton Shell */
+.menu-button {
+    -fx-background-color: #361000;
+    -fx-background-radius: 40;
+    -fx-background-insets: 0;
+    -fx-padding: 5 15 5 15; /* Top, Right, Bottom, Left - adds some breathing room */
+    -fx-cursor: hand;
+}
+
+/* 2. The Text Label inside the button */
+.menu-button .label {
+    -fx-text-fill: #d7b0a0;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+/* 3. The Arrow section */
+.menu-button .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 10; /* Adds space between the text and the arrow */
+}
+
+/* 4. The Arrow Icon itself */
+.menu-button .arrow {
+    -fx-background-color: #fbe9e1;
+    -fx-background-insets: 0;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* Standard down arrow shape */
+}
+
+/* --- Dropdown Menu (Context Menu) Styling --- */
+
+.context-menu {
+    -fx-background-color: #d7b0a0;
+    /*-fx-background-radius: 10;*/
+    /*-fx-border-color: #7a4900;*/
+    -fx-border-radius: 10;
+    /*-fx-border-width: 1;*/
+}
+
+.menu-item .label {
+    -fx-text-fill: #7a4900;
+    -fx-font-family: "Constantia";
+}
+
+.menu-item:focused {
+    -fx-background-color: #fff7f4;
+}
+
+
+
+
+
