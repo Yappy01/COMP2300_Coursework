@@ -2,6 +2,7 @@ package Controller;
 
 import Service.UserService;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -78,8 +79,18 @@ public class HomePageController {
 
     //access to quiz Page, not yet made
     @FXML
-    public void quizBtn() {
-        General.getInfoAlert("The quiz page will be displayed.");
+    public void quizBtn() throws IOException {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/fxml/pages/quizMain.fxml")
+        );
+
+        Event event = new Event(null);
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     //access to community page
