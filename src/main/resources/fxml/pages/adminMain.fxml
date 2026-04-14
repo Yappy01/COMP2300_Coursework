@@ -47,7 +47,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AdminMainController">
     <top>
         <fx:include fx:id="commonTopBar" source="../components/commonTopBar.fxml" />
     </top>
@@ -144,15 +144,6 @@
                                 </Button>
                             </children>
                         </StackPane>
-                        <TableView fx:id="stiContentTable" maxWidth="840.0" prefWidth="838.0" stylesheets="@../../css/infoTableView.css">
-                            <columns>
-                                <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" styleClass="wrap-text-cell" text="User ID" />
-                                <TableColumn fx:id="stiRiskLevelColumn" prefWidth="96.0" styleClass="wrap-text-cell" text="ID" />
-                                <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="168.0" styleClass="wrap-text-cell" text="Role" />
-                                <TableColumn fx:id="stiTestAndCureColumn" prefWidth="208.0" styleClass="wrap-text-cell" text="TREATMENT" />
-                                <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="220.0" styleClass="wrap-text-cell" text="PREVENTION" />
-                            </columns>
-                        </TableView>
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />

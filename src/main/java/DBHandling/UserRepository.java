@@ -2,6 +2,7 @@ package DBHandling;
 import Models.User; //import the model of user
 import utils.DBConnection; //import the dbconnector
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,6 +165,28 @@ public class UserRepository {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public ArrayList<User> getAllUser() {
+        ArrayList<User> userList = new ArrayList<>();
+
+        String query = "SELECT * FROM users";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement count_stmt = conn.prepareStatement(query)) {
+
+            ResultSet rs = count_stmt.executeQuery();
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("userId"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 
     public User getUser(String username) {

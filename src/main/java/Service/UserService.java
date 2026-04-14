@@ -6,6 +6,7 @@ import javafx.concurrent.Task;
 import utils.General;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,6 +68,17 @@ public class UserService {
 
     public boolean checkEmailExist(String email) {
         return userRepository.checkEmailExist(email);
+    }
+
+    public void getAllUserAsync(Consumer<ArrayList<User>> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<ArrayList<User>> task = new Task<ArrayList<User>>() {
+            @Override
+            protected ArrayList<User> call() throws Exception {
+                return userRepository.getAllUser();
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void register_userAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
