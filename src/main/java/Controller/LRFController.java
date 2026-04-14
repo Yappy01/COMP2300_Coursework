@@ -187,7 +187,7 @@ public class LRFController {
                 }else{
                     progressIndicator.setVisible(true);
 
-                    User user = new User(username,password,email,answer);
+                    User user = new User(username,password,email,answer, "User");
 
                     userService.register_userAsync(user, (value) -> {
                         try {

@@ -179,7 +179,8 @@ public class UserRepository {
                 User user = new User(
                         rs.getInt("userId"),
                         rs.getString("name"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("role")
                 );
                 userList.add(user);
             }
@@ -201,7 +202,8 @@ public class UserRepository {
                 user = new User(
                         rs.getInt("userId"),
                         rs.getString("name"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("role")
                 );
 
                 return user;

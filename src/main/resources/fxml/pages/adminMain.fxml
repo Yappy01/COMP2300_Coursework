@@ -71,7 +71,7 @@
                 <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                     <children>
                         <Label styleClass="sidebar-title" text="Table Options" />
-                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Doctor" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Doctor" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -82,7 +82,7 @@
                         <ToggleGroup fx:id="adminOptions" />
                      </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="User" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" styleClass="sidebar-button-medium" text="User" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -90,7 +90,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Report" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                        <ToggleButton fx:id="symptomsButton" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Report" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -98,7 +98,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                  <ToggleButton fx:id="symptomsButton1" layoutX="30.0" layoutY="229.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Clinic" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                  <ToggleButton fx:id="symptomsButton1" layoutX="30.0" layoutY="229.0" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Clinic" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -122,7 +122,7 @@
     <center>
         <StackPane BorderPane.alignment="CENTER_RIGHT">
             <children>
-                <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;">
+                <VBox fx:id="tableViewArea" alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;">
                     <children>
                         <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
                             <children>
@@ -134,7 +134,7 @@
                                         <Insets left="25.0" right="50.0" />
                                     </padding>
                                 </TextField>
-                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchSymptoms" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
+                                <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
                                     <font>
                                         <Font size="20.0" />
                                     </font>

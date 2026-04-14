@@ -12,6 +12,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import utils.Session;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AdminMainController {
+    @FXML private VBox tableViewArea;
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Parent commonTopBar;
     @FXML private CommonTopBarController commonTopBarController;
@@ -28,10 +30,11 @@ public class AdminMainController {
     private ArrayList<User> userList = new ArrayList<>();
 
     public void initialize() {
-        commonTopBarController.setUp("Information Page", Session.getInstance().getUserName());
+        commonTopBarController.setUp("Admin Page", Session.getInstance().getUserName());
 
-        progressIndicator.setVisible(true);
+        progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
+        generateUserTable();;
     }
 
     public void generateUserTable() {
@@ -46,7 +49,10 @@ public class AdminMainController {
         TableColumn<User, String> emailCol = new TableColumn<>("Email");
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        userTable.getColumns().addAll(idCol, nameCol, emailCol);
+        TableColumn<User, String> roleCol = new TableColumn<>("Role");
+        roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+
+        userTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
         userTable.getStylesheets().add(getClass().getResource("/css/infotableView.css").toExternalForm());
 
         userService.getAllUserAsync((allUsers) -> {
@@ -55,15 +61,11 @@ public class AdminMainController {
 
             ObservableList<User> masterData = FXCollections.observableArrayList(userList);
             userTable.setItems(masterData);
-            for (TableColumn<?, ?> col : userTable.getColumns()) {
-                col.setResizable(false);
-                col.setReorderable(false);
-                col.setSortable(false);
-            }
         }, (error) -> {
             progressIndicator.setVisible(false);
             error.printStackTrace();
         });
+        tableViewArea.getChildren().add(userTable);
     }
 
     private <T> Callback<TableColumn<T, String>, TableCell<T, String>> wrapTextCellFactory() {
