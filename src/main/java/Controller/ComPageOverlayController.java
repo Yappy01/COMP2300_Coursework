@@ -67,6 +67,7 @@ public class ComPageOverlayController {
 
     public void setCommentSection() {
         parentController.setProgressIndicatorVisibility(true);
+        commentBox.getChildren().clear();
         postService.getCommentsAsync(post, (comments) -> {
             for (int i = 0; i < comments.size(); i++) {
                 comments.get(i);
