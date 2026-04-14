@@ -23,7 +23,7 @@
 
 /* 2. The Text Label inside the button */
 .menu-button .label {
-    -fx-text-fill: #d7b0a0;
+    -fx-text-fill: #7a4900;
     -fx-font-family: "Constantia";
     -fx-font-weight: bold;
     -fx-font-size: 20px;

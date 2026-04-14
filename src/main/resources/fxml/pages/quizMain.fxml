@@ -32,19 +32,13 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.QuizMainController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
             <children>
@@ -220,16 +214,16 @@
                                             </font>
                                         </Label>
                                     </children></AnchorPane>
-                                <Button layoutX="543.0" layoutY="314.0" mnemonicParsing="false" styleClass="signout-button" stylesheets="@../../css/UserProfileDesign.css" text="Start" />
+                                <Button fx:id="startButton" layoutX="543.0" layoutY="314.0" mnemonicParsing="false" onAction="#startQuiz" styleClass="signout-button" stylesheets="@../../css/UserProfileDesign.css" text="Start" />
                                 <Label layoutX="174.0" layoutY="60.0" text="🌳">
                                     <font>
                                         <Font size="160.0" />
                                     </font>
                                 </Label>
-                                <MenuButton layoutX="543.0" layoutY="380.0" mnemonicParsing="false" styleClass="context-menu" stylesheets="@../../css/quizMainDesign.css" text="Categories">
+                                <MenuButton fx:id="quiz_title" layoutX="543.0" layoutY="380.0" mnemonicParsing="false" styleClass="context-menu" stylesheets="@../../css/quizMainDesign.css" text="Categories">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Action 1" />
-                                        <MenuItem mnemonicParsing="false" text="Action 2" />
+                                        <MenuItem mnemonicParsing="false" text="STI quiz" onAction="#handleQuizSelection" />
+                                        <MenuItem mnemonicParsing="false" text="Birth Control quiz" onAction="#handleQuizSelection" />
                                     </items>
                                 </MenuButton>
                             </children>

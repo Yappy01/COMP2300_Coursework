@@ -84,10 +84,7 @@ public class HomePageController {
                 getClass().getResource("/fxml/pages/quizMain.fxml")
         );
 
-        Event event = new Event(null);
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
+        Stage stage = (Stage) mp_QuizBtn.getScene().getWindow();
 
         stage.setScene(new Scene(root));
         stage.show();

@@ -32,22 +32,13 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.QuizQuestionController">
     <top>
         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@../../css/styles.css" BorderPane.alignment="CENTER">
             <children>
@@ -101,7 +92,7 @@
                 </Button>
                 <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list" stylesheets="@../../css/quizQuestionDesign.css">
                     <children>
-                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" stylesheets="@../../css/styles.css" text="Question 1" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="question1Button" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" stylesheets="@../../css/styles.css" text="Question 1" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -112,7 +103,7 @@
                                 <ToggleGroup fx:id="questions" />
                             </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 2" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question2Button" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 2" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -120,7 +111,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 3" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question3Button" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 3" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -128,7 +119,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton1" layoutX="30.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 4" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question4Button" layoutX="30.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 4" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -136,7 +127,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton11" layoutX="30.0" layoutY="205.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 5" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question5Button" layoutX="30.0" layoutY="205.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 5" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -144,7 +135,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton2" layoutX="30.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 6" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question6Button" layoutX="30.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 6" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -152,7 +143,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton21" layoutX="30.0" layoutY="275.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 7" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question7Button" layoutX="30.0" layoutY="275.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 7" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -160,7 +151,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton211" layoutX="30.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 8" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
+                        <ToggleButton fx:id="question8Button" layoutX="30.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Question 8" textAlignment="CENTER" toggleGroup="$questions" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -168,7 +159,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton2111" layoutX="30.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Result" textAlignment="CENTER" wrapText="true">
+                        <ToggleButton fx:id="resultTBtn" layoutX="30.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Result" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -176,7 +167,7 @@
                                 <Insets />
                             </opaqueInsets>
                             <toggleGroup>
-                                <ToggleGroup fx:id="questions1" />
+                                <ToggleGroup fx:id="resultgroup" />
                             </toggleGroup>
                         </ToggleButton>
                     </children>
@@ -198,7 +189,7 @@
                 <AnchorPane prefHeight="486.0" prefWidth="840.0" styleClass="main" stylesheets="@../../css/quizMainDesign.css">
                     <children>
                         <Label layoutX="24.0" layoutY="20.0" styleClass="questionNoFont" stylesheets="@../../css/quizQuestionDesign.css" text="Question 1" />
-                        <Label layoutX="24.0" layoutY="67.0" maxWidth="789.0" prefHeight="159.0" prefWidth="789.0" styleClass="questionFont" stylesheets="@../../css/quizQuestionDesign.css" text="What is the best time to take morning-after pill? Please choose the answer that is most accurate." wrapText="true" />
+                        <Label fx:id="questionLabel" layoutX="24.0" layoutY="67.0" maxWidth="789.0" prefHeight="159.0" prefWidth="789.0" styleClass="questionFont" stylesheets="@../../css/quizQuestionDesign.css" text="What is the best time to take morning-after pill? Please choose the answer that is most accurate." wrapText="true" />
                         <GridPane layoutX="19.0" layoutY="224.0" prefHeight="231.0" prefWidth="799.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -209,7 +200,7 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <ToggleButton alignment="CENTER_LEFT" mnemonicParsing="false" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="A. Before sexual activities" wrapText="true">
+                                <ToggleButton fx:id="option1TBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#next_question" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="A. Before sexual activities" wrapText="true">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" right="5.0" />
                                     </GridPane.margin>
@@ -217,17 +208,17 @@
                                         <ToggleGroup fx:id="options" />
                                     </toggleGroup>
                                 </ToggleButton>
-                                <ToggleButton alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="B. After sexual activities" toggleGroup="$options" wrapText="true" GridPane.columnIndex="1">
+                                <ToggleButton fx:id="option2TBtn" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#next_question" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="B. After sexual activities" toggleGroup="$options" wrapText="true" GridPane.columnIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" />
                                     </GridPane.margin>
                                 </ToggleButton>
-                                <ToggleButton alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="C. In the morning" toggleGroup="$options" wrapText="true" GridPane.rowIndex="1">
+                                <ToggleButton fx:id="option3TBtn" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#next_question" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="C. In the morning" toggleGroup="$options" wrapText="true" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets right="5.0" top="5.0" />
                                     </GridPane.margin>
                                 </ToggleButton>
-                                <ToggleButton alignment="CENTER_LEFT" layoutX="10.0" layoutY="126.0" mnemonicParsing="false" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="D. At night" toggleGroup="$options" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <ToggleButton fx:id="option4TBtn" alignment="CENTER_LEFT" layoutX="10.0" layoutY="126.0" mnemonicParsing="false" onAction="#next_question" prefHeight="130.0" prefWidth="400.0" styleClass="option" stylesheets="@../../css/quizQuestionDesign.css" text="D. At night" toggleGroup="$options" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="5.0" top="5.0" />
                                     </GridPane.margin>
