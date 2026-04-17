@@ -159,65 +159,46 @@ public class LRFController {
 
     @FXML
     public void regBtn(){
-        //check if any field is empty
-        if (su_username.getText().isEmpty() || su_password.getText().isEmpty()
-                || su_email.getText().isEmpty()||su_answer.getText().isEmpty()
-                || su_question.getSelectionModel().getSelectedItem() == null) {
-            General.getErrorAlert("Please fill all blank fields");
-
-            //check if username is unique
-        }else if (userService.checkUserExist(su_username.getText())) {
-            General.getErrorAlert("username already exist. Please choose another username");
-
-            //check if email is unique(email should be unique)
-        }else if(userService.checkEmailExist(su_email.getText())) {
-            General.getErrorAlert("email already exist. Please login using this email");
-
-        }else{
+        if (userService.validateCredentials(su_username.getText(), su_password.getText(), su_email.getText(),
+                su_answer.getText(), su_question.getSelectionModel().getSelectedItem())) {
             try{
                 String answer = this.su_answer.getText().trim();
                 String username = this.su_username.getText();
                 String password = this.su_password.getText();
                 String email = this.su_email.getText();
 
-                //too short password alert
-                if(password.length()<8){
-                    General.getErrorAlert("Invalid Password, at least 8 characters are needed");
+                progressIndicator.setVisible(true);
 
-                }else{
-                    progressIndicator.setVisible(true);
+                User user = new User(username,password,email,answer, "User");
 
-                    User user = new User(username,password,email,answer, "User");
+                userService.register_userAsync(user, (value) -> {
+                    try {
+                        if(value){
+                            General.getInfoAlert("Successfully registered Account!");
+                            su_username.clear();
+                            su_password.clear();
+                            su_email.clear();
 
-                    userService.register_userAsync(user, (value) -> {
-                        try {
-                            if(value){
-                                General.getInfoAlert("Successfully registered Account!");
-                                su_username.clear();
-                                su_password.clear();
-                                su_email.clear();
+                            TranslateTransition slider = new TranslateTransition();
 
-                                TranslateTransition slider = new TranslateTransition();
+                            slider.setNode(side_form);
+                            slider.setToX(0);
+                            slider.setDuration(Duration.seconds(.5));
 
-                                slider.setNode(side_form);
-                                slider.setToX(0);
-                                slider.setDuration(Duration.seconds(.5));
-
-                                slider.setOnFinished((ActionEvent e1) -> {
-                                    side_alreadyHave.setVisible(false);
-                                    side_CreateBtn.setVisible(true);
-                                });
-                                slider.play();
-                                progressIndicator.setVisible(false);
-                            }
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                            slider.setOnFinished((ActionEvent e1) -> {
+                                side_alreadyHave.setVisible(false);
+                                side_CreateBtn.setVisible(true);
+                            });
+                            slider.play();
+                            progressIndicator.setVisible(false);
                         }
-                    }, (error) -> {
-                        progressIndicator.setVisible(false);
-                        error.printStackTrace();
-                    });
-                }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }, (error) -> {
+                    progressIndicator.setVisible(false);
+                    error.printStackTrace();
+                });
             }catch(Exception e){e.printStackTrace();}
         }
     }
