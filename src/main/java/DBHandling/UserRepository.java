@@ -190,6 +190,22 @@ public class UserRepository {
         return userList;
     }
 
+    public boolean deleteUser(User user) {
+        String query = "DELETE FROM users WHERE \"userId\" = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, user.getUserId());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public User getUser(String username) {
         String query = "SELECT * FROM users WHERE name = ?";
         User user = null;
@@ -310,5 +326,24 @@ public class UserRepository {
             e.printStackTrace();
         }
         return profileData;
+    }
+
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET name=?, email=?, role=? WHERE \"userId\"=?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getRole());
+            stmt.setInt(4, user.getUserId());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

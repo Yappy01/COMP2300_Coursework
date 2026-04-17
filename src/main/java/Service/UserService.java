@@ -3,6 +3,7 @@ package Service;
 import DBHandling.UserRepository;
 import Models.User;
 import javafx.concurrent.Task;
+import net.bytebuddy.implementation.bytecode.Throw;
 import utils.General;
 
 import java.sql.SQLException;
@@ -18,6 +19,28 @@ public class UserService {
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
     public User searchByUsername(String keyword) {
         return userRepository.getUser(keyword);
+    }
+
+    public void deleteUserAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return userRepository.deleteUser(user);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void updateUserAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return userRepository.updateUser(user);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void getUserName(Integer userId, Consumer<String> onSucceeded, Consumer<Throwable> onFailed) {
