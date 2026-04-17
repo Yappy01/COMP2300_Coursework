@@ -104,6 +104,27 @@ public class UserService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
+    public Boolean validateCredentials(String username, String password, String email, String answer, String question) {
+        if (username.isEmpty() || password.isEmpty()
+                || email.isEmpty() || answer.isEmpty()
+                || question.isEmpty()) {
+            General.getErrorAlert("Please fill all blank fields");
+
+            //check if username is unique
+        } else if (checkUserExist(username)) {
+            General.getErrorAlert("username already exist. Please choose another username");
+
+            //check if email is unique(email should be unique)
+        } else if (checkEmailExist(email)) {
+            General.getErrorAlert("email already exist. Please login using this email");
+        } else if (password.length() < 8) {
+            General.getErrorAlert("Invalid Password, at least 8 characters are needed");
+        } else {
+            return true;
+        }
+        return false;
+    }
+
     public void register_userAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task<Boolean>() {
             @Override
