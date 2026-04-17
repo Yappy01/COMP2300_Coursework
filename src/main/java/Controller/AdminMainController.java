@@ -1,6 +1,8 @@
 package Controller;
 
+import Models.Post;
 import Models.User;
+import Service.PostService;
 import Service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -25,8 +29,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminMainController {
+public class AdminMainController implements PostParent {
 
+    @FXML private StackPane mainPageArea;
+    @FXML private Button loadMoreButton;
+    @FXML private TilePane cardTiles;
+    @FXML private StackPane mainPostPage;
+    @FXML private StackPane addPostPage;
+
+    @FXML private ScrollPane postScrollPage;
     @FXML private TextField filterField;
     @FXML private Button confirmButton;
     @FXML private Button editOrAddButton;
@@ -38,6 +49,8 @@ public class AdminMainController {
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Parent commonTopBar;
     @FXML private CommonTopBarController commonTopBarController;
+
+    private ComPageOverlayController comPageOverlayController;
 
     private ObservableList<Object> originalMasterData = FXCollections.observableArrayList();
     private FilteredList<Object> filteredData = new FilteredList<>(originalMasterData, p -> true);
@@ -62,9 +75,12 @@ public class AdminMainController {
         }
     };
     private final UserService userService = new UserService();
+    private final PostService postService = new PostService();
+    private ArrayList<Post> postsList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
 
     public void initialize() {
+        postScrollPage.setVisible(false);
         commonTopBarController.setUp("Admin Page", Session.getInstance().getUserName());
 
         progressIndicator.setVisible(false);
@@ -117,7 +133,9 @@ public class AdminMainController {
         });
     }
 
-    public void generateUserTable() {
+    @FXML
+    private void generateUserTable() {
+        postScrollPage.setVisible(false);
         progressIndicator.setVisible(true);
         TableView<User> userTable = new TableView<>();
 
@@ -280,6 +298,42 @@ public class AdminMainController {
         }
     }
 
+    @FXML
+    private void loadAdminPostPage() {
+        postScrollPage.setVisible(true);
+
+        OverlayBController overlayBController = null;
+        progressIndicator.setVisible(false);
+        progressIndicator.setProgress(-1);
+
+        try {
+            FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));
+            mainPostPage = overlayLoader.load();
+
+            mainPostPage.setVisible(false);
+            comPageOverlayController = overlayLoader.getController();
+            comPageOverlayController.setParentController(this);
+            mainPageArea.getChildren().add(mainPostPage);
+
+            FXMLLoader overlayBLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay2.fxml"));
+            addPostPage = overlayBLoader.load();
+            addPostPage.setVisible(false);
+            overlayBController = overlayBLoader.getController();
+            overlayBController.setParentController(this);
+            mainPageArea.getChildren().add(addPostPage);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        reloadCards();
+        postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.doubleValue() == 1.0) {
+                System.out.println("At the bottom!");
+                loadMoreButton.setVisible(true);
+            }
+        });
+    }
+
     private <T> Callback<TableColumn<T, String>, TableCell<T, String>> wrapTextCellFactory() {
         return tc -> new TableCell<>() {
             private final Text text = new Text();
@@ -296,6 +350,7 @@ public class AdminMainController {
             }
         };
     }
+
 
     private void autoFillFields(Object object) {
         if (object == null) return;
@@ -350,5 +405,86 @@ public class AdminMainController {
     @FXML
     private void goToHomepage(ActionEvent event) throws IOException {
         HomePageController.goToHomepage(event);
+    }
+
+
+    public void setOverlayVisibility(Boolean visibility) {
+        mainPostPage.setVisible(visibility);
+    }
+
+    public void setOverlayBVisibility(Boolean visibility) {
+        addPostPage.setVisible(visibility);
+    }
+
+    @Override
+    public void setProgressIndicatorVisibility(Boolean value) {
+        progressIndicator.setVisible(value);
+    }
+
+    @Override
+    public StackPane getAddPostPage() {
+        return addPostPage;
+    }
+
+    @Override
+    public void reloadCards() {
+        progressIndicator.setVisible(true);
+
+        postService.getAllPostsAsync("likes", Session.getInstance().getLoadedPostNum(),
+                (allPost) -> {
+                    postsList.clear();
+                    cardTiles.getChildren().clear();
+
+                    postsList = allPost;
+                    loadCards(); // UI update
+                    progressIndicator.setVisible(false);
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    progressIndicator.setVisible(false);
+                });
+    }
+
+    @Override
+    public void loadCards() {
+        for (int i = 0; i < postsList.size(); i++) {
+            try {
+                final int index = i;
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
+                Node card = loader.load();
+
+                CardController controller = loader.getController();
+                controller.setParentController(this);
+                Post post = postsList.get(i);
+
+                userService.getUserName(post.getUserId(), (name) -> {
+                    controller.setComPageOverlayController(comPageOverlayController);
+                    controller.setPost(postsList.get(index));
+                    controller.setData(name, post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+                    cardTiles.getChildren().add(card);
+
+                    if (index == postsList.size()) {
+                        progressIndicator.setVisible(false);
+                    }
+                }, (error) -> {
+                    error.printStackTrace();
+                    if (index == postsList.size()) {
+                        progressIndicator.setVisible(false);
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onLoadMoreButtonClick(){
+        if (postsList.size() == Session.getInstance().getLoadedPostNum()) {
+            Session.getInstance().setLoadedPostNum(Session.getInstance().getLoadedPostNum() + 12);
+            reloadCards();
+        } else {
+            General.getInfoAlert("No more Posts");
+        }
     }
 }
