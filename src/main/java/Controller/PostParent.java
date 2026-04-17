@@ -8,4 +8,6 @@ public interface PostParent {
     void setProgressIndicatorVisibility(Boolean visibility);
     StackPane getAddPostPage();
     void reloadCards();
+    void loadCards();
+    void onLoadMoreButtonClick();
 }
