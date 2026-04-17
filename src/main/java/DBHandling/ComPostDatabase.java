@@ -232,6 +232,23 @@ public class ComPostDatabase {
         return false;
     }
 
+    // Temporary Delete Posts
+    public Boolean tempDelete(int id, String text) {
+        String sql = "UPDATE posts SET reasonDeleted = ? WHERE postId=?";;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, text);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     // 7️⃣ Delete Post
     public Boolean delete(int id) {
         String sql = "DELETE FROM posts WHERE postId=?";

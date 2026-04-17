@@ -49,7 +49,6 @@ public class PostService {
         return true;
     }
 
-
     public void likePost(Post post, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task() {
             @Override
@@ -122,6 +121,18 @@ public class PostService {
 
         General.setTask(task, onSucceeded, onFailed, executor);
     }
+
+    public void tempDeleteAsync(Integer postId, String text, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return postDatabase.tempDelete(postId, text);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
 
     public void deletePostAsync(Post post, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task<Boolean>() {

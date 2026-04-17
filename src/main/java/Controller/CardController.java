@@ -78,6 +78,8 @@ public class CardController {
 
         if (parentController instanceof CommunityPageController) {
             buttonBar.setVisible(false);
+        } else if (parentController instanceof AdminMainController) {
+            editButton.setVisible(false);
         }
         if (!filePath.equals("")) {
             System.out.println(filePath);
@@ -89,17 +91,32 @@ public class CardController {
         deleteButton.setOnAction(e -> {
             parentController.setProgressIndicatorVisibility(true);
 
-            postService.deletePostAsync(post, (value) -> {
-                if (value) {
-                    System.out.println("Successfully deleted");
-                }
-                parentController.setProgressIndicatorVisibility(false);
-                parentController.reloadCards();
-            }, (error) -> {
-                error.printStackTrace();
-                parentController.setProgressIndicatorVisibility(false);
-            });
+            if (parentController instanceof AdminMainController) {
+                String text = General.getTextInput("Deletion of user post", "Please Type Reason for Deletion: ");
+                postService.tempDeleteAsync(post.getPostId(), text,(value) -> {
+                    if (value) {
+                        System.out.println("Successfully deleted");
+                    }
+                    parentController.setProgressIndicatorVisibility(false);
+                    parentController.reloadCards();
+                }, (error) -> {
+                    error.printStackTrace();
+                    parentController.setProgressIndicatorVisibility(false);
+                });
+            } else {
+                postService.deletePostAsync(post, (value) -> {
+                    if (value) {
+                        System.out.println("Successfully deleted");
+                    }
+                    parentController.setProgressIndicatorVisibility(false);
+                    parentController.reloadCards();
+                }, (error) -> {
+                    error.printStackTrace();
+                    parentController.setProgressIndicatorVisibility(false);
+                });
+            }
         });
+
         editButton.setOnAction(e -> {
             parentController.setOverlayBVisibility(true);
             overlayBController.setOriPost(post);
