@@ -78,11 +78,11 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void getAllPostsAsync(String type, Integer limit, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+    public void getAllPostsAsync(String type, Integer limit, Boolean showDeleted, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
         Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
             @Override
             protected ArrayList<Post> call() throws Exception {
-                return postDatabase.getCard(limit, type);
+                return postDatabase.getCard(limit, type, showDeleted);
             }
         };
         General.setTask(task, onSucceeded, onFailed, executor);

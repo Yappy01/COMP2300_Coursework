@@ -430,7 +430,7 @@ public class AdminMainController implements PostParent {
     public void reloadCards() {
         progressIndicator.setVisible(true);
 
-        postService.getAllPostsAsync("likes", Session.getInstance().getLoadedPostNum(),
+        postService.getAllPostsAsync("likes", Session.getInstance().getLoadedPostNum(), true,
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();

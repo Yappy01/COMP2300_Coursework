@@ -66,6 +66,15 @@ public class CardController {
 
     // Use this to set the data and contain of each card.
     public void setData(String name, String content, Timestamp date, Integer likeCount, Integer commentCount, String filePath) {
+        if (post == null) {
+            return;
+        }
+        if (post.getReasonDeleted() != null) {
+            contentLabel.setText("Post Deleted: " + post.getReasonDeleted());
+            editButton.setVisible(false);
+            return;
+        }
+
         this.nameLabel.setText(name);
         this.contentLabel.setText(content);
 

@@ -99,7 +99,7 @@ public class ComPostDatabase {
         return list;
     }
 
-    public ArrayList<Post> getCard(int limit, String type) {
+    public ArrayList<Post> getCard(int limit, String type, Boolean showDeleted) {
         ArrayList<Post> list = new ArrayList<>();
         // Use '?' as a placeholder for the limit
         String orderBy ="createdAt";
@@ -112,7 +112,11 @@ public class ComPostDatabase {
         } else if (type.equals("comments")) {
             orderBy = "commentcount";
         }
-        sql = "SELECT * FROM posts ORDER BY " + orderBy + " DESC LIMIT ?";
+        if (showDeleted) {
+            sql = "SELECT * FROM posts ORDER BY " + orderBy + " DESC LIMIT ?"; //Selects all
+        } else {
+            sql = "SELECT * FROM posts WHERE reasonDeleted IS NULL ORDER BY " + orderBy + " DESC LIMIT ?"; //Selects all that has no reason deleted
+        }
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -380,7 +384,8 @@ public class ComPostDatabase {
                 rs.getTimestamp("createdAt"),
                 rs.getTimestamp("updatedAt"),
                 rs.getInt("commentCount"),
-                rs.getString("publicId")
+                rs.getString("publicId"),
+                rs.getString("reasonDeleted")
         );
     }
 }
