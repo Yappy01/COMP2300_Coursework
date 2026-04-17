@@ -50,8 +50,15 @@ public class PostService {
     }
 
 
-    public void likePost(Post post) {
-        postDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
+    public void likePost(Post post, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                return postDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void commentPost(Post post, String content) {

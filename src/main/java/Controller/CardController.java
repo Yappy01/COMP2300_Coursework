@@ -117,7 +117,16 @@ public class CardController {
 
     // This button likes the post directly
     public void likeClicked() {
-        postService.likePost(post);
+        parentController.setProgressIndicatorVisibility(true);
+        postService.likePost(post, (value) -> {
+            parentController.setProgressIndicatorVisibility(false);
+            if (value) {
+                likeNumLabel.setText(General.formatLikes(Integer.valueOf(likeNumLabel.getText()) + 1));
+            }
+        }, (error) -> {
+            parentController.setProgressIndicatorVisibility(false);
+            error.printStackTrace();
+        });
     }
 
     // This button allows user to directly comment without looking at other people's comment.
