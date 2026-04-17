@@ -4,6 +4,7 @@ import Models.User;
 import Service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 public class AdminMainController {
 
+    @FXML private TextField filterField;
     @FXML private Button confirmButton;
     @FXML private Button editOrAddButton;
     @FXML private Button deleteButton;
@@ -37,6 +39,8 @@ public class AdminMainController {
     @FXML private Parent commonTopBar;
     @FXML private CommonTopBarController commonTopBarController;
 
+    private ObservableList<Object> originalMasterData = FXCollections.observableArrayList();
+    private FilteredList<Object> filteredData = new FilteredList<>(originalMasterData, p -> true);
     private Map<String, InputBoxController> controllerMap = new HashMap<>();
     private final StringConverter<Object> stringConverter = new StringConverter<Object>() {
         @Override
@@ -67,17 +71,19 @@ public class AdminMainController {
         progressIndicator.setProgress(-1);
         generateUserTable();
 
-        confirmButton.setOnAction(e -> { //Currently only configured for User Table
-            InputBoxController nameController = controllerMap.get("Name");
-            InputBoxController emailController = controllerMap.get("Email");
-            InputBoxController roleController = controllerMap.get("Role");
+        // Currently only configured for UserTable
+        InputBoxController nameController = controllerMap.get("Name");
+        InputBoxController emailController = controllerMap.get("Email");
+        InputBoxController roleController = controllerMap.get("Role");
 
+        confirmButton.setOnAction(e -> { // Currently only configured for users
             if (editOrAddButton.getText().equals("Add Mode")) {
                 InputBoxController passwordController = controllerMap.get("Password");
                 InputBoxController answerController = controllerMap.get("Answer");
 
-                confirmButton.setOnAction(event -> {
-                    progressIndicator.setVisible(true);
+                progressIndicator.setVisible(true);
+
+                if (userService.validateCredentials(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), "Example Question")) {
                     User user = new User(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), roleController.getInputText());
                     userService.register_userAsync(user, (value) -> {
                         progressIndicator.setVisible(false);
@@ -89,26 +95,25 @@ public class AdminMainController {
                         error.printStackTrace();
                     });
 
-                    reloadTableData(User.class);
-                });
+                    loadTableData(User.class);
+                }
+
             } else {
-                confirmButton.setOnAction(event -> {
-                    System.out.println("EDITINGGGGGG");
-                    User user = (User) idMenuSelection.getValue();
-                    progressIndicator.setVisible(true);
-                    User editedUser = new User(user.getUserId(), nameController.getInputText(), emailController.getInputText(), roleController.getInputText());
-                    userService.updateUserAsync(editedUser, (value) -> {
-                        progressIndicator.setVisible(false);
-                        if (value) {
-                            General.getInfoAlert("User updated successfully");
-                            reloadTableData(User.class);
-                        }
-                    }, (error) -> {
-                        progressIndicator.setVisible(false);
-                        error.printStackTrace();
-                    });
+                User user = (User) idMenuSelection.getValue();
+                progressIndicator.setVisible(true);
+                User editedUser = new User(user.getUserId(), nameController.getInputText(), emailController.getInputText(), roleController.getInputText());
+                userService.updateUserAsync(editedUser, (value) -> {
+                    progressIndicator.setVisible(false);
+                    if (value) {
+                        General.getInfoAlert("User updated successfully");
+                        loadTableData(User.class);
+                    }
+                }, (error) -> {
+                    progressIndicator.setVisible(false);
+                    error.printStackTrace();
                 });
             }
+
         });
     }
 
@@ -134,23 +139,7 @@ public class AdminMainController {
 
         userTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
 
-        userService.getAllUserAsync((allUsers) -> {
-            progressIndicator.setVisible(false);
-            userList = allUsers;
-
-            ObservableList<User> masterData = FXCollections.observableArrayList(userList);
-            userTable.setItems(masterData);
-
-            idMenuSelection.setItems(adminPageTable.getItems());
-            idMenuSelection.setConverter(stringConverter);
-            idMenuSelection.setOnAction(event -> {
-                Object selected = idMenuSelection.getValue();
-                autoFillFields(selected);
-            });
-        }, (error) -> {
-            progressIndicator.setVisible(false);
-            error.printStackTrace();
-        });
+        loadTableData(User.class);
 
         adminPageTable = (TableView<Object>) (Object) userTable;
         // Clear the VBox and show the NEW table
@@ -166,7 +155,7 @@ public class AdminMainController {
                     if (value) {
                         General.getInfoAlert("User Deleted Successfully");
                     }
-                    reloadTableData(User.class);
+                    loadTableData(User.class);
                 }, (error) -> {
                     progressIndicator.setVisible(false);
                     error.printStackTrace();
@@ -210,10 +199,15 @@ public class AdminMainController {
                     } else { //Currently is in Add mode changing to edit mode
                         clearInputs();
                         Object selected = idMenuSelection.getValue();
-                        autoFillFields(selected);
+                        if (selected != null) {
+                            autoFillFields(selected);
+                        }
                         idMenuSelection.setDisable(false);
-                        inputField.lookup("#Answer").setVisible(false);
-                        inputField.lookup("#Password").setVisible(false);
+
+                        Node ans = inputField.lookup("#Answer");
+                        Node pwd = inputField.lookup("#Password");
+                        if (ans != null) ans.setVisible(false);
+                        if (pwd != null) pwd.setVisible(false);
 
                         editOrAddButton.setText("Edit Mode");
                         deleteButton.setDisable(false);
@@ -227,12 +221,40 @@ public class AdminMainController {
         }
     }
 
-    public <T> void reloadTableData(Class<T> type) {
-        if  (type == User.class) {
-            clearInputs();
-            generateUserTable();
-        } else {
-            System.out.println("NOT RELOAIDNG");
+    public <T> void loadTableData(Class<T> type) {
+        if (type == User.class) {
+            progressIndicator.setVisible(true);
+            userService.getAllUserAsync((allUsers) -> {
+                progressIndicator.setVisible(false);
+
+                // Use a FilteredList for the Search functionality
+                FilteredList<Object> filteredData = new FilteredList<>(
+                        FXCollections.observableArrayList(allUsers), p -> true
+                );
+
+                // Setup the Search Bar Listener
+                filterField.textProperty().addListener((obs, oldVal, newVal) -> {
+                    filteredData.setPredicate(item -> {
+                        if (newVal == null || newVal.isBlank()) return true;
+                        String filter = newVal.toLowerCase();
+                        return getSearchString(item).contains(filter);
+                    });
+                });
+
+                // Update UI Components
+                adminPageTable.setItems(filteredData);
+                idMenuSelection.setItems(filteredData);
+                idMenuSelection.setOnAction(e -> {
+                    Object selected = idMenuSelection.getValue();
+                    if (selected != null) {
+                        autoFillFields(selected);
+                    }
+                });
+                clearInputs();
+            }, (error) -> {
+                progressIndicator.setVisible(false);
+                error.printStackTrace();
+            });
         }
     }
 
@@ -310,6 +332,19 @@ public class AdminMainController {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    private String getSearchString(Object obj) {
+        if (obj == null) return "";
+        StringBuilder sb = new StringBuilder();
+        for (java.lang.reflect.Field field : obj.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                Object val = field.get(obj);
+                if (val != null) sb.append(val.toString().toLowerCase()).append(" ");
+            } catch (Exception e) { /* Skip inaccessible fields */ }
+        }
+        return sb.toString();
     }
 
     @FXML
