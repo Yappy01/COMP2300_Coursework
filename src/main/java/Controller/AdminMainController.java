@@ -108,15 +108,19 @@ public class AdminMainController implements PostParent {
 
         TableColumn<StiEntry, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setCellFactory(wrapTextCellFactory());
 
         TableColumn<StiEntry, String> symptomsColumn = new TableColumn<>("Symptoms");
         symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
+        symptomsColumn.setCellFactory(wrapTextCellFactory());
 
         TableColumn<StiEntry, String> treatmentColumn = new TableColumn<>("Treatment");
         treatmentColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
+        treatmentColumn.setCellFactory(wrapTextCellFactory());
 
         TableColumn<StiEntry, String> preventionColumn = new TableColumn<>("Prevention");
         preventionColumn.setCellValueFactory(new PropertyValueFactory<>("prevention"));
+        preventionColumn.setCellFactory(wrapTextCellFactory());
 
         TableColumn<StiEntry, Integer> riskLevelColumn = new TableColumn<>("riskLevel");
         riskLevelColumn.setCellValueFactory(new PropertyValueFactory<>("riskLevel"));
