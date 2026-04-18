@@ -99,7 +99,8 @@ public class AdminMainController implements PostParent {
 
                 progressIndicator.setVisible(true);
 
-                if (userService.validateCredentials(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), "Example Question")) {
+                String errorMsg = userService.validateCredentials(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), "Example Question");
+                if (errorMsg.isEmpty()) {
                     User user = new User(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), roleController.getInputText());
                     userService.register_userAsync(user, (value) -> {
                         progressIndicator.setVisible(false);
@@ -112,6 +113,8 @@ public class AdminMainController implements PostParent {
                     });
 
                     loadTableData(User.class);
+                } else {
+                    General.getErrorAlert(errorMsg);
                 }
 
             } else {

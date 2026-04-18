@@ -159,8 +159,9 @@ public class LRFController {
 
     @FXML
     public void regBtn(){
-        if (userService.validateCredentials(su_username.getText(), su_password.getText(), su_email.getText(),
-                su_answer.getText(), su_question.getSelectionModel().getSelectedItem())) {
+        String errorMsg = userService.validateCredentials(su_username.getText(), su_password.getText(), su_email.getText(),
+                su_answer.getText(), su_question.getSelectionModel().getSelectedItem());
+        if (errorMsg.isEmpty()) {
             try{
                 String answer = this.su_answer.getText().trim();
                 String username = this.su_username.getText();
@@ -200,6 +201,8 @@ public class LRFController {
                     error.printStackTrace();
                 });
             }catch(Exception e){e.printStackTrace();}
+        } else {
+            General.getErrorAlert(errorMsg);
         }
     }
 
