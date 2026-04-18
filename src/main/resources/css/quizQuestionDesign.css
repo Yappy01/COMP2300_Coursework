@@ -1,0 +1,63 @@
+/* Toggle button for choosing the number of question in quiz page */
+.sidebar-list {
+    -fx-background-color: #fff7f4;
+    -fx-background-radius: 40;
+    -fx-spacing: 10px;
+}
+
+.sidebar-button-medium {
+    -fx-background-color: #6C4535;
+    -fx-text-fill: #fff7f4;
+    -fx-font-family: "Constantia";
+    -fx-font-size: 14px;
+    -fx-min-height: 26;
+    -fx-max-width: infinity;
+    -fx-background-radius: 40;
+    -fx-spacing: 5px;
+}
+
+.sidebar-button-medium:hover {
+    -fx-background-color: #f7cfc0;
+    -fx-text-fill: #261c1c;
+}
+
+.sidebar-button-medium:selected {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: #261c1c;
+}
+
+/* Fonts */
+.questionNoFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #361000;
+    -fx-font-size: 40px;
+}
+
+.questionFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #361000;
+    -fx-font-size: 22px;
+}
+
+/* Option design */
+.option{
+    -fx-background-color: #764834;
+    -fx-background-radius: 25;
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 22px;
+}
+
+.option:hover {
+    -fx-background-color: #f7cfc0;
+    -fx-text-fill: #261c1c;
+}
+
+.option:selected {
+    -fx-background-color: #d7b0a0;
+    -fx-text-fill: #261c1c;
+}
+
