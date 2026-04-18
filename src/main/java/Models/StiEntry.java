@@ -25,6 +25,15 @@ public class StiEntry {
         this.riskLevel = riskLevel;
     }
 
+    public StiEntry(String name, String symptoms,
+                    String prevention, String treatment, int riskLevel) {
+        this.name = name;
+        this.symptoms = symptoms;
+        this.prevention = prevention;
+        this.treatment = treatment;
+        this.riskLevel = riskLevel;
+    }
+
     // Methods
 
     public void getStiDetails() {
@@ -82,5 +91,10 @@ public class StiEntry {
 
     public void setRiskLevel(int level) {
         this.riskLevel = level;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(stiId);
     }
 }

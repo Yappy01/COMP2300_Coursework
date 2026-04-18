@@ -1,8 +1,10 @@
 package Controller;
 
 import Models.Post;
+import Models.StiEntry;
 import Models.User;
 import Service.PostService;
+import Service.StiService;
 import Service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,8 +78,10 @@ public class AdminMainController implements PostParent {
     };
     private final UserService userService = new UserService();
     private final PostService postService = new PostService();
+    private final StiService stiService = new StiService();
     private ArrayList<Post> postsList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
+    private ArrayList<StiEntry> stiList = new ArrayList<>();
 
     public void initialize() {
         postScrollPage.setVisible(false);
@@ -86,54 +90,88 @@ public class AdminMainController implements PostParent {
         progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
         generateUserTable();
+    }
 
-        // Currently only configured for UserTable
-        InputBoxController nameController = controllerMap.get("Name");
-        InputBoxController emailController = controllerMap.get("Email");
-        InputBoxController roleController = controllerMap.get("Role");
 
-        confirmButton.setOnAction(e -> { // Currently only configured for users
-            if (editOrAddButton.getText().equals("Add Mode")) {
-                InputBoxController passwordController = controllerMap.get("Password");
-                InputBoxController answerController = controllerMap.get("Answer");
+    @FXML
+    private void generateInfoPageTable() {
+        postScrollPage.setVisible(false);
+        progressIndicator.setVisible(true);
+        TableView<StiEntry> stiTable = new TableView<>();
 
-                progressIndicator.setVisible(true);
+        if (adminPageTable != null) {
+            stiTable.getStyleClass().addAll(adminPageTable.getStyleClass());
+        }
 
-                String errorMsg = userService.validateCredentials(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), "Example Question");
-                if (errorMsg.isEmpty()) {
-                    User user = new User(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), roleController.getInputText());
-                    userService.register_userAsync(user, (value) -> {
-                        progressIndicator.setVisible(false);
-                        if (value) {
-                            General.getInfoAlert("New User Added Successfully");
-                        }
-                    }, (error) -> {
-                        progressIndicator.setVisible(false);
-                        error.printStackTrace();
-                    });
+        TableColumn<StiEntry, String> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("stiId"));
 
-                    loadTableData(User.class);
-                } else {
-                    General.getErrorAlert(errorMsg);
-                }
+        TableColumn<StiEntry, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-            } else {
-                User user = (User) idMenuSelection.getValue();
-                progressIndicator.setVisible(true);
-                User editedUser = new User(user.getUserId(), nameController.getInputText(), emailController.getInputText(), roleController.getInputText());
-                userService.updateUserAsync(editedUser, (value) -> {
+        TableColumn<StiEntry, String> symptomsColumn = new TableColumn<>("Symptoms");
+        symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
+
+        TableColumn<StiEntry, String> treatmentColumn = new TableColumn<>("Treatment");
+        treatmentColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
+
+        TableColumn<StiEntry, String> preventionColumn = new TableColumn<>("Prevention");
+        preventionColumn.setCellValueFactory(new PropertyValueFactory<>("prevention"));
+
+        TableColumn<StiEntry, Integer> riskLevelColumn = new TableColumn<>("riskLevel");
+        riskLevelColumn.setCellValueFactory(new PropertyValueFactory<>("riskLevel"));
+
+        stiTable.getColumns().addAll(idColumn, nameColumn, symptomsColumn, treatmentColumn, preventionColumn, riskLevelColumn);
+        loadTableData(StiEntry.class);
+
+        adminPageTable = (TableView<Object>) (Object) stiTable;
+        // Clear the VBox and show the NEW table
+        tableViewArea.getChildren().set(0, stiTable);
+
+        try {
+            generateInputBoxes();
+            loadTableData(StiEntry.class);
+
+            deleteButton.setOnAction(e -> {
+                StiEntry stiEntry = (StiEntry) idMenuSelection.getValue();
+                stiService.deleteStiAsync(stiEntry.getStiId(), (value) -> {
                     progressIndicator.setVisible(false);
                     if (value) {
-                        General.getInfoAlert("User updated successfully");
-                        loadTableData(User.class);
+                        General.getInfoAlert("Sti Entry Deleted Successfully");
                     }
+                    loadTableData(StiEntry.class);
                 }, (error) -> {
                     progressIndicator.setVisible(false);
                     error.printStackTrace();
                 });
-            }
+            });
 
-        });
+            editOrAddButton.setOnAction(e -> {
+                deleteButton.setDisable(false);
+                clearInputs();
+
+                if (editOrAddButton.getText().equals("Edit Mode")) { //Currently is in edit mode changing to add mode
+                    idMenuSelection.setDisable(true);
+
+                    editOrAddButton.setText("Add Mode");
+                    deleteButton.setDisable(true);
+                } else { //Currently is in Add mode changing to edit mode
+                    clearInputs();
+                    Object selected = idMenuSelection.getValue();
+                    if (selected != null) {
+                        autoFillFields(selected);
+                    }
+                    idMenuSelection.setDisable(false);
+
+                    editOrAddButton.setText("Edit Mode");
+                    deleteButton.setDisable(false);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        configConfirmButton(StiEntry.class);
     }
 
     @FXML
@@ -160,14 +198,13 @@ public class AdminMainController implements PostParent {
 
         userTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
 
-        loadTableData(User.class);
-
         adminPageTable = (TableView<Object>) (Object) userTable;
         // Clear the VBox and show the NEW table
         tableViewArea.getChildren().set(0, userTable);
 
         try {
             generateInputBoxes();
+            loadTableData(User.class);
 
             deleteButton.setOnAction(e -> {
                 User user = (User) idMenuSelection.getValue();
@@ -240,20 +277,21 @@ public class AdminMainController implements PostParent {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        configConfirmButton(User.class);
     }
 
     public <T> void loadTableData(Class<T> type) {
+        System.out.println("LOad data");
         if (type == User.class) {
+            System.out.println("Loading user data");
             progressIndicator.setVisible(true);
             userService.getAllUserAsync((allUsers) -> {
                 progressIndicator.setVisible(false);
 
-                // Use a FilteredList for the Search functionality
                 FilteredList<Object> filteredData = new FilteredList<>(
                         FXCollections.observableArrayList(allUsers), p -> true
                 );
 
-                // Setup the Search Bar Listener
                 filterField.textProperty().addListener((obs, oldVal, newVal) -> {
                     filteredData.setPredicate(item -> {
                         if (newVal == null || newVal.isBlank()) return true;
@@ -276,7 +314,131 @@ public class AdminMainController implements PostParent {
                 progressIndicator.setVisible(false);
                 error.printStackTrace();
             });
+        } else if (type == StiEntry.class) {
+            System.out.println("Loading Sti Data");
+            progressIndicator.setVisible(true);
+            stiService.getAllAsync((allStis) -> {
+                progressIndicator.setVisible(false);
+
+                FilteredList<Object> filteredData = new FilteredList<>(
+                        FXCollections.observableArrayList(allStis), p -> true
+                );
+
+                filterField.textProperty().addListener((obs, oldVal, newVal) -> {
+                    filteredData.setPredicate(item -> {
+                        if (newVal == null || newVal.isBlank()) return true;
+                        String filter = newVal.toLowerCase();
+                        return getSearchString(item).contains(filter);
+                    });
+                });
+
+                adminPageTable.setItems(filteredData);
+                idMenuSelection.setItems(filteredData);
+                idMenuSelection.setOnAction(e -> {
+                    Object selected = idMenuSelection.getValue();
+                    if (selected != null) {
+                        autoFillFields(selected);
+                    }
+                });
+                clearInputs();
+            }, (error) -> {
+                error.printStackTrace();
+                progressIndicator.setVisible(false);
+            });
         }
+    }
+
+    public <T> void configConfirmButton(Class<T> type) {
+        confirmButton.setOnAction(e -> {
+            if (type == User.class) {
+                InputBoxController nameController = controllerMap.get("Name");
+                InputBoxController emailController = controllerMap.get("Email");
+                InputBoxController roleController = controllerMap.get("Role");
+
+                if (editOrAddButton.getText().equals("Add Mode")) {
+                    InputBoxController passwordController = controllerMap.get("Password");
+                    InputBoxController answerController = controllerMap.get("Answer");
+
+                    progressIndicator.setVisible(true);
+
+                    String errorMsg = userService.validateCredentials(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), "Example Question");
+                    if (errorMsg.isEmpty()) {
+                        User user = new User(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), roleController.getInputText());
+                        userService.register_userAsync(user, (value) -> {
+                            progressIndicator.setVisible(false);
+                            if (value) {
+                                General.getInfoAlert("New User Added Successfully");
+                            }
+                        }, (error) -> {
+                            progressIndicator.setVisible(false);
+                            error.printStackTrace();
+                        });
+                        loadTableData(User.class);
+                    } else {
+                        General.getErrorAlert(errorMsg);
+                    }
+                } else {
+                    User user = (User) idMenuSelection.getValue();
+                    progressIndicator.setVisible(true);
+                    User editedUser = new User(user.getUserId(), nameController.getInputText(), emailController.getInputText(), roleController.getInputText());
+                    userService.updateUserAsync(editedUser, (value) -> {
+                        progressIndicator.setVisible(false);
+                        if (value) {
+                            General.getInfoAlert("User updated successfully");
+                            loadTableData(User.class);
+                        }
+                    }, (error) -> {
+                        progressIndicator.setVisible(false);
+                        error.printStackTrace();
+                    });
+                }
+            } else if (type == StiService.class) {
+                if (editOrAddButton.getText().equals("Add Mode")) {
+                    InputBoxController nameController = controllerMap.get("Name");
+                    InputBoxController symptomsController = controllerMap.get("Symptoms");
+                    InputBoxController treatmentController = controllerMap.get("Treatment");
+                    InputBoxController preventionController = controllerMap.get("Prevention");
+                    InputBoxController riskLevelController = controllerMap.get("Risk Level");
+
+                    if (editOrAddButton.getText().equals("Add Mode")) {
+                        progressIndicator.setVisible(true);
+
+                        String errorMsg = stiService.validateInput(nameController.getInputText(), symptomsController.getInputText(), treatmentController.getInputText(), preventionController.getInputText(), riskLevelController.getInputText());
+                        if (errorMsg.isEmpty()) {
+                            StiEntry stiEntry = new StiEntry(nameController.getInputText(), symptomsController.getInputText(), treatmentController.getInputText(), preventionController.getInputText(), Integer.valueOf(riskLevelController.getInputText()));
+                            stiService.insertStiInfo(stiEntry, (value) -> {
+                                progressIndicator.setVisible(false);
+                                if (value) {
+                                    General.getInfoAlert("New Sti Entry Added Successfully");
+                                }
+                            }, (error) -> {
+                                progressIndicator.setVisible(false);
+                                error.printStackTrace();
+                            });
+
+                            loadTableData(StiEntry.class);
+                        } else {
+                            General.getErrorAlert(errorMsg);
+                        }
+                    } else {
+                        StiEntry stiEntry = (StiEntry) idMenuSelection.getValue();
+                        progressIndicator.setVisible(true);
+                        StiEntry editedEntry = new StiEntry(stiEntry.getStiId(), nameController.getInputText(), symptomsController.getInputText(), treatmentController.getInputText(), preventionController.getInputText(), Integer.valueOf(riskLevelController.getInputText()));
+                        stiService.updateStiInfo(editedEntry, (value) -> {
+                            progressIndicator.setVisible(false);
+                            if (value) {
+                                General.getInfoAlert("User updated successfully");
+                                loadTableData(User.class);
+                            }
+                        }, (error) -> {
+                            progressIndicator.setVisible(false);
+                            error.printStackTrace();
+                        });
+                        loadTableData(StiEntry.class);
+                    }
+                }
+            }
+        });
     }
 
     public void generateInputBoxes() throws IOException {
@@ -353,7 +515,6 @@ public class AdminMainController implements PostParent {
             }
         };
     }
-
 
     private void autoFillFields(Object object) {
         if (object == null) return;

@@ -3,6 +3,7 @@ package Service;
 import DBHandling.StiDatabase;
 import Models.StiEntry;
 import javafx.concurrent.Task;
+import net.bytebuddy.implementation.bytecode.Throw;
 import utils.General;
 
 import java.util.ArrayList;
@@ -72,5 +73,56 @@ public class StiService {
             }
         };
         General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void deleteStiAsync(Integer stiId, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return stiDatabase.delete(stiId);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void insertStiInfo(StiEntry sti, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return stiDatabase.addSti(sti);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void updateStiInfo(StiEntry stiEntry, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return stiDatabase.update(stiEntry);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public String validateInput(String name, String symptoms, String treatment, String prevention, String riskLevel) {
+        if (name.isEmpty() || symptoms.isEmpty() || treatment.isEmpty() || prevention.isEmpty() || riskLevel.isEmpty()) {
+            return "Please fill in all the blanks";
+        } else if (stiDatabase.findByName(name) != null) {
+            return "The Sti already exists. Please either delete or edit the already existing input";
+        } else {
+            try {
+                Integer risk = Integer.parseInt(riskLevel);
+                if (risk > 4 || risk < 0) {
+                    return "risk level should be between 0 - 4";
+                }
+            } catch (NumberFormatException e) {
+                return "Please enter a valid number between 0 - 4 in the risk level input box";
+            }
+        }
+        return "";
     }
 }
