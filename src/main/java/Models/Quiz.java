@@ -7,6 +7,7 @@ public class Quiz {
     private String answer3;
     private String answer4;
     private String correctAnswer;
+    private String chosenAnswer;
 
     public Quiz(String question, String answer1, String answer2, String answer3, String answer4,String correctAnswer) {
         this.question = question;
@@ -25,4 +26,7 @@ public class Quiz {
     public String getAnswer3() { return answer3; }
     public String getAnswer4() { return answer4; }
     public String getCorrectAnswer() { return correctAnswer; }
+    public boolean correctAnswer(String chosenAnswer) {
+        return correctAnswer.equals(chosenAnswer);
+    }
 }

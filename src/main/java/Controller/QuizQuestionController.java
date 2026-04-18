@@ -14,12 +14,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class QuizQuestionController {
-    @FXML private void handleSearch(){
-    }
 
     @FXML private ToggleGroup questions; // Maps to fx:id="questions" in FXML [cite: 22]
     @FXML private ToggleButton resultTBtn;   // Maps to fx:id="result"
-
+    @FXML private Label usernameLbl;
     // UI Elements for the question and 4 choices
     @FXML private Label questionLabel;
     @FXML private Label questionNumberLabel;
@@ -37,6 +35,11 @@ public class QuizQuestionController {
 //        loadQuiz();
 //    }
 
+    @FXML public void initialize() {
+        usernameLbl.setText(utils.Session.getInstance().getUserName());
+    };
+
+
     public void loadQuizCategory(int quizCategory) {
         this.quizCategory = quizCategory;
     }
@@ -45,11 +48,15 @@ public class QuizQuestionController {
 
     // Update setQuizzes to actually show the first question once data is received
     public void setQuizzes(List<Quiz> quizzes) {
+        if (quizzes == null) {
+            this.activeQuizzes = new ArrayList<>();
+            return;
+        }
         this.activeQuizzes = new ArrayList<>(quizzes);
         if (!activeQuizzes.isEmpty()) {
             Collections.shuffle(activeQuizzes);
             this.activeQuizzes = activeQuizzes.subList(0, Math.min(8, activeQuizzes.size()));
-            showQuestion(0); // Display the first question passed from the previous screen
+            showQuestion(0);
         }
     }
 
@@ -66,7 +73,7 @@ public class QuizQuestionController {
     }
 
     @FXML
-    private void handleSearch(ActionEvent event) {
+    public void handleSearch(ActionEvent event) throws IOException {
         ToggleButton selectedBtn = (ToggleButton) event.getSource();
 
         if (selectedBtn == resultTBtn) {
@@ -117,25 +124,62 @@ public class QuizQuestionController {
         if (selected != null) {
             // Save answer
             userAnswers.put(currentQuestionIndex, selected.getText());
+//            if (activeQuizzes.get(currentQuestionIndex).getCorrectAnswer().equals(userAnswers.get(currentQuestionIndex))) {
+////                utils.General.getInfoAlert("You have selected the correct answer.");
+//
+//                if (currentQuestionIndex < 7) {
+//                    currentQuestionIndex++;
+//                    questions.selectToggle(questions.getToggles().get(currentQuestionIndex));
+//                    showQuestion(currentQuestionIndex);
+//                }
+//            }else{
+//                utils.General.getInfoAlert("You have not selected the correct answer.");
+//            }
 
             if (currentQuestionIndex < 7) {
                 currentQuestionIndex++;
                 questions.selectToggle(questions.getToggles().get(currentQuestionIndex));
                 showQuestion(currentQuestionIndex);
             }
+//            userAnswers.get(currentQuestionIndex);
         }
     }
 
 
-    private void calculateResults() {
+    private void calculateResults() throws IOException {
         int score = 0;
         for (int i = 0; i < activeQuizzes.size(); i++) {
             if (activeQuizzes.get(i).getCorrectAnswer().equals(userAnswers.get(i))) {
                 score++;
             }
         }
+
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/quizResult.fxml"));
+        Parent root = loader.load();
+        QuizResultController targetController = loader.getController();
+
+        targetController.show_result(score);
+
+        Stage stage = (Stage) (option1TBtn.getScene().getWindow());
+        stage.setScene(new Scene(root));
+        stage.show();
+
         // Logic to switch to result view and display "score/8" [cite: 81]
     }
+
+//    public void clearAnswers() throws IOException {
+//        userAnswers.clear();
+//        QuizMainController quizMainController = new QuizMainController();
+//        ActionEvent event = new ActionEvent();
+//        quizMainController.handleQuizSelection(event);
+//        setQuizzes(activeQuizzes);
+//
+//        if (options != null) {
+//            options.selectToggle(null);
+//        }
+//    }
 
     @FXML void goToHomepage(ActionEvent event) throws IOException {
 //        Parent root = FXMLLoader.load(
@@ -151,5 +195,16 @@ public class QuizQuestionController {
         stage.setScene(new Scene(root));
         stage.show();
 
+    }
+
+    @FXML void gotoUserProfile() throws IOException {
+        Parent root = FXMLLoader.load(
+                HomePageController.class.getResource("/fxml/pages/UserProfile.fxml")
+        );
+
+        Stage stage = (Stage) questionLabel.getScene().getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

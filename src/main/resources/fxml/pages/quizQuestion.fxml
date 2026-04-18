@@ -58,10 +58,10 @@
                         <Font name="Comic Sans MS Bold" size="40.0" />
                     </font>
                 </Label>
-                <VBox alignment="CENTER">
+                <VBox alignment="CENTER" onMouseClicked="#gotoUserProfile">
                     <children>
-                        <SVGPath content="M36 6 C19.44 6 6 19.44 6 36 s13.44 30 30 30 30-13.44 30-30 S52.56 6 36 6 zm0 12 a9 9 0 1 1 0 18 9 9 0 0 1 0-18 zm0 42 c-7.5 0-14.13-3.84-18-9.66 .09-5.97 12-9.24 18-9.24 5.97 0 17.91 3.27 18 9.24 C50.13 56.16 43.5 60 36 60z" />
-                        <Label text="Username" textFill="#6c4535">
+                        <SVGPath content="M36 6 C19.44 6 6 19.44 6 36 s13.44 30 30 30 30-13.44 30-30 S52.56 6 36 6 zm0 12 a9 9 0 1 1 0 18 9 9 0 0 1 0-18 zm0 42 c-7.5 0-14.13-3.84-18-9.66 .09-5.97 12-9.24 18-9.24 5.97 0 17.91 3.27 18 9.24 C50.13 56.16 43.5 60 36 60z" onDragEntered="#gotoUserProfile" onMouseClicked="#gotoUserProfile" />
+                        <Label fx:id="usernameLbl" onMouseClicked="#gotoUserProfile" text="Username" textFill="#6c4535">
                             <font>
                                 <Font name="Cambria" size="16.0" />
                             </font>

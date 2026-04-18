@@ -58,14 +58,20 @@
                         <Font name="Comic Sans MS Bold" size="40.0" />
                     </font>
                 </Label>
-                <VBox prefHeight="74.0" prefWidth="58.0">
+                <VBox alignment="CENTER" onMouseClicked="#gotoUserProfile">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="57.0" prefWidth="60.0" styleClass="user-btn" stylesheets="@../../css/homePageDesign.css" text="👤">
-                            <font>
-                                <Font size="24.0" />
-                            </font>
-                        </Button>
-                        <Label prefHeight="29.0" prefWidth="100.0" text=" Username" />
+                            <SVGPath content="M36 6 C19.44 6 6 19.44 6 36 s13.44 30 30 30 30-13.44 30-30 S52.56 6 36 6 zm0 12 a9 9 0 1 1 0 18 9 9 0 0 1 0-18 zm0 42 c-7.5 0-14.13-3.84-18-9.66 .09-5.97 12-9.24 18-9.24 5.97 0 17.91 3.27 18 9.24 C50.13 56.16 43.5 60 36 60z" onMouseClicked="#gotoUserProfile" />
+                            <Label fx:id="usernameLbl" onMouseClicked="#gotoUserProfile" text="Username" textFill="#6c4535">
+                                <font>
+                                    <Font name="Cambria" size="16.0" />
+                                </font>
+                            </Label>
+<!--                        <Button mnemonicParsing="false" prefHeight="57.0" prefWidth="60.0" styleClass="user-btn" stylesheets="@../../css/homePageDesign.css" text="👤">-->
+<!--                            <font>-->
+<!--                                <Font size="24.0" />-->
+<!--                            </font>-->
+<!--                        </Button>-->
+<!--                        <Label prefHeight="29.0" prefWidth="100.0" text=" Username" />-->
                     </children>
                 </VBox>
             </children>
@@ -222,8 +228,8 @@
                                 </Label>
                                 <MenuButton fx:id="quiz_title" layoutX="543.0" layoutY="380.0" mnemonicParsing="false" styleClass="context-menu" stylesheets="@../../css/quizMainDesign.css" text="Categories">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="STI quiz" onAction="#handleQuizSelection" />
-                                        <MenuItem mnemonicParsing="false" text="Birth Control quiz" onAction="#handleQuizSelection" />
+                                            <MenuItem mnemonicParsing="false" onAction="#handleQuizSelection" text="STI quiz" />
+                                            <MenuItem mnemonicParsing="false" onAction="#handleQuizSelection" text="Birth Control quiz" />
                                     </items>
                                 </MenuButton>
                             </children>
