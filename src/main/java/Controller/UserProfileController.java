@@ -251,4 +251,17 @@ public class UserProfileController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void signOut(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                HomePageController.class.getResource("/fxml/pages/LRFDocument_updated.fxml")
+        );
+
+        Stage stage = (Stage) pntextfield.getScene().getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.centerOnScreen();
+        stage.show();
+    }
 }
