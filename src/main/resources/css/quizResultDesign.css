@@ -1,0 +1,11 @@
+.result{
+    -fx-background-color: #361000;
+    -fx-background-radius: 40;
+}
+
+.resultFont {
+    -fx-font-family: "Constantia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #d7b0a0;
+    -fx-font-size: 35px;
+}
