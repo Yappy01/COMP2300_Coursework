@@ -53,7 +53,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserProfileController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0">
           <top>
@@ -249,16 +249,30 @@
                         <Label layoutX="15.0" layoutY="197.0" styleClass="sectionSubFont" text="OR INJURIES:" />
                         <TextField fx:id="allergies_textfield" layoutX="96.0" layoutY="41.0" styleClass="textfield" />
                         <TextField fx:id="chronicdiseaseTextfield" layoutX="157.0" layoutY="83.0" prefHeight="25.0" prefWidth="84.0" styleClass="textfield" />
-                        <TextField fx:id="btTextefield" layoutX="109.0" layoutY="129.0" styleClass="textfield" />
+                        <TextField fx:id="btTextfield" layoutX="109.0" layoutY="129.0" styleClass="textfield" />
                         <TextField fx:id="piTextfield" layoutX="123.0" layoutY="193.0" prefHeight="25.0" prefWidth="128.0" styleClass="textfield" />
                         <Button fx:id="add_event_Button11" layoutX="193.0" layoutY="6.0" mnemonicParsing="false" onAction="#add_anamnesis" prefHeight="41.0" prefWidth="70.0" styleClass="add-button" text="Save" />
                      </children>
                   </AnchorPane>
-                  <ScrollPane prefHeight="221.0" prefWidth="295.0">
+                  <ScrollPane fx:id="noteToYourself" prefHeight="221.0" prefWidth="295.0">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="279.0" styleClass="sectionBackground">
+                      <AnchorPane styleClass="sectionBackground">
 
                       </AnchorPane>
+                        <AnchorPane layoutX="534.0" layoutY="245.0" prefHeight="216.0" prefWidth="503.0" styleClass="sectionBackground">
+                            <children>
+                                <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" text="Note to yourself">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="mp_NoteToSelf" layoutX="13.0" layoutY="56.0" onAction="#noteToSelfBtn" prefHeight="142.0" prefWidth="227.0" promptText="What's in your mind?" styleClass="section-btn" AnchorPane.bottomAnchor="25.0">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </TextField>
+                            </children>
+                        </AnchorPane>
                     </content>
                      <VBox.margin>
                         <Insets left="5.0" right="18.0" />
