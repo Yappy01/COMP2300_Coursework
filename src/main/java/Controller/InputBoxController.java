@@ -24,4 +24,8 @@ public class InputBoxController {
         inputText.setPromptText("input " + label + " here...");
         inputText.setText(text);
     }
+
+    public void clearBox() {
+        inputText.clear();
+    }
 }

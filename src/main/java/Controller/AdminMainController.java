@@ -122,7 +122,7 @@ public class AdminMainController implements PostParent {
         preventionColumn.setCellValueFactory(new PropertyValueFactory<>("prevention"));
         preventionColumn.setCellFactory(wrapTextCellFactory());
 
-        TableColumn<StiEntry, Integer> riskLevelColumn = new TableColumn<>("riskLevel");
+        TableColumn<StiEntry, Integer> riskLevelColumn = new TableColumn<>("Risk Level");
         riskLevelColumn.setCellValueFactory(new PropertyValueFactory<>("riskLevel"));
 
         stiTable.getColumns().addAll(idColumn, nameColumn, symptomsColumn, treatmentColumn, preventionColumn, riskLevelColumn);
@@ -354,6 +354,7 @@ public class AdminMainController implements PostParent {
 
     public <T> void configConfirmButton(Class<T> type) {
         confirmButton.setOnAction(e -> {
+            progressIndicator.setVisible(true);
             if (type == User.class) {
                 InputBoxController nameController = controllerMap.get("Name");
                 InputBoxController emailController = controllerMap.get("Email");
@@ -362,8 +363,6 @@ public class AdminMainController implements PostParent {
                 if (editOrAddButton.getText().equals("Add Mode")) {
                     InputBoxController passwordController = controllerMap.get("Password");
                     InputBoxController answerController = controllerMap.get("Answer");
-
-                    progressIndicator.setVisible(true);
 
                     String errorMsg = userService.validateCredentials(nameController.getInputText(), passwordController.getInputText(), emailController.getInputText(), answerController.getInputText(), "Example Question");
                     if (errorMsg.isEmpty()) {
@@ -380,10 +379,15 @@ public class AdminMainController implements PostParent {
                         loadTableData(User.class);
                     } else {
                         General.getErrorAlert(errorMsg);
+                        progressIndicator.setVisible(false);
                     }
                 } else {
                     User user = (User) idMenuSelection.getValue();
-                    progressIndicator.setVisible(true);
+                    if (user == null) {
+                        General.getErrorAlert("Please select an ID to alter");
+                        progressIndicator.setVisible(false);
+                        return;
+                    }
                     User editedUser = new User(user.getUserId(), nameController.getInputText(), emailController.getInputText(), roleController.getInputText());
                     userService.updateUserAsync(editedUser, (value) -> {
                         progressIndicator.setVisible(false);
@@ -396,7 +400,8 @@ public class AdminMainController implements PostParent {
                         error.printStackTrace();
                     });
                 }
-            } else if (type == StiService.class) {
+            } else if (type == StiEntry.class) {
+                System.out.println("LOADING STI");
                 if (editOrAddButton.getText().equals("Add Mode")) {
                     InputBoxController nameController = controllerMap.get("Name");
                     InputBoxController symptomsController = controllerMap.get("Symptoms");
@@ -405,8 +410,6 @@ public class AdminMainController implements PostParent {
                     InputBoxController riskLevelController = controllerMap.get("Risk Level");
 
                     if (editOrAddButton.getText().equals("Add Mode")) {
-                        progressIndicator.setVisible(true);
-
                         String errorMsg = stiService.validateInput(nameController.getInputText(), symptomsController.getInputText(), treatmentController.getInputText(), preventionController.getInputText(), riskLevelController.getInputText());
                         if (errorMsg.isEmpty()) {
                             StiEntry stiEntry = new StiEntry(nameController.getInputText(), symptomsController.getInputText(), treatmentController.getInputText(), preventionController.getInputText(), Integer.valueOf(riskLevelController.getInputText()));
@@ -423,10 +426,15 @@ public class AdminMainController implements PostParent {
                             loadTableData(StiEntry.class);
                         } else {
                             General.getErrorAlert(errorMsg);
+                            progressIndicator.setVisible(false);
                         }
                     } else {
                         StiEntry stiEntry = (StiEntry) idMenuSelection.getValue();
-                        progressIndicator.setVisible(true);
+                        if (stiEntry == null) {
+                            General.getErrorAlert("Please select an ID to alter");
+                            progressIndicator.setVisible(false);
+                            return;
+                        }
                         StiEntry editedEntry = new StiEntry(stiEntry.getStiId(), nameController.getInputText(), symptomsController.getInputText(), treatmentController.getInputText(), preventionController.getInputText(), Integer.valueOf(riskLevelController.getInputText()));
                         stiService.updateStiInfo(editedEntry, (value) -> {
                             progressIndicator.setVisible(false);
@@ -542,18 +550,10 @@ public class AdminMainController implements PostParent {
     }
 
     private void clearInputs() {
-        try {
-            for (TableColumn<Object, ?> col : adminPageTable.getColumns()) {
-                String columnName = col.getText();
-
-                InputBoxController controller = controllerMap.get(columnName);
-
-                if (controller != null) {
-                    controller.configInputBox(columnName, "");
-                }
+        for (InputBoxController controller : controllerMap.values()) {
+            if (controller != null) {
+                controller.clearBox();
             }
-        } catch (IOException exception) {
-            exception.printStackTrace();
         }
     }
 
