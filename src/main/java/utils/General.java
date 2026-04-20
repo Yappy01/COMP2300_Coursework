@@ -3,6 +3,7 @@ package utils;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -58,5 +59,17 @@ public class General {
         } else {
             return false;
         }
+    }
+
+    public static String getTextInput(String title, String header) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+
+        // showAndWait() returns an Optional<String>
+        Optional<String> result = dialog.showAndWait();
+
+        // If the user clicked "OK", return the text; otherwise, return null or empty
+        return result.orElse(null);
     }
 }

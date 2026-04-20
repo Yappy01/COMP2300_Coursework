@@ -119,7 +119,7 @@ public class CommunityPageController implements PostParent {
     public void filterRecent() {
         progressIndicator.setVisible(true);
         type = "recent";
-        postService.getAllPostsAsync("recent", Session.getInstance().getLoadedPostNum(),
+        postService.getAllPostsAsync("recent", Session.getInstance().getLoadedPostNum(), false,
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
@@ -139,7 +139,7 @@ public class CommunityPageController implements PostParent {
         progressIndicator.setVisible(true);
         type = "likes";
 
-        postService.getAllPostsAsync("likes", Session.getInstance().getLoadedPostNum(),
+        postService.getAllPostsAsync("likes", Session.getInstance().getLoadedPostNum(), false,
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
@@ -159,7 +159,7 @@ public class CommunityPageController implements PostParent {
         progressIndicator.setVisible(true);
         type = "comments";
 
-        postService.getAllPostsAsync("comments", Session.getInstance().getLoadedPostNum(),
+        postService.getAllPostsAsync("comments", Session.getInstance().getLoadedPostNum(), false,
                 (allPost) -> {
                     postsList.clear();
                     cardTiles.getChildren().clear();
@@ -187,6 +187,7 @@ public class CommunityPageController implements PostParent {
 
     public void loadCards() {
         for (int i = 0; i < postsList.size(); i++) {
+            Post post = postsList.get(i);
             try {
                 final int index = i;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
@@ -194,9 +195,9 @@ public class CommunityPageController implements PostParent {
 
                 CardController controller = loader.getController();
                 controller.setParentController(this);
-                Post post = postsList.get(i);
 
                 userService.getUserName(post.getUserId(), (name) -> {
+                    System.out.println(index);
                     controller.setComPageOverlayController(comPageOverlayController);
                     controller.setPost(postsList.get(index));
                     controller.setData(name, post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());

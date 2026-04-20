@@ -12,10 +12,11 @@ public class Post {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String publicId;
+    private String reasonDeleted;
 
     // Constructor (full)
     public Post(int postId, int userId, String content, int likeCount,
-                String imageLink, Timestamp createdAt, Timestamp updatedAt, int commentCount, String publicId) {
+                String imageLink, Timestamp createdAt, Timestamp updatedAt, int commentCount, String publicId, String reasonDeleted) {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
@@ -25,6 +26,7 @@ public class Post {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.publicId = publicId;
+        this.reasonDeleted = reasonDeleted;
     }
 
     // Constructor (for new post)
@@ -110,5 +112,13 @@ public class Post {
 
     public void setPublicId(String publicId) {
         this.publicId = publicId;
+    }
+
+    public String getReasonDeleted() {
+        return reasonDeleted;
+    }
+
+    public void setReasonDeleted(String reasonDeleted) {
+        this.reasonDeleted = reasonDeleted;
     }
 }

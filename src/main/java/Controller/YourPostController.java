@@ -44,7 +44,6 @@ public class YourPostController implements PostParent{
     private OverlayBController overlayBController;
     private List<Post> postsList = new ArrayList<>();
     private final PostService postService = new PostService();
-    private final CommunityPageController communityPageController = new CommunityPageController();
 
     public void goToHomepage(ActionEvent event) throws IOException {
         HomePageController.goToHomepage(event);

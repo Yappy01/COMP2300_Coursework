@@ -39,7 +39,7 @@
                         </Button>
                         <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                             <children>
-                                <ToggleButton fx:id="informationPageButton" onAction="#goToPIPage" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
+                                <ToggleButton onAction="#goToPIPage" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -50,7 +50,7 @@
                                         <ToggleGroup fx:id="userToggle" />
                                     </toggleGroup>
                                 </ToggleButton>
-                                <ToggleButton fx:id="userPostButton" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$userToggle" wrapText="true">
+                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$userToggle" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>

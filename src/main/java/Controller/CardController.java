@@ -66,6 +66,15 @@ public class CardController {
 
     // Use this to set the data and contain of each card.
     public void setData(String name, String content, Timestamp date, Integer likeCount, Integer commentCount, String filePath) {
+        if (post == null) {
+            return;
+        }
+        if (post.getReasonDeleted() != null) {
+            contentLabel.setText("Post Deleted: " + post.getReasonDeleted());
+            editButton.setVisible(false);
+            return;
+        }
+
         this.nameLabel.setText(name);
         this.contentLabel.setText(content);
 
@@ -78,6 +87,8 @@ public class CardController {
 
         if (parentController instanceof CommunityPageController) {
             buttonBar.setVisible(false);
+        } else if (parentController instanceof AdminMainController) {
+            editButton.setVisible(false);
         }
         if (!filePath.equals("")) {
             System.out.println(filePath);
@@ -89,17 +100,32 @@ public class CardController {
         deleteButton.setOnAction(e -> {
             parentController.setProgressIndicatorVisibility(true);
 
-            postService.deletePostAsync(post, (value) -> {
-                if (value) {
-                    System.out.println("Successfully deleted");
-                }
-                parentController.setProgressIndicatorVisibility(false);
-                parentController.reloadCards();
-            }, (error) -> {
-                error.printStackTrace();
-                parentController.setProgressIndicatorVisibility(false);
-            });
+            if (parentController instanceof AdminMainController) {
+                String text = General.getTextInput("Deletion of user post", "Please Type Reason for Deletion: ");
+                postService.tempDeleteAsync(post.getPostId(), text,(value) -> {
+                    if (value) {
+                        System.out.println("Successfully deleted");
+                    }
+                    parentController.setProgressIndicatorVisibility(false);
+                    parentController.reloadCards();
+                }, (error) -> {
+                    error.printStackTrace();
+                    parentController.setProgressIndicatorVisibility(false);
+                });
+            } else {
+                postService.deletePostAsync(post, (value) -> {
+                    if (value) {
+                        System.out.println("Successfully deleted");
+                    }
+                    parentController.setProgressIndicatorVisibility(false);
+                    parentController.reloadCards();
+                }, (error) -> {
+                    error.printStackTrace();
+                    parentController.setProgressIndicatorVisibility(false);
+                });
+            }
         });
+
         editButton.setOnAction(e -> {
             parentController.setOverlayBVisibility(true);
             overlayBController.setOriPost(post);
@@ -117,7 +143,16 @@ public class CardController {
 
     // This button likes the post directly
     public void likeClicked() {
-        postService.likePost(post);
+        parentController.setProgressIndicatorVisibility(true);
+        postService.likePost(post, (value) -> {
+            parentController.setProgressIndicatorVisibility(false);
+            if (value) {
+                likeNumLabel.setText(General.formatLikes(Integer.valueOf(likeNumLabel.getText()) + 1));
+            }
+        }, (error) -> {
+            parentController.setProgressIndicatorVisibility(false);
+            error.printStackTrace();
+        });
     }
 
     // This button allows user to directly comment without looking at other people's comment.

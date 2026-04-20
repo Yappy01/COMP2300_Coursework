@@ -34,132 +34,176 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.InformationPageController">
-    <top>
-        <fx:include fx:id="commonTopBar" source="../components/commonTopBar.fxml" />
-    </top>
-    <left>
-        <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
-            <children>
-                <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME">
-                    <graphic>
-                        <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
-                    </graphic>
-                    <font>
-                        <Font name="Comic Sans MS Bold" size="24.0" />
-                    </font>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                </Button>
-                <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
-                    <children>
-                        <Label styleClass="sidebar-title" text="Table Options" />
-                        <ToggleButton fx:id="riskLevelButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Doctor" textAlignment="CENTER" wrapText="true">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="adminOptions" />
-                     </toggleGroup>
+
+<StackPane fx:id="mainPageArea" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AdminMainController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css">
+          <top>
+              <fx:include fx:id="commonTopBar" source="../components/commonTopBar.fxml" />
+          </top>
+          <left>
+              <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
+                  <children>
+                      <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="sidebar-button-large" text="HOME">
+                          <graphic>
+                              <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
+                          </graphic>
+                          <font>
+                              <Font name="Comic Sans MS Bold" size="24.0" />
+                          </font>
+                          <opaqueInsets>
+                              <Insets />
+                          </opaqueInsets>
+                          <VBox.margin>
+                              <Insets />
+                          </VBox.margin>
+                      </Button>
+                      <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
+                          <children>
+                              <Label styleClass="sidebar-title" text="Table Options" />
+                              <ToggleButton mnemonicParsing="false" onAction="#loadAdminPostPage" styleClass="sidebar-button-medium" text="Posts" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                                  <opaqueInsets>
+                                      <Insets />
+                                  </opaqueInsets>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="adminOptions" />
+                           </toggleGroup>
+                              </ToggleButton>
+                              <ToggleButton mnemonicParsing="false" onAction="#generateUserTable" styleClass="sidebar-button-medium" text="User" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                                  <opaqueInsets>
+                                      <Insets />
+                                  </opaqueInsets>
+                              </ToggleButton>
+                              <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Report" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                                  <opaqueInsets>
+                                      <Insets />
+                                  </opaqueInsets>
+                              </ToggleButton>
+                              <ToggleButton layoutX="30.0" layoutY="229.0" mnemonicParsing="false" styleClass="sidebar-button-medium" onAction="#generateInfoPageTable" text="Information Page" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </ToggleButton>
-                        <ToggleButton fx:id="nameButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="User" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                        </ToggleButton>
-                        <ToggleButton fx:id="symptomsButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Report" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                        </ToggleButton>
-                  <ToggleButton fx:id="symptomsButton1" layoutX="30.0" layoutY="229.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="sidebar-button-medium" text="Clinic" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </ToggleButton>
-                    </children>
-                    <padding>
-                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
-                    </padding>
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                </VBox>
-            </children>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
-            </padding></VBox>
-    </left>
-    <center>
-        <StackPane BorderPane.alignment="CENTER_RIGHT">
-            <children>
-                <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;">
-                    <children>
-                        <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
-                            <children>
-                                <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search bar" style="-fx-background-radius: 30;">
-                                    <font>
-                                        <Font name="Arial" size="20.0" />
-                                    </font>
-                                    <padding>
-                                        <Insets left="25.0" right="50.0" />
-                                    </padding>
-                                </TextField>
-                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchSymptoms" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                    <StackPane.margin>
-                                        <Insets right="20.0" />
-                                    </StackPane.margin>
-                                </Button>
-                            </children>
-                        </StackPane>
-                        <TableView fx:id="stiContentTable" maxWidth="840.0" prefWidth="838.0" stylesheets="@../../css/infoTableView.css">
-                            <columns>
-                                <TableColumn fx:id="stiNameColumn" prefWidth="144.8000030517578" styleClass="wrap-text-cell" text="User ID" />
-                                <TableColumn fx:id="stiRiskLevelColumn" prefWidth="96.0" styleClass="wrap-text-cell" text="ID" />
-                                <TableColumn fx:id="stiSymptomsColumn" minWidth="0.0" prefWidth="168.0" styleClass="wrap-text-cell" text="Role" />
-                                <TableColumn fx:id="stiTestAndCureColumn" prefWidth="208.0" styleClass="wrap-text-cell" text="TREATMENT" />
-                                <TableColumn fx:id="stiTransmissionModeColumn" prefWidth="220.0" styleClass="wrap-text-cell" text="PREVENTION" />
-                            </columns>
-                        </TableView>
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                    </padding>
-                </VBox>
-                <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
-            </children>
-        </StackPane>
-    </center>
-</BorderPane>
+                          </children>
+                          <padding>
+                              <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                          </padding>
+                          <VBox.margin>
+                              <Insets />
+                          </VBox.margin>
+                      </VBox>
+                  </children>
+                  <padding>
+                      <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                  </padding>
+            </VBox>
+          </left>
+          <center>
+              <StackPane BorderPane.alignment="CENTER_RIGHT">
+                  <children>
+                      <VBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-background-color: #6C4535;">
+                          <children>
+                              <StackPane alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0">
+                                  <children>
+                                      <TextField fx:id="filterField" maxHeight="1.7976931348623157E308" maxWidth="380.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="380.0" promptText="Search bar" style="-fx-background-radius: 30;">
+                                          <font>
+                                              <Font name="Arial" size="20.0" />
+                                          </font>
+                                          <padding>
+                                              <Insets left="25.0" right="50.0" />
+                                          </padding>
+                                      </TextField>
+                                      <Button fx:id="searchButton" mnemonicParsing="false" prefWidth="28.0" styleClass="info-magnifying" text="🔍">
+                                          <font>
+                                              <Font size="20.0" />
+                                          </font>
+                                          <StackPane.margin>
+                                              <Insets right="20.0" />
+                                          </StackPane.margin>
+                                      </Button>
+                                  </children>
+                              </StackPane>
+                        <HBox fx:id="tableViewArea">
+                           <children>
+                              <TableView fx:id="adminPageTable" prefHeight="375.0" prefWidth="500.0" stylesheets="@../../css/infoTableView.css" HBox.hgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                              <ScrollPane prefHeight="200.0" prefWidth="390.0">
+                                 <content>
+                                    <VBox fx:id="inputField" prefHeight="371.0" prefWidth="390.0">
+                                       <children>
+                                          <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
+                                            <buttons>
+                                              <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="84.0" text="Confirm" />
+                                                <Button fx:id="editOrAddButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="84.0" text="Edit Mode" />
+                                                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="84.0" text="Delete" />
+                                            </buttons>
+                                          </ButtonBar>
+                                          <ComboBox fx:id="idMenuSelection" prefWidth="150.0" promptText="ID" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </HBox>
+                          </children>
+                          <padding>
+                              <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                          </padding>
+                      </VBox>
+                      <ScrollPane fx:id="postScrollPage" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="382.0" prefWidth="764.0" style="-fx-border-color: transparent; -fx-border-width: 0;">
+                          <content>
+                              <BorderPane style="-fx-background-color: #fbe9e1; -fx-border-width: 0;">
+                                  <center>
+                                      <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
+                                  </center>
+                                  <bottom>
+                                      <Button fx:id="loadMoreButton" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#onLoadMoreButtonClick" styleClass="sidebar-button-medium" text="Load More" BorderPane.alignment="CENTER">
+                                          <font>
+                                              <Font size="17.0" />
+                                          </font>
+                                      </Button>
+                                  </bottom>
+                              </BorderPane>
+                          </content>
+                      </ScrollPane>
+                  </children>
+              </StackPane>
+          </center>
+      </BorderPane>
+          <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" progress="0.0" />
+   </children>
+</StackPane>

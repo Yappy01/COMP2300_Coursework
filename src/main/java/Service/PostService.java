@@ -49,9 +49,15 @@ public class PostService {
         return true;
     }
 
+    public void likePost(Post post, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                return postDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
+            }
+        };
 
-    public void likePost(Post post) {
-        postDatabase.toggleLike(post.getPostId(), Session.getInstance().getUser().getUserId());
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void commentPost(Post post, String content) {
@@ -72,11 +78,11 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void getAllPostsAsync(String type, Integer limit, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+    public void getAllPostsAsync(String type, Integer limit, Boolean showDeleted, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
         Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
             @Override
             protected ArrayList<Post> call() throws Exception {
-                return postDatabase.getCard(limit, type);
+                return postDatabase.getCard(limit, type, showDeleted);
             }
         };
         General.setTask(task, onSucceeded, onFailed, executor);
@@ -115,6 +121,18 @@ public class PostService {
 
         General.setTask(task, onSucceeded, onFailed, executor);
     }
+
+    public void tempDeleteAsync(Integer postId, String text, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return postDatabase.tempDelete(postId, text);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
 
     public void deletePostAsync(Post post, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task<Boolean>() {

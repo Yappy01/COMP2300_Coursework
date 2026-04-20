@@ -10,15 +10,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import utils.General;
 import utils.Session;
 
+import javax.imageio.event.IIOWriteProgressListener;
 import java.io.IOException;
 import java.util.Objects;
 
 public class HomePageController {
+    @FXML private AnchorPane buttonLayout;
     @FXML private ProgressIndicator progressIndicator;
     //all textfields, passwordfields and button in the fxml has been recorded here
     //even if they are not all used
@@ -28,6 +31,7 @@ public class HomePageController {
     @FXML private Button mp_InfoBtn;
     @FXML private Button mp_QuizBtn;
     @FXML private Button mp_ComBtn;
+    @FXML private Button adminButton;
 
     @FXML private Button mp_TodayFactBtn;
     @FXML private Button mp_TodayQuizBtn;
@@ -41,6 +45,9 @@ public class HomePageController {
     //initiate the homePagePane
     @FXML private void initialize() {
         this.assign_usertag(Session.getInstance().getUserName());
+        if (Session.getInstance().getUser().getRole().equals("Admin")) {
+            adminButton.setVisible(true);
+        }
         this.setNoteToSelf();
     }
 
@@ -87,6 +94,20 @@ public class HomePageController {
     public void comBtn(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(
                 getClass().getResource("/fxml/pages/community.fxml")
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void adminBtn(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/fxml/pages/adminMain.fxml")
         );
 
         Stage stage = (Stage) ((Node) event.getSource())

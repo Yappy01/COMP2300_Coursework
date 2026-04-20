@@ -3,9 +3,11 @@ package Service;
 import DBHandling.UserRepository;
 import Models.User;
 import javafx.concurrent.Task;
+import net.bytebuddy.implementation.bytecode.Throw;
 import utils.General;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +19,28 @@ public class UserService {
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
     public User searchByUsername(String keyword) {
         return userRepository.getUser(keyword);
+    }
+
+    public void deleteUserAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return userRepository.deleteUser(user);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void updateUserAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<Boolean> task = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return userRepository.updateUser(user);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
     }
 
     public void getUserName(Integer userId, Consumer<String> onSucceeded, Consumer<Throwable> onFailed) {
@@ -67,6 +91,37 @@ public class UserService {
 
     public boolean checkEmailExist(String email) {
         return userRepository.checkEmailExist(email);
+    }
+
+    public void getAllUserAsync(Consumer<ArrayList<User>> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<ArrayList<User>> task = new Task<ArrayList<User>>() {
+            @Override
+            protected ArrayList<User> call() throws Exception {
+                return userRepository.getAllUser();
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public String validateCredentials(String username, String password, String email, String answer, String question) {
+        if (username.isEmpty() || password.isEmpty()
+                || email.isEmpty() || answer.isEmpty()
+                || question.isEmpty()) {
+            return "Please fill all blank fields";
+
+            //check if username is unique
+        } else if (checkUserExist(username)) {
+            return("username already exist. Please choose another username");
+
+            //check if email is unique(email should be unique)
+        } else if (checkEmailExist(email)) {
+            return("email already exist. Please login using this email");
+        } else if (password.length() < 8) {
+            return("Invalid Password, at least 8 characters are needed");
+        } else {
+            return "";
+        }
     }
 
     public void register_userAsync(User user, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {

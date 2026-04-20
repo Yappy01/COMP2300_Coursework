@@ -51,7 +51,7 @@
                      <children>
                         <AnchorPane layoutX="20.0" layoutY="16.0" prefHeight="430.0" prefWidth="1060.0" styleClass="main">
                            <children>
-                              <AnchorPane layoutX="34.0" layoutY="36.0" prefHeight="373.0" prefWidth="447.0">
+                              <AnchorPane fx:id="buttonLayout" layoutX="34.0" layoutY="36.0" prefHeight="373.0" prefWidth="447.0">
                                  <children>
                                     <Label layoutX="156.0" layoutY="21.0" styleClass="sectionTitleFont" text="MENU">
                                        <font>
@@ -77,6 +77,15 @@
                                        </styleClass>
                                     </Button>
                                     <Button fx:id="mp_ComBtn" layoutX="40.0" layoutY="272.0" mnemonicParsing="false" onAction="#comBtn" prefHeight="54.0" prefWidth="368.0" text="Community Page">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="section-btn" />
+                                          <String fx:value="sectionSubFont" />
+                                       </styleClass>
+                                    </Button>
+                                    <Button fx:id="adminButton" layoutX="40.0" layoutY="360.0" mnemonicParsing="false" onAction="#adminBtn" prefHeight="54.0" prefWidth="368.0" text="Admin Page" visible="false">
                                        <font>
                                           <Font size="16.0" />
                                        </font>

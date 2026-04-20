@@ -2,6 +2,7 @@ package DBHandling;
 import Models.User; //import the model of user
 import utils.DBConnection; //import the dbconnector
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -166,6 +167,45 @@ public class UserRepository {
         return false;
     }
 
+    public ArrayList<User> getAllUser() {
+        ArrayList<User> userList = new ArrayList<>();
+
+        String query = "SELECT * FROM users";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement count_stmt = conn.prepareStatement(query)) {
+
+            ResultSet rs = count_stmt.executeQuery();
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("userId"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("role")
+                );
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    public boolean deleteUser(User user) {
+        String query = "DELETE FROM users WHERE \"userId\" = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, user.getUserId());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public User getUser(String username) {
         String query = "SELECT * FROM users WHERE name = ?";
         User user = null;
@@ -178,7 +218,8 @@ public class UserRepository {
                 user = new User(
                         rs.getInt("userId"),
                         rs.getString("name"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("role")
                 );
 
                 return user;
@@ -285,5 +326,24 @@ public class UserRepository {
             e.printStackTrace();
         }
         return profileData;
+    }
+
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET name=?, email=?, role=? WHERE \"userId\"=?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getRole());
+            stmt.setInt(4, user.getUserId());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

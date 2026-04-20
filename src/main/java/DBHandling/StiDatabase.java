@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class StiDatabase {
-    public void save(StiEntry sti) {
+    public Boolean addSti(StiEntry sti) {
         String sql = "INSERT INTO sti_information (name, symptoms, prevention, treatment, risklevel) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -24,10 +24,12 @@ public class StiDatabase {
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 sti.setStiId(rs.getInt(1));
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // 2️⃣ Read (By ID)
@@ -88,7 +90,7 @@ public class StiDatabase {
     }
 
     // 3️⃣ Update
-    public void update(StiEntry sti) {
+    public Boolean update(StiEntry sti) {
         String sql = "UPDATE sti_information SET name=?, symptoms=?, prevention=?, treatment=?, risklevel=? WHERE stiid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -101,14 +103,15 @@ public class StiDatabase {
             stmt.setInt(6, sti.getStiId());
 
             stmt.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // 4️⃣ Delete
-    public void delete(int id) {
+    public Boolean delete(int id) {
         String sql = "DELETE FROM sti_information WHERE stiid=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -116,9 +119,11 @@ public class StiDatabase {
             stmt.setInt(1, id);
             stmt.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // 5️⃣ List All

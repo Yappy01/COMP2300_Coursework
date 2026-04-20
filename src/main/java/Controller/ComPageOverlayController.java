@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import utils.General;
 
 import java.io.IOException;
 
@@ -56,7 +57,13 @@ public class ComPageOverlayController {
     }
 
     public void likeClicked() {
-        postService.likePost(post);
+        parentController.setProgressIndicatorVisibility(true);
+        postService.likePost(post, (value) -> {
+            parentController.setProgressIndicatorVisibility(false);
+        }, (error) -> {
+            parentController.setProgressIndicatorVisibility(false);
+            error.printStackTrace();
+        });
     }
 
     public void sendComment() {
@@ -67,6 +74,7 @@ public class ComPageOverlayController {
 
     public void setCommentSection() {
         parentController.setProgressIndicatorVisibility(true);
+        commentBox.getChildren().clear();
         postService.getCommentsAsync(post, (comments) -> {
             for (int i = 0; i < comments.size(); i++) {
                 comments.get(i);
