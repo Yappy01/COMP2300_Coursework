@@ -125,4 +125,15 @@ public class StiService {
         }
         return "";
     }
+
+    public void getFunFactAsync(Integer id, Consumer<String> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return stiDatabase.getFunFact(id);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
 }
