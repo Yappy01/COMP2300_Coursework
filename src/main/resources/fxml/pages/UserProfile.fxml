@@ -160,13 +160,27 @@
                                  </GridPane.margin>
                                  <children>
                                     <Label layoutX="14.0" layoutY="14.0" styleClass="sectionTitleFont" text="GENERAL INFORMATION:" />
-                                    <Label layoutX="14.0" layoutY="60.0" styleClass="sectionSubFont" text="PHONE NUMBER:" />
-                                    <Label layoutX="14.0" layoutY="122.0" styleClass="sectionSubFont" text="DATE OF BIRTH:" />
+                                    <Label layoutX="14.0" layoutY="56.0" styleClass="sectionSubFont" text="PHONE NUMBER:" />
+                                    <Label layoutX="14.0" layoutY="100.0" styleClass="sectionSubFont" text="DATE OF BIRTH:" />
+                                    <Label layoutX="14.0" layoutY="137.0" styleClass="sectionSubFont" text="GENDER:" />
                                     <Line endX="178.0" layoutX="115.0" layoutY="86.0" startX="-100.0" strokeWidth="2.0" />
-                                    <Line endX="178.0" layoutX="115.0" layoutY="150.0" startX="-100.0" strokeWidth="2.0" />
-                                    <TextField fx:id="pntextfield" layoutX="144.0" layoutY="57.0" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" />
-                                    <TextField fx:id="dateOfBirthField" layoutX="135.0" layoutY="119.0" promptText="DD/MM/YY" styleClass="textfield" />
-                                     <Button fx:id="add_event_Button1" layoutX="227.0" layoutY="155.0" mnemonicParsing="false" onAction="#add_personalInformation" prefHeight="41.0" prefWidth="70.0" styleClass="add-button" text="Save" />
+                                    <Line endX="178.0" layoutX="115.0" layoutY="128.0" startX="-100.0" strokeWidth="2.0" />
+                                    <TextField fx:id="pntextfield" layoutX="134.0" layoutY="52.0" promptText="ex. xxx-xxx-xxxx" styleClass="textfield" />
+                                    <TextField fx:id="dateOfBirthField" layoutX="127.0" layoutY="97.0" promptText="DD/MM/YY" styleClass="textfield" />
+                                    <Label fx:id="genderField" layoutX="81.0" layoutY="138.0" text="choose one below" styleClass="textfield" />
+
+
+                                     <HBox alignment="CENTER_LEFT" layoutX="18.0" layoutY="156.0" prefHeight="26.0" prefWidth="282.0" spacing="10.0">
+                                         <children>
+                                             <RadioButton fx:id="maleRadio" text="Male">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="genderGroup" />
+                                             </toggleGroup></RadioButton>
+                                             <RadioButton fx:id="femaleRadio" text="Female" toggleGroup="$genderGroup" />
+                                             <RadioButton fx:id="otherRadio" text="Other:" toggleGroup="$genderGroup" />
+                                             <TextField fx:id="otherGenderField" prefHeight="25.0" prefWidth="88.0" promptText="Specify" visible="true" />                                         </children>
+                                     </HBox>
+                                     <Button fx:id="add_event_Button1" layoutX="242.0" layoutY="21.0" mnemonicParsing="false" onAction="#add_personalInformation" prefHeight="38.0" prefWidth="57.0" styleClass="add-button" text="Save" />
                                  </children>
                               </AnchorPane>
                            </children>

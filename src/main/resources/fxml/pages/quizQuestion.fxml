@@ -188,7 +188,7 @@
             <children>
                 <AnchorPane prefHeight="486.0" prefWidth="840.0" styleClass="main" stylesheets="@../../css/quizMainDesign.css">
                     <children>
-                        <Label layoutX="24.0" layoutY="20.0" styleClass="questionNoFont" stylesheets="@../../css/quizQuestionDesign.css" text="Question 1" />
+                        <Label fx:id="questionNumberLabel" layoutX="24.0" layoutY="20.0" styleClass="questionNoFont" stylesheets="@../../css/quizQuestionDesign.css" text="Question 1" />
                         <Label fx:id="questionLabel" layoutX="24.0" layoutY="67.0" maxWidth="789.0" prefHeight="159.0" prefWidth="789.0" styleClass="questionFont" stylesheets="@../../css/quizQuestionDesign.css" text="What is the best time to take morning-after pill? Please choose the answer that is most accurate." wrapText="true" />
                         <GridPane layoutX="19.0" layoutY="224.0" prefHeight="231.0" prefWidth="799.0">
                             <columnConstraints>

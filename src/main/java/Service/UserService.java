@@ -109,11 +109,11 @@ public class UserService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void change_personalInformationAsync(Integer userid, String phone_number, String date_of_birth, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
+    public void change_personalInformationAsync(Integer userid, String phone_number, String date_of_birth, String gender, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
         Task<Boolean> task = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                return userRepository.change_personalInformation(userid, phone_number, date_of_birth);
+                return userRepository.change_personalInformation(userid, phone_number, date_of_birth,gender);
             }
         };
 

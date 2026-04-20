@@ -221,12 +221,12 @@
                                         <Font size="100.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="291.0" layoutY="32.0" text="🦒">
+                                <Label layoutX="330.0" layoutY="44.0" prefHeight="171.0" prefWidth="184.0" text="🐘">
                                     <font>
                                         <Font size="110.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="443.0" layoutY="106.0" text="🦒">
+                                <Label layoutX="443.0" layoutY="106.0" text="🐘">
                                     <font>
                                         <Font size="56.0" />
                                     </font>

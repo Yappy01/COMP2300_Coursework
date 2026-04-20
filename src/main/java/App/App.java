@@ -17,6 +17,12 @@ public class App extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
+
+    @Override
+    public void stop() {
+        System.out.println("Stage is closing. Shutting down.");
+        System.exit(0);
+    }
     public static void main(String[] args) {
         launch(args);
     }

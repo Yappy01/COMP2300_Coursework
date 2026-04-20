@@ -95,8 +95,11 @@ public class QuizQuestionController {
     }
 
     private void showQuestion(int index) {
-        System.out.println(activeQuizzes.size());
+//        System.out.println(activeQuizzes.size());
+//        System.out.println("current Question index in show question: " + currentQuestionIndex);
+
         Quiz q = activeQuizzes.get(index);
+
         if (questionNumberLabel != null) questionNumberLabel.setText("Question " + (index+1));
 
         //update the question
@@ -138,6 +141,7 @@ public class QuizQuestionController {
 
             if (currentQuestionIndex < 7) {
                 currentQuestionIndex++;
+//                System.out.println("current Question index: " + currentQuestionIndex);
                 questions.selectToggle(questions.getToggles().get(currentQuestionIndex));
                 showQuestion(currentQuestionIndex);
             }

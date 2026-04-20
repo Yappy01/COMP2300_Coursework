@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,19 +18,24 @@ public class QuizMainController {
 
     @FXML private MenuButton quiz_title;
     @FXML private Label usernameLbl;
-
+    @FXML private ProgressIndicator progressIndicator;
     @FXML private Button startButton;
     private int quizCategory;
 
     private final QuizService quizService = new QuizService();
     private List<Quiz> currentQuizList;
 
+
+
     @FXML public void initialize() {
         usernameLbl.setText(utils.Session.getInstance().getUserName());
+        progressIndicator.setVisible(false);
     };
 
     @FXML
     public void handleQuizSelection(ActionEvent event) throws IOException {
+        progressIndicator.setVisible(true);
+        startButton.setDisable(true);
         Object source = event.getSource();
 
         if (source instanceof MenuItem) {
@@ -41,7 +43,6 @@ public class QuizMainController {
             String selectedText = item.getText();
 
             quiz_title.setText(selectedText);
-
 
             // Map the text to your database type IDs
            final int typeId = selectedText.equals("STI quiz") ? 1 : 2;
@@ -53,24 +54,20 @@ public class QuizMainController {
                         this.currentQuizList = quizzes;
                         quiz_title.setText(selectedText);
                         System.out.println("handleQuiz" + currentQuizList);
-
+                        progressIndicator.setVisible(false);
+                        startButton.setDisable(false);
                     },
                     error -> {
-                        System.err.println("Failed to load quizzes: " + error.getMessage());
+                        error.printStackTrace();
+                        progressIndicator.setVisible(false);
+                        utils.General.getErrorAlert("Quiz was not loaded");
                     });
 
-            while (currentQuizList == null) {
-                utils.General.getInfoAlert("Wait for quiz to be loaded!");
-            }
-            utils.General.getInfoAlert("Quiz loaded!");
         } else {
             System.out.println("Source was not a MenuItem: " + source.getClass());
         }
     }
 
-//    @FXML private int loadQuiz(int typeid) throws IOException {
-//        return typeid;
-//    }
 
 
     @FXML void startQuiz(ActionEvent event) throws IOException {

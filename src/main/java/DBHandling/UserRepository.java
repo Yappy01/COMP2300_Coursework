@@ -223,14 +223,15 @@ public class UserRepository {
         return false;
     }
 
-    public boolean change_personalInformation(Integer userid, String phone_number,String date_of_birth) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users SET phone_number = ?, date_of_birth = ? WHERE \"userId\" = ?";
+    public boolean change_personalInformation(Integer userid, String phone_number,String date_of_birth, String gender) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users SET phone_number = ?, date_of_birth = ?, gender = ? WHERE \"userId\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
             update_user_stmt.setString(1, phone_number.trim());
             update_user_stmt.setString(2, date_of_birth.trim());
-            update_user_stmt.setInt(3,userid);
+            update_user_stmt.setString(3, gender.trim());
+            update_user_stmt.setInt(4,userid);
             update_user_stmt.executeUpdate();
             System.out.println("Note updated in the database successfully");
             return true;
@@ -265,7 +266,7 @@ public class UserRepository {
 
     public Map<String, String> getUserFullProfile(int userId) {
         Map<String, String> profileData = new HashMap<>();
-        String query = "SELECT phone_number, date_of_birth, allergies, blood_type,injuries_illness, chronic_diseases FROM users WHERE \"userId\" = ?";
+        String query = "SELECT phone_number, date_of_birth,gender, allergies, blood_type,injuries_illness, chronic_diseases FROM users WHERE \"userId\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -275,6 +276,7 @@ public class UserRepository {
                 if (rs.next()) {
                     profileData.put("phone", rs.getString("phone_number"));
                     profileData.put("dob", rs.getString("date_of_birth"));
+                    profileData.put("gender", rs.getString("gender"));
                     profileData.put("allergies", rs.getString("allergies"));
                     profileData.put("chronic", rs.getString("chronic_diseases"));
                     profileData.put("blood", rs.getString("blood_type"));
