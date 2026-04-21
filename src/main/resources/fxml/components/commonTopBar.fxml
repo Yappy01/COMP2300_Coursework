@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="commonTopBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="1100.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommonTopBarController">
+<HBox fx:id="commonTopBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="1100.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommonTopBarController">
    <children>
       <Label alignment="CENTER" minWidth="100.0" text="♛" textAlignment="CENTER" textFill="#361000">
          <font>
