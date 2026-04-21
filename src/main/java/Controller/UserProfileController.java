@@ -109,6 +109,7 @@ public class UserProfileController {
 
                 // Set RadioButton based on DB value
                 String gender = data.getOrDefault("gender", "");
+                if (gender == null) {gender = "";}
                 if ("Male".equalsIgnoreCase(gender)) {
                     genderField.setText("Male");
                     maleRadio.setSelected(true);

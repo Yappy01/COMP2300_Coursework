@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ComPostDatabase {
 
     public Integer countPostsToday(User user) {
-        String sql = "SELECT COUNT(*) FROM posts WHERE user_id = ? AND created_at >= CURRENT_DATE;";
+        String sql = "SELECT COUNT(*) FROM posts WHERE userid = ? AND created_at >= CURRENT_DATE;";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

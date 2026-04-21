@@ -269,9 +269,12 @@ public class UserRepository {
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement update_user_stmt = conn.prepareStatement(query)) {
-            update_user_stmt.setString(1, phone_number.trim());
-            update_user_stmt.setString(2, date_of_birth.trim());
-            update_user_stmt.setString(3, gender.trim());
+            if (phone_number != null) {phone_number = phone_number.trim();}
+            if (date_of_birth != null) {date_of_birth = date_of_birth.trim();}
+            if (gender != null) {gender = gender.trim();}
+            update_user_stmt.setString(1, phone_number);
+            update_user_stmt.setString(2, date_of_birth);
+            update_user_stmt.setString(3, gender);
             update_user_stmt.setInt(4,userid);
             update_user_stmt.executeUpdate();
             System.out.println("Note updated in the database successfully");
