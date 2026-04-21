@@ -82,6 +82,7 @@ public class AdminMainController implements PostParent {
     private ArrayList<Post> postsList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
     private ArrayList<StiEntry> stiList = new ArrayList<>();
+    private final ObservableList<String> roles = FXCollections.observableArrayList("Admin", "User", "Verified");
 
     public void initialize() {
         postScrollPage.setVisible(false);
@@ -468,7 +469,11 @@ public class AdminMainController implements PostParent {
             Node inputBox = loader.load();
 
             InputBoxController controller = loader.getController();
-            controller.configInputBox(col.getText(), "");
+            if (col.getText().equals("Role")) {
+                controller.setMenuItem(roles);
+            } else {
+                controller.configInputBox(col.getText(), "");
+            }
             controllerMap.put(col.getText(), controller);
             inputBox.setId(col.getText()); // Check if actually needed
             inputField.getChildren().add(inputBox);
