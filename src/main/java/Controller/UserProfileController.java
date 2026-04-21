@@ -17,15 +17,18 @@ import utils.Session;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class UserProfileController {
 
+    @FXML private TextField mp_NoteToSelf;
+    @FXML private ScrollPane noteToYourself;
     @FXML private ToggleGroup visitsTreatments;
     @FXML private TextField pntextfield;
     @FXML private TextField dateOfBirthField;
     @FXML private TextField allergies_textfield;
     @FXML private TextField chronicdiseaseTextfield;
-    @FXML private TextField btTextefield;
+    @FXML private TextField btTextfield;
     @FXML private TextField piTextfield;
     @FXML private VBox eventContainer;
     @FXML private ProgressIndicator progressIndicator;
@@ -55,6 +58,8 @@ public class UserProfileController {
         filterEvents();
         displayEventsFromDatabase();
         username_label.setText(Session.getInstance().getUserName());
+
+        setNoteToSelf();
     }
 
     @FXML
@@ -90,7 +95,7 @@ public class UserProfileController {
                 dateOfBirthField.setText(data.getOrDefault("dob", ""));
                 allergies_textfield.setText(data.getOrDefault("allergies", ""));
                 chronicdiseaseTextfield.setText(data.getOrDefault("chronic", ""));
-                btTextefield.setText(data.getOrDefault("blood", ""));
+                btTextfield.setText(data.getOrDefault("blood", ""));
                 piTextfield.setText(data.getOrDefault("injuries", ""));
             }
             progressIndicator.setVisible(false);
@@ -120,7 +125,7 @@ public class UserProfileController {
 
     @FXML void add_anamnesis() throws SQLException, ClassNotFoundException {
         progressIndicator.setVisible(true);
-        userService.change_anamnesisAsync(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextefield.getText(), piTextfield.getText(),
+        userService.change_anamnesisAsync(Session.getInstance().getUserID(),allergies_textfield.getText(), chronicdiseaseTextfield.getText(), btTextfield.getText(), piTextfield.getText(),
                 (value) -> {
                     if (value){
                         General.getInfoAlert("Information successfully added.");
@@ -259,5 +264,41 @@ public class UserProfileController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void noteToSelfBtn() {
+        progressIndicator.setVisible(true);
+        String name = Session.getInstance().getUserName();
+        String note = mp_NoteToSelf.getText();
+
+        userService.change_notetoselfAsync(name,note, (value) -> {
+            progressIndicator.setVisible(false);
+            if(value){
+                setNoteToSelf();
+            }else{
+                General.getInfoAlert("The note was not changed.");
+            }
+        }, (error) -> {
+            error.printStackTrace();
+            progressIndicator.setVisible(false);
+        });
+    }
+
+    public void setNoteToSelf() {
+        progressIndicator.setVisible(true);
+        String name = Session.getInstance().getUserName();
+
+        userService.fetch_notetoselfAsync(name, (note) -> {
+            progressIndicator.setVisible(false);
+            if (Objects.equals(note, null)) {
+                mp_NoteToSelf.clear();
+            }else{
+                mp_NoteToSelf.setText(note);
+            }
+        }, (error) -> {
+            error.printStackTrace();
+            progressIndicator.setVisible(false);
+        });
     }
 }

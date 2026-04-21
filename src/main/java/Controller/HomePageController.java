@@ -1,5 +1,7 @@
 package Controller;
 
+import DBHandling.StiDatabase;
+import Service.StiService;
 import Service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +21,7 @@ import utils.Session;
 import javax.imageio.event.IIOWriteProgressListener;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 public class HomePageController {
     @FXML private AnchorPane buttonLayout;
@@ -41,6 +44,7 @@ public class HomePageController {
     private final UserService userService = new UserService();
 
     @FXML private StackPane homePagePane;
+    private final StiService stiService = new StiService();
 
     //initiate the homePagePane
     @FXML private void initialize() {
@@ -121,7 +125,20 @@ public class HomePageController {
     //access to today's fact, not yet connected
     @FXML
     public void todayFactBtn() {
-        General.getInfoAlert("The today fact in information page will be displayed.");
+        progressIndicator.setVisible(true);
+        Random rand = new Random();
+
+        int randomInt = rand.nextInt(20);
+
+        stiService.getFunFactAsync(randomInt, (tdyFunFact) -> {
+            progressIndicator.setVisible(false);
+            mp_TodayFactBtn.setText(tdyFunFact);
+            mp_TodayFactBtn.setWrapText(true);
+            General.getInfoAlert(tdyFunFact);
+        }, (error) -> {
+            progressIndicator.setVisible(false);
+            error.printStackTrace();
+        });
     }
 
     //access to today's quiz, not yet made

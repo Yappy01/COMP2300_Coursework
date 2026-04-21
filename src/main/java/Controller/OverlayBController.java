@@ -215,6 +215,7 @@ public class OverlayBController {
 
     @FXML
     public void initialize() {
+        General.addPopup(insertButton, "Please don't include sensitive information like names or other personal details in your posts.");
         if (imagePreview.getImage() == null) {
             imagePreview.setVisible(false);
             imagePreview.setManaged(false);

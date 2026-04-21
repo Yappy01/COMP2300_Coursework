@@ -100,7 +100,7 @@
                                         <Insets />
                                     </opaqueInsets>
                                 </ToggleButton>
-                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="LGBTQ+" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
+                                <ToggleButton mnemonicParsing="false" onAction="#filterTags" styleClass="sidebar-button-medium" text="Verified User" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -121,12 +121,12 @@
                     <children>
                         <ScrollPane fx:id="postScrollPage" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="382.0" prefWidth="764.0" style="-fx-border-color: transparent; -fx-border-width: 0;">
                             <content>
-                        <BorderPane style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" >
+                        <BorderPane style="-fx-background-color: #fbe9e1; -fx-border-width: 0;">
                            <center>
                                       <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
                            </center>
                            <bottom>
-                              <Button fx:id="loadMoreButton" onAction="#onLoadMoreButtonClick" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" text="Load More" styleClass="sidebar-button-medium" BorderPane.alignment="CENTER">
+                              <Button fx:id="loadMoreButton" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#onLoadMoreButtonClick" styleClass="sidebar-button-medium" text="Load More" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font size="17.0" />
                                  </font>

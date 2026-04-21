@@ -157,7 +157,6 @@ public class PostService {
                     if (!"ok".equals(status) && !"not found".equals(status)) {
                         throw new RuntimeException("Cloudinary deletion failed: " + status);
                     }
-                    System.out.println("PUBLiC ID =" + post.getPublicId());
                     System.out.println(result);
                 }
                 return postDatabase.delete(post.getPostId());
@@ -214,6 +213,17 @@ public class PostService {
                         commentCount,
                         filePath
                 );
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
+
+    public void getVerifiedPost(Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
+            @Override
+            protected ArrayList<Post> call() throws Exception {
+                return postDatabase.getPostsByRole("Verified", Session.getInstance().getLoadedPostNum());
             }
         };
 

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import utils.General;
@@ -86,7 +87,6 @@ public class CommunityPageController implements PostParent {
         filterRecent();
         postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() == 1.0) {
-                System.out.println("At the bottom!");
                 loadMoreButton.setVisible(true);
             }
         });
@@ -186,6 +186,7 @@ public class CommunityPageController implements PostParent {
     }
 
     public void loadCards() {
+        progressIndicator.setVisible(true);
         for (int i = 0; i < postsList.size(); i++) {
             Post post = postsList.get(i);
             try {
@@ -197,7 +198,6 @@ public class CommunityPageController implements PostParent {
                 controller.setParentController(this);
 
                 userService.getUserName(post.getUserId(), (name) -> {
-                    System.out.println(index);
                     controller.setComPageOverlayController(comPageOverlayController);
                     controller.setPost(postsList.get(index));
                     controller.setData(name, post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());
@@ -218,6 +218,29 @@ public class CommunityPageController implements PostParent {
         }
     }
 
+
+    @FXML
+    private void filterTags(ActionEvent event) {
+        progressIndicator.setVisible(true);
+        ToggleButton tagBtn = (ToggleButton) (event.getSource());
+
+        if (tagBtn.isSelected()) {
+            postService.getVerifiedPost((allPost) -> {
+                postsList.clear();
+                cardTiles.getChildren().clear();
+
+                postsList = allPost;
+                loadCards(); // UI update
+                progressIndicator.setVisible(false);
+            }, (error) -> {
+                progressIndicator.setVisible(false);
+                error.printStackTrace();
+            });
+        } else {
+            reloadCards();
+        }
+
+    }
 
     @FXML
     public void goToHomepage(ActionEvent event) throws IOException {

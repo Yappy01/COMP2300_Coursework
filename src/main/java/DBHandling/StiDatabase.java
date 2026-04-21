@@ -182,4 +182,26 @@ public class StiDatabase {
 
         return list;
     }
+
+    public String getFunFact(Integer id) {
+        String sql = "SELECT * FROM fun_fact WHERE id = ?";
+        String funFact = "";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                funFact = rs.getString("funfact");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return funFact;
+    }
+
 }
