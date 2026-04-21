@@ -134,12 +134,11 @@ public class HomePageController {
             progressIndicator.setVisible(false);
             mp_TodayFactBtn.setText(tdyFunFact);
             mp_TodayFactBtn.setWrapText(true);
+            General.getInfoAlert(tdyFunFact);
         }, (error) -> {
             progressIndicator.setVisible(false);
             error.printStackTrace();
         });
-
-//        General.getInfoAlert("The today fact in information page will be displayed.");
     }
 
     //access to today's quiz, not yet made
