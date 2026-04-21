@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:controller="Controller.ComPageOverlayController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ComPageOverlayController">
    <children>
       <StackPane fx:id="mainPostPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
          <children>
@@ -66,9 +66,9 @@
                         <Insets top="50.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="BOTTOM_CENTER">
+                  <HBox alignment="BOTTOM_CENTER" spacing="20.0">
                      <children>
-                        <Button fx:id="overlayLikeButton" onAction="#likeClicked" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
+                        <Button fx:id="overlayLikeButton" alignment="CENTER" mnemonicParsing="false" onAction="#likeClicked" prefHeight="25.0" prefWidth="25.0" styleClass="community-btn-like">
                            <font>
                               <Font name="Constantia" size="24.0" />
                            </font>
@@ -84,6 +84,7 @@
                            </graphic>
                         </Button>
                         <Region HBox.hgrow="SOMETIMES" />
+                        <Button fx:id="reportButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#reportPost" prefWidth="100.0" text="Report" />
                         <StackPane maxWidth="350.0" HBox.hgrow="ALWAYS">
                            <children>
                               <TextField fx:id="commentTextField" minHeight="40.0" promptText="Enter Comment Here" style="-fx-background-radius: 10;">
@@ -93,7 +94,7 @@
                                  <font>
                                     <Font name="Constantia" size="16.0" />
                                  </font></TextField>
-                              <Button onAction="#sendComment" mnemonicParsing="false" styleClass="community-btn-send" StackPane.alignment="CENTER_RIGHT">
+                              <Button mnemonicParsing="false" onAction="#sendComment" styleClass="community-btn-send" StackPane.alignment="CENTER_RIGHT">
                                  <graphic>
                                     <Group>
                                        <children>
@@ -114,7 +115,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT" onAction="#clickExitButton">
+            <Button mnemonicParsing="false" onAction="#clickExitButton" styleClass="community-btn-overlay-close" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
                   <Insets top="15.0" />
                </StackPane.margin>

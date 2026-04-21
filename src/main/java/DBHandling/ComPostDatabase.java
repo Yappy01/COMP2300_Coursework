@@ -339,6 +339,25 @@ public class ComPostDatabase {
         }
     }
 
+    public boolean toggleReport(int postId, int userId, String reason) {
+        String submitReport = "INSERT INTO post_report (postid, userid, status, reason) VALUES (?, ?, 'pending', ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(submitReport)) {
+
+            stmt.setInt(1, postId);
+            stmt.setInt(2, userId);
+            stmt.setString(3, reason);
+
+            stmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean addComment(int postId, int userId, String content) {
         String insertComment = "INSERT INTO comments (postid, userid, content) VALUES (?, ?, ?)";
         // Optional: If your 'posts' table has a 'commentCount' column to track totals

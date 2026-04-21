@@ -95,4 +95,20 @@ public class ComPageOverlayController {
             parentController.setProgressIndicatorVisibility(false);
         });
     }
+
+    public void reportPost() {
+        parentController.setProgressIndicatorVisibility(true);
+        String text = General.getTextInput("Reporting Post", "Please Type Reason for Reporting Post: ");
+
+        postService.reportPost(post, "report", (value) -> {
+            if (value) {
+                System.out.println("Successfully reported post");
+            }
+            parentController.setProgressIndicatorVisibility(false);
+            parentController.reloadCards();
+            }, (error) -> {
+            error.printStackTrace();
+            parentController.setProgressIndicatorVisibility(false);
+        });
+    }
 }

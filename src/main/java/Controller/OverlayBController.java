@@ -86,12 +86,14 @@ public class OverlayBController {
                 editPost();
             });
 
-            Image image = new Image(oriPost.getImageLink());
-            imagePreview.setVisible(true);
-            imagePreview.setManaged(true);
-            imagePreview.setImage(image);
-            imageArea.getChildren().add(fileLabel);
-            uploadButton.setVisible(false);
+            if  (!oriPost.getImageLink().isEmpty()) {
+                Image image = new Image(oriPost.getImageLink());
+                imagePreview.setVisible(true);
+                imagePreview.setManaged(true);
+                imagePreview.setImage(image);
+                imageArea.getChildren().add(fileLabel);
+                uploadButton.setVisible(false);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to load file label UI.");
