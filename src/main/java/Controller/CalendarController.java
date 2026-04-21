@@ -87,6 +87,7 @@ public class CalendarController implements Initializable {
                     clearFields();
                     System.out.println("Event Saved Successfully!");
                     General.getInfoAlert("Event Saved!");
+                    handleExit();
                 },
                 (error) -> {
                     userProfileController.setProgressIndicatorVisible(false);
@@ -104,12 +105,12 @@ public class CalendarController implements Initializable {
     }
 
     @FXML
-    private void handleExit(ActionEvent event) {
+    private void handleExit() {
         if (userProfileController != null) {
             userProfileController.refreshEvents();
         }
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
+//        Node source = (Node) eventDescription.getSource();
+        Stage stage = (Stage) eventDescription.getScene().getWindow();
         stage.close();
 
     }

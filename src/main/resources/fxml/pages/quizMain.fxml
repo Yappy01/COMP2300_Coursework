@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.QuizMainController">
+    <top>
+        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1100.0" spacing="250.0" style="-fx-border-width: 4 0 4 0; -fx-border-color: black;" BorderPane.alignment="CENTER">
+            <children>
+                <Label maxHeight="1.7976931348623157E308" text="♛" textAlignment="CENTER" textFill="#361000">
+                    <font>
+                        <Font name="Georgia" size="72.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                    <padding>
+                        <Insets left="25.0" right="25.0" />
+                    </padding>
+                </Label>
+                <Label styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="      Quiz Page      " textAlignment="CENTER" textFill="#6c4535">
+                    <font>
+                        <Font name="Comic Sans MS Bold" size="40.0" />
+                    </font>
+                </Label>
+                <VBox alignment="CENTER" onMouseClicked="#gotoUserProfile">
+                    <children>
+                            <SVGPath content="M36 6 C19.44 6 6 19.44 6 36 s13.44 30 30 30 30-13.44 30-30 S52.56 6 36 6 zm0 12 a9 9 0 1 1 0 18 9 9 0 0 1 0-18 zm0 42 c-7.5 0-14.13-3.84-18-9.66 .09-5.97 12-9.24 18-9.24 5.97 0 17.91 3.27 18 9.24 C50.13 56.16 43.5 60 36 60z" onMouseClicked="#gotoUserProfile" />
+                            <Label fx:id="usernameLbl" onMouseClicked="#gotoUserProfile" text="Username" textFill="#6c4535">
+                                <font>
+                                    <Font name="Cambria" size="16.0" />
+                                </font>
+                            </Label>
+<!--                        <Button mnemonicParsing="false" prefHeight="57.0" prefWidth="60.0" styleClass="user-btn" stylesheets="@../../css/homePageDesign.css" text="👤">-->
+<!--                            <font>-->
+<!--                                <Font size="24.0" />-->
+<!--                            </font>-->
+<!--                        </Button>-->
+<!--                        <Label prefHeight="29.0" prefWidth="100.0" text=" Username" />-->
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+            </padding></HBox>
+    </top>
+    <left>
+        <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
+            <children>
+                <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" stylesheets="@../../css/UserProfileDesign.css" text="HOME">
+                    <graphic>
+                        <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
+                    </graphic>
+                    <font>
+                        <Font name="Comic Sans MS Bold" size="24.0" />
+                    </font>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+            </padding></VBox>
+    </left>
+    <center>
+        <StackPane BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER_RIGHT" prefHeight="500.0" prefWidth="556.0" spacing="15.0" style="-fx-background-color: #6C4535;" BorderPane.alignment="CENTER_RIGHT">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <VBox prefHeight="495.0" prefWidth="545.0">
+                            <children>
+                                <AnchorPane prefHeight="483.0" prefWidth="840.0" styleClass="main" stylesheets="@../../css/quizMainDesign.css">
+                                    <children>
+                                        <AnchorPane layoutX="12.0" layoutY="73.0" prefHeight="384.0" prefWidth="483.0" styleClass="giraffeBackground" stylesheets="@../../css/quizMainDesign.css" />
+                                        <Label layoutX="25.0" layoutY="-11.0" prefHeight="106.0" prefWidth="577.0" styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="Welcome to Quiz Hub! Player " textAlignment="CENTER" textFill="#6c4535">
+                                            <font>
+                                                <Font name="Comic Sans MS Bold" size="40.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="593.0" layoutY="18.0" styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="Username" textAlignment="CENTER" textFill="#6c4535">
+                                            <font>
+                                                <Font name="Comic Sans MS Bold" size="40.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="137.0" layoutY="162.0" prefHeight="292.0" prefWidth="281.0" text="🐘">
+                                            <font>
+                                                <Font size="200.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="330.0" layoutY="275.0" text="🐘">
+                                            <font>
+                                                <Font size="96.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="-16.0" layoutY="52.0" text="🌳">
+                                            <font>
+                                                <Font size="170.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="110.0" layoutY="362.0" text="෴">
+                                            <font>
+                                                <Font size="58.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="190.0" layoutY="367.0" text="෴">
+                                            <font>
+                                                <Font size="58.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="301.0" layoutY="381.0" text="෴">
+                                            <font>
+                                                <Font size="53.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="376.0" layoutY="387.0" text="෴">
+                                            <font>
+                                                <Font size="54.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="11.0" layoutY="326.0" text="🌷">
+                                            <font>
+                                                <Font size="96.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="81.0" layoutY="320.0" text="🌷">
+                                            <font>
+                                                <Font size="57.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="287.0" layoutY="129.0" text="🌳">
+                                            <font>
+                                                <Font size="100.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="313.0" layoutY="52.0" text="🌳">
+                                            <font>
+                                                <Font size="170.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="351.0" layoutY="240.0" text="෴">
+                                            <font>
+                                                <Font size="31.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="387.0" layoutY="252.0" text="෴">
+                                            <font>
+                                                <Font size="31.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="85.0" layoutY="275.0" text="෴">
+                                            <font>
+                                                <Font size="31.0" />
+                                            </font>
+                                        </Label>
+                                        <Label layoutX="377.0" layoutY="107.0" text="🌳">
+                                            <font>
+                                                <Font size="130.0" />
+                                            </font>
+                                        </Label>
+                                        <AnchorPane layoutX="532.0" layoutY="87.0" prefHeight="200.0" prefWidth="268.0" styleClass="giraffeMessageBackground" stylesheets="@../../css/quizMainDesign.css">
+                                            <children>
+                                                <Label layoutX="12.0" layoutY="50.0" prefHeight="29.0" prefWidth="260.0" styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="Play the quiz to make" textAlignment="CENTER" textFill="#6c4535">
+                                                    <font>
+                                                        <Font name="Comic Sans MS Bold" size="25.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="14.0" layoutY="8.0" prefHeight="29.0" prefWidth="165.0" styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="*Mission*" textAlignment="CENTER" textFill="#6c4535">
+                                                    <font>
+                                                        <Font name="Comic Sans MS Bold" size="30.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="12.0" layoutY="81.0" prefHeight="29.0" prefWidth="260.0" styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="these elephants happy" textAlignment="CENTER" textFill="#6c4535">
+                                                    <font>
+                                                        <Font name="Comic Sans MS Bold" size="25.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="14.0" layoutY="147.0" prefHeight="29.0" prefWidth="172.0" styleClass="headerFont" stylesheets="@../../css/UserProfileDesign.css" text="Good Luck :D" textAlignment="CENTER" textFill="#6c4535">
+                                                    <font>
+                                                        <Font name="Comic Sans MS Bold" size="25.0" />
+                                                    </font>
+                                                </Label>
+                                            </children></AnchorPane>
+                                        <Button fx:id="startButton" layoutX="543.0" layoutY="305.0" mnemonicParsing="false" onAction="#startQuiz" styleClass="signout-button" stylesheets="@../../css/UserProfileDesign.css" text="Start" />
+                                        <Label layoutX="174.0" layoutY="60.0" text="🌳">
+                                            <font>
+                                                <Font size="160.0" />
+                                            </font>
+                                        </Label>
+                                        <MenuButton fx:id="quiz_title" layoutX="543.0" layoutY="367.0" mnemonicParsing="false" styleClass="context-menu" stylesheets="@../../css/quizMainDesign.css" text="Categories">
+                                            <items>
+                                                <MenuItem mnemonicParsing="false" onAction="#handleQuizSelection" text="STI quiz" />
+                                                <MenuItem mnemonicParsing="false" onAction="#handleQuizSelection" text="Birth Control quiz" />
+                                            </items>
+                                        </MenuButton>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+                <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" />
+
+            </children>
+        </StackPane>
+    </center>
+
+</BorderPane>

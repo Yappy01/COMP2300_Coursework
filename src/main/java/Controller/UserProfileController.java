@@ -26,6 +26,12 @@ public class UserProfileController {
     @FXML private ToggleGroup visitsTreatments;
     @FXML private TextField pntextfield;
     @FXML private TextField dateOfBirthField;
+    @FXML private Label genderField;
+    @FXML private ToggleGroup genderGroup;
+    @FXML private RadioButton maleRadio;
+    @FXML private RadioButton femaleRadio;
+    @FXML private RadioButton otherRadio;
+    @FXML private TextField otherGenderField;
     @FXML private TextField allergies_textfield;
     @FXML private TextField chronicdiseaseTextfield;
     @FXML private TextField btTextfield;
@@ -55,6 +61,13 @@ public class UserProfileController {
             }
         });
 
+        genderGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> {
+            otherGenderField.setVisible(newT == otherRadio);
+            if (newT != otherRadio) otherGenderField.clear();
+        });
+
+        populateProfileFields();
+
         filterEvents();
         displayEventsFromDatabase();
         username_label.setText(Session.getInstance().getUserName());
@@ -63,7 +76,7 @@ public class UserProfileController {
     }
 
     @FXML
-    public void goToHomepage(ActionEvent event) throws IOException {
+    private void goToHomepage(ActionEvent event) throws IOException {
         HomePageController.goToHomepage(event);
     }
 
@@ -93,32 +106,64 @@ public class UserProfileController {
                 // Use setText() for each respective field
                 pntextfield.setText(data.getOrDefault("phone", ""));
                 dateOfBirthField.setText(data.getOrDefault("dob", ""));
-                allergies_textfield.setText(data.getOrDefault("allergies", ""));
-                chronicdiseaseTextfield.setText(data.getOrDefault("chronic", ""));
-                btTextfield.setText(data.getOrDefault("blood", ""));
-                piTextfield.setText(data.getOrDefault("injuries", ""));
+
+                // Set RadioButton based on DB value
+                String gender = data.getOrDefault("gender", "");
+                if ("Male".equalsIgnoreCase(gender)) {
+                    genderField.setText("Male");
+                    maleRadio.setSelected(true);
+                } else if ("Female".equalsIgnoreCase(gender)) {
+                    genderField.setText("Female");
+                    femaleRadio.setSelected(true);
+                } else if (!gender.isEmpty()) {
+                    otherRadio.setSelected(true);
+                    otherGenderField.setText("");
+                    otherGenderField.setVisible(true);
+                    genderField.setText(gender);
+                }else if (gender == null || gender.trim().isEmpty()) {
+                    genderField.setText("Not Specified");
+                } else {
+                    genderField.setText(gender);
+                }
             }
+
+            allergies_textfield.setText(data.getOrDefault("allergies", ""));
+            chronicdiseaseTextfield.setText(data.getOrDefault("chronic", ""));
+            btTextfield.setText(data.getOrDefault("blood", ""));
+            piTextfield.setText(data.getOrDefault("injuries", ""));
+
             progressIndicator.setVisible(false);
         }, (error) -> {
-            progressIndicator.setVisible(false);
             error.printStackTrace();
-        });
+            progressIndicator.setVisible(false); });
     }
 
     @FXML
-    public void add_personalInformation() throws SQLException, ClassNotFoundException {
+    public void add_personalInformation() {
         progressIndicator.setVisible(true);
-        userService.change_personalInformationAsync(Session.getInstance().getUserID(), pntextfield.getText(),dateOfBirthField.getText(), (value) -> {
-            if (value){
-                General.getInfoAlert("Information successfully added.");
-            }else{
-                General.getErrorAlert("Something went wrong");
-            }
-            progressIndicator.setVisible(false);
-        }, (error) -> {
-            error.printStackTrace();
-            progressIndicator.setVisible(false);
-        });
+
+        // Get selected gender text
+        String selectedGender = "";
+        if (maleRadio.isSelected()) selectedGender = "Male";
+        else if (femaleRadio.isSelected()) selectedGender = "Female";
+        else if (otherRadio.isSelected()) selectedGender = otherGenderField.getText();
+
+        userService.change_personalInformationAsync(
+                Session.getInstance().getUserID(),
+                pntextfield.getText(),
+                dateOfBirthField.getText(),
+                selectedGender,
+                (value) -> {
+                    if (value) General.getInfoAlert("Information successfully added.");
+                    else General.getErrorAlert("Something went wrong");
+                    progressIndicator.setVisible(false);
+                    populateProfileFields();
+                },
+                (error) -> {
+                    error.printStackTrace();
+                    progressIndicator.setVisible(false);
+                }
+        );
     }
 
 
@@ -300,5 +345,18 @@ public class UserProfileController {
             error.printStackTrace();
             progressIndicator.setVisible(false);
         });
+    }
+
+    @FXML
+    private void signOut(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(
+                HomePageController.class.getResource("/fxml/pages/LRFDocument_updated.fxml")
+        );
+
+        Stage stage = (Stage) pntextfield.getScene().getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.centerOnScreen();
+        stage.show();
     }
 }

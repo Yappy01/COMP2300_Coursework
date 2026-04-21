@@ -49,16 +49,16 @@
     /*-fx-background-radius: 10;*/
     /*-fx-border-color: #7a4900;*/
     -fx-border-radius: 10;
-/*-fx-border-width: 1;*/
+    /*-fx-border-width: 1;*/
 }
 
 .menu-item .label {
--fx-text-fill: #7a4900;
--fx-font-family: "Constantia";
+    -fx-text-fill: #7a4900;
+    -fx-font-family: "Constantia";
 }
 
 .menu-item:focused {
--fx-background-color: #fff7f4;
+    -fx-background-color: #fff7f4;
 }
 
 

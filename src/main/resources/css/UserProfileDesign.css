@@ -6,7 +6,7 @@
 
 /* Home button */
 .home-button {
-    -fx-background-color: #fff7f4;
+    -fx-background-color: rgba(255, 247, 244, 0.99);
     -fx-text-fill: #D7B0A0;
     -fx-font-family: "Constantia";
     -fx-font-weight: bold;
@@ -142,6 +142,7 @@
 }
 
 /*visit and treatment toggle buttons*/
+
 .visitTreatment-button {
     -fx-background-color: transparent;
     -fx-text-fill: #361000;
@@ -160,7 +161,7 @@
 }
 
 .event-box{
-    -fx-background-color: #d7b0a0;
+    -fx-background-color: #fbe9e1;
 }
 /*scrollbar*/
 .scroll-bar > .thumb {
@@ -172,4 +173,24 @@
 }
 .scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
     -fx-background-color: #d7b0a0;
+}
+
+/* 1. Target all ScrollPanes to make their containers transparent */
+.scroll-pane {
+    -fx-background-color: #fbe9e1;
+}
+
+/* 2. Target the viewport (the actual visible area) to set the background color */
+.scroll-pane .viewport {
+    -fx-background-color: #fbe9e1; /* Using your sectionBackground color  */
+}
+
+/* 3. Specific override for the ScrollPane with the 'thumb' class [cite: 47] */
+.thumb.scroll-pane .viewport {
+    -fx-background-color: #fbe9e1;
+}
+
+/* 4. Ensure the background property is also handled for older JavaFX versions */
+.scroll-pane {
+    -fx-background: #fbe9e1;
 }
