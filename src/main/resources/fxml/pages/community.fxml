@@ -100,7 +100,7 @@
                                         <Insets />
                                     </opaqueInsets>
                                 </ToggleButton>
-                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="LGBTQ+" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
+                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Post from Verified Users" onAction="#filterTags" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>

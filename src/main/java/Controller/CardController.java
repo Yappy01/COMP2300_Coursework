@@ -55,6 +55,7 @@ public class CardController {
 
     private Post post;
     private final PostService postService = new PostService();
+    private final UserService userService = new UserService();
 
     public void setParentController(PostParent parentController) {
         this.parentController = parentController;
@@ -73,6 +74,10 @@ public class CardController {
             contentLabel.setText("Post Deleted: " + post.getReasonDeleted());
             editButton.setVisible(false);
             return;
+        }
+
+        if (userService.searchByUsername(name).getRole().equals("Verified")) {
+            name += "✅";
         }
 
         this.nameLabel.setText(name);

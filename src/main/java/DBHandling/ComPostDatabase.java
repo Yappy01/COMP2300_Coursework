@@ -193,6 +193,33 @@ public class ComPostDatabase {
         return list;
     }
 
+    public ArrayList<Post> getPostsByRole(String role, Integer limit) {
+        ArrayList<Post> list = new ArrayList<>();
+        String sql = "SELECT p.* " +
+                "FROM posts p " +
+                "JOIN users u ON p.userId = u.\"userId\" " +
+                "WHERE u.role = ? " +
+                "ORDER BY p.createdAt DESC " +
+                "LIMIT ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, role);
+            stmt.setInt(2, limit);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(extractPost(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     // 5️⃣ Search by Content (Keyword)
     public ArrayList<Post> searchByContent(String keyword) {
         ArrayList<Post> list = new ArrayList<>();

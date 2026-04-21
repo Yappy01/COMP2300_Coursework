@@ -1,6 +1,7 @@
 package Controller;
 
 import Models.Post;
+import Models.Report;
 import Models.StiEntry;
 import Models.User;
 import Service.PostService;
@@ -284,6 +285,109 @@ public class AdminMainController implements PostParent {
         }
         configConfirmButton(User.class);
     }
+
+//    @FXML
+//    private void generateReportTable() {
+//        postScrollPage.setVisible(false);
+//        progressIndicator.setVisible(true);
+//        TableView<User> userTable = new TableView<>();
+//
+//        if (adminPageTable != null) {
+//            userTable.getStyleClass().addAll(adminPageTable.getStyleClass());
+//        }
+//
+//        TableColumn<User, Integer> nameCol = new TableColumn<>("Name");
+//        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+//
+//        TableColumn<User, Integer> emailCol = new TableColumn<>("Email");
+//        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+//
+//        TableColumn<User, String> roleCol = new TableColumn<>("Role");
+//        roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+//
+//        userTable.getColumns().addAll(nameCol, emailCol, roleCol);
+//
+//        adminPageTable = (TableView<Object>) (Object) userTable;
+//        // Clear the VBox and show the NEW table
+//        tableViewArea.getChildren().set(0, userTable);
+//
+//        try {
+//            generateInputBoxes();
+//            loadTableData(User.class);
+//
+//            deleteButton.setOnAction(e -> {
+//                User user = (User) idMenuSelection.getValue();
+//                userService.deleteUserAsync(user, (value) -> {
+//                    progressIndicator.setVisible(false);
+//                    if (value) {
+//                        General.getInfoAlert("User Deleted Successfully");
+//                    }
+//                    loadTableData(User.class);
+//                }, (error) -> {
+//                    progressIndicator.setVisible(false);
+//                    error.printStackTrace();
+//                });
+//            });
+//
+//            editOrAddButton.setOnAction(e -> {
+//                try {
+//                    deleteButton.setDisable(false);
+//                    clearInputs();
+//
+//                    if (editOrAddButton.getText().equals("Edit Mode")) { //Currently is in edit mode changing to add mode
+//                        idMenuSelection.setDisable(true);
+//                        if (inputField.lookup("#Password") == null) {
+//                            //Individually adding new input boxes for rows not shown in the table
+//                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/inputBoxes.fxml"));
+//                            Node inputBox = loader.load();
+//
+//                            InputBoxController controller = loader.getController();
+//                            controller.configInputBox("Password", "");
+//                            inputBox.setId("Password");
+//                            inputField.getChildren().add(inputBox);
+//                            controllerMap.put("Password", controller);
+//
+//                            //Individually adding new input boxes for rows not shown in the table
+//                            loader = new FXMLLoader(getClass().getResource("/fxml/components/inputBoxes.fxml"));
+//                            inputBox = loader.load();
+//
+//                            controller = loader.getController();
+//                            controller.configInputBox("Answer", "");
+//                            inputBox.setId("Answer");
+//                            inputField.getChildren().add(inputBox);
+//                            controllerMap.put("Answer", controller);
+//                        } else {
+//                            inputField.lookup("#Answer").setVisible(true);
+//                            inputField.lookup("#Password").setVisible(true);
+//                        }
+//
+//                        editOrAddButton.setText("Add Mode");
+//                        deleteButton.setDisable(true);
+//                    } else { //Currently is in Add mode changing to edit mode
+//                        clearInputs();
+//                        Object selected = idMenuSelection.getValue();
+//                        if (selected != null) {
+//                            autoFillFields(selected);
+//                        }
+//                        idMenuSelection.setDisable(false);
+//
+//                        Node ans = inputField.lookup("#Answer");
+//                        Node pwd = inputField.lookup("#Password");
+//                        if (ans != null) ans.setVisible(false);
+//                        if (pwd != null) pwd.setVisible(false);
+//
+//                        editOrAddButton.setText("Edit Mode");
+//                        deleteButton.setDisable(false);
+//                    }
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        configConfirmButton(Report.class);
+//    }
 
     public <T> void loadTableData(Class<T> type) {
         System.out.println("LOad data");
