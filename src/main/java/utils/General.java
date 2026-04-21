@@ -1,9 +1,7 @@
 package utils;
 
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -71,5 +69,12 @@ public class General {
 
         // If the user clicked "OK", return the text; otherwise, return null or empty
         return result.orElse(null);
+    }
+
+    public static void addPopup(Button button, String text) {
+        Tooltip tooltip = new Tooltip(text);
+        tooltip.setWrapText(true);
+        button.setTooltip(tooltip);
+        System.out.println("Tooltip set");
     }
 }
