@@ -14,16 +14,16 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.YourPostController">
+<StackPane fx:id="comPageArea" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.YourPostController">
     <children>
-        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css">
+        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0">
             <top>
                 <fx:include fx:id="commonTopBar" source="../components/commonTopBar.fxml" />
             </top>
             <left>
                 <VBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="500.0" prefWidth="220.0" spacing="15.0" style="-fx-background-color: #6C4535; -fx-border-color: #D7B0A0; -fx-border-width: 8;" BorderPane.alignment="CENTER">
                     <children>
-                        <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" text="HOME">
+                        <Button graphicTextGap="8.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToHomepage" style="-fx-graphic: M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z;" styleClass="home-button" stylesheets="@../../css/UserProfileDesign.css" text="HOME">
                             <graphic>
                                 <SVGPath content="M24 6 L2 24 H10 V42 H20 V30 H28 V42 H38 V24 H44 Z" fill="#6c4535" />
                             </graphic>
@@ -39,7 +39,7 @@
                         </Button>
                         <VBox alignment="TOP_CENTER" prefWidth="183.0" spacing="20.0" styleClass="sidebar-list">
                             <children>
-                                <ToggleButton onAction="#goToPIPage" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
+                                <ToggleButton mnemonicParsing="false" onAction="#goToPIPage" styleClass="sidebar-button-medium" text="Personal Information" textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -77,12 +77,12 @@
                     <children>
                         <ScrollPane fx:id="postScrollPage" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="382.0" prefWidth="764.0" style="-fx-border-color: transparent; -fx-border-width: 0;">
                             <content>
-                                <BorderPane style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" >
+                                <BorderPane style="-fx-background-color: #fbe9e1; -fx-border-width: 0;">
                                     <center>
                                         <TilePane fx:id="cardTiles" hgap="20.0" prefColumns="3" style="-fx-background-color: #fbe9e1; -fx-border-width: 0;" vgap="10.0"> </TilePane>
                                     </center>
                                     <bottom>
-                                        <Button fx:id="loadMoreButton" onAction="#onLoadMoreButtonClick" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" text="Load More" styleClass="sidebar-button-medium" BorderPane.alignment="CENTER">
+                                        <Button fx:id="loadMoreButton" alignment="CENTER" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#onLoadMoreButtonClick" styleClass="sidebar-button-medium" text="Load More" BorderPane.alignment="CENTER">
                                             <font>
                                                 <Font size="17.0" />
                                             </font>
@@ -91,7 +91,7 @@
                                 </BorderPane>
                             </content>
                         </ScrollPane>
-                        <Button mnemonicParsing="false" onAction="#onAddButtonClick" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button mnemonicParsing="false" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
                             <StackPane.margin>
                                 <Insets bottom="50.0" right="50.0" />
                             </StackPane.margin>
