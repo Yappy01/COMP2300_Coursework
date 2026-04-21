@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import utils.General;
@@ -219,19 +220,26 @@ public class CommunityPageController implements PostParent {
 
 
     @FXML
-    private void filterTags() {
+    private void filterTags(ActionEvent event) {
         progressIndicator.setVisible(true);
-        postService.getVerifiedPost((allPost) -> {
-            postsList.clear();
-            cardTiles.getChildren().clear();
+        ToggleButton tagBtn = (ToggleButton) (event.getSource());
 
-            postsList = allPost;
-            loadCards(); // UI update
-            progressIndicator.setVisible(false);
-        }, (error) -> {
-            progressIndicator.setVisible(false);
-            error.printStackTrace();
-        });
+        if (tagBtn.isSelected()) {
+            postService.getVerifiedPost((allPost) -> {
+                postsList.clear();
+                cardTiles.getChildren().clear();
+
+                postsList = allPost;
+                loadCards(); // UI update
+                progressIndicator.setVisible(false);
+            }, (error) -> {
+                progressIndicator.setVisible(false);
+                error.printStackTrace();
+            });
+        } else {
+            reloadCards();
+        }
+
     }
 
     @FXML
