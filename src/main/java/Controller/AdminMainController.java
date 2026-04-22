@@ -8,6 +8,8 @@ import Service.PostService;
 import Service.ReportService;
 import Service.StiService;
 import Service.UserService;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -195,32 +197,53 @@ public class AdminMainController implements PostParent {
         TableColumn<Report, String> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("reportId"));
 
-        TableColumn<Report, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Report, String> postColumn = new TableColumn<>("Post");
+        postColumn.setCellValueFactory(new PropertyValueFactory<>("postId"));
 
-        TableColumn<Report, String> reasonColumn = new TableColumn<>("Reason");
+        TableColumn<Report, String> nameColumn = new TableColumn<>("Username");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+
+        TableColumn<Report, String> statusColumn = new TableColumn<>("Status");
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        TableColumn<Report, Integer> reasonColumn = new TableColumn<>("Reason");
         reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
 
-        TableColumn<Report, Integer> deleteColumn = new TableColumn<>("Deletion");
-        deleteColumn.setCellValueFactory(new PropertyValueFactory<>("deletion"));
+        TableColumn<Report, Integer> resolvedColumn = new TableColumn<>("How Its Resolved");
+        resolvedColumn.setCellValueFactory(new PropertyValueFactory<>("how_its_resolved"));
 
-        reportTable.getColumns().addAll(idColumn, nameColumn, reasonColumn, deleteColumn);
+        reportTable.getColumns().addAll(idColumn, postColumn, nameColumn, statusColumn, reasonColumn, resolvedColumn);
 
         adminPageTable = (TableView<Object>) (Object) reportTable;
         tableViewArea.getChildren().set(0, reportTable);
 
         try {
-            generateInputBoxes();
+            //generate Input Boxes
+            int columns = inputField.getChildren().size();
+            inputField.getChildren().remove(2, columns);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/inputBoxes.fxml"));
+            Node inputBox = loader.load();
+
+            InputBoxController controller = loader.getController();
+            controller.configInputBox("How it's Resolved", "");
+            controllerMap.put("How it's Resolved", controller);
+            inputBox.setId("How it's Resolved"); // Check if actually needed
+            inputField.getChildren().add(inputBox);
+            //In this section
+
             loadTableData(Report.class);
+
+            editOrAddButton.setVisible(false);
 
             deleteButton.setOnAction(e -> {
                 Report report = (Report) idMenuSelection.getValue();
-                reportService.deleteReportAsync(user, (value) -> {
+                reportService.deleteReportAsync(report, (value) -> {
                     progressIndicator.setVisible(false);
                     if (value) {
                         General.getInfoAlert("Post Deleted Successfully");
                     }
-                    loadTableData(User.class);
+                    loadTableData(Report.class);
                 }, (error) -> {
                     progressIndicator.setVisible(false);
                     error.printStackTrace();
@@ -337,109 +360,7 @@ public class AdminMainController implements PostParent {
         }
         configConfirmButton(User.class);
     }
-
-//    @FXML
-//    private void generateReportTable() {
-//        postScrollPage.setVisible(false);
-//        progressIndicator.setVisible(true);
-//        TableView<User> userTable = new TableView<>();
-//
-//        if (adminPageTable != null) {
-//            userTable.getStyleClass().addAll(adminPageTable.getStyleClass());
-//        }
-//
-//        TableColumn<User, Integer> nameCol = new TableColumn<>("Name");
-//        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-//
-//        TableColumn<User, Integer> emailCol = new TableColumn<>("Email");
-//        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-//
-//        TableColumn<User, String> roleCol = new TableColumn<>("Role");
-//        roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
-//
-//        userTable.getColumns().addAll(nameCol, emailCol, roleCol);
-//
-//        adminPageTable = (TableView<Object>) (Object) userTable;
-//        // Clear the VBox and show the NEW table
-//        tableViewArea.getChildren().set(0, userTable);
-//
-//        try {
-//            generateInputBoxes();
-//            loadTableData(User.class);
-//
-//            deleteButton.setOnAction(e -> {
-//                User user = (User) idMenuSelection.getValue();
-//                userService.deleteUserAsync(user, (value) -> {
-//                    progressIndicator.setVisible(false);
-//                    if (value) {
-//                        General.getInfoAlert("User Deleted Successfully");
-//                    }
-//                    loadTableData(User.class);
-//                }, (error) -> {
-//                    progressIndicator.setVisible(false);
-//                    error.printStackTrace();
-//                });
-//            });
-//
-//            editOrAddButton.setOnAction(e -> {
-//                try {
-//                    deleteButton.setDisable(false);
-//                    clearInputs();
-//
-//                    if (editOrAddButton.getText().equals("Edit Mode")) { //Currently is in edit mode changing to add mode
-//                        idMenuSelection.setDisable(true);
-//                        if (inputField.lookup("#Password") == null) {
-//                            //Individually adding new input boxes for rows not shown in the table
-//                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/inputBoxes.fxml"));
-//                            Node inputBox = loader.load();
-//
-//                            InputBoxController controller = loader.getController();
-//                            controller.configInputBox("Password", "");
-//                            inputBox.setId("Password");
-//                            inputField.getChildren().add(inputBox);
-//                            controllerMap.put("Password", controller);
-//
-//                            //Individually adding new input boxes for rows not shown in the table
-//                            loader = new FXMLLoader(getClass().getResource("/fxml/components/inputBoxes.fxml"));
-//                            inputBox = loader.load();
-//
-//                            controller = loader.getController();
-//                            controller.configInputBox("Answer", "");
-//                            inputBox.setId("Answer");
-//                            inputField.getChildren().add(inputBox);
-//                            controllerMap.put("Answer", controller);
-//                        } else {
-//                            inputField.lookup("#Answer").setVisible(true);
-//                            inputField.lookup("#Password").setVisible(true);
-//                        }
-//
-//                        editOrAddButton.setText("Add Mode");
-//                        deleteButton.setDisable(true);
-//                    } else { //Currently is in Add mode changing to edit mode
-//                        clearInputs();
-//                        Object selected = idMenuSelection.getValue();
-//                        if (selected != null) {
-//                            autoFillFields(selected);
-//                        }
-//                        idMenuSelection.setDisable(false);
-//
-//                        Node ans = inputField.lookup("#Answer");
-//                        Node pwd = inputField.lookup("#Password");
-//                        if (ans != null) ans.setVisible(false);
-//                        if (pwd != null) pwd.setVisible(false);
-//
-//                        editOrAddButton.setText("Edit Mode");
-//                        deleteButton.setDisable(false);
-//                    }
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        configConfirmButton(Report.class);
-//    }
+    
 
     public <T> void loadTableData(Class<T> type) {
         System.out.println("LOad data");
@@ -506,10 +427,41 @@ public class AdminMainController implements PostParent {
                 error.printStackTrace();
                 progressIndicator.setVisible(false);
             });
+        } else if (type == Report.class) {
+            progressIndicator.setVisible(true);
+            reportService.getAllReportAsync((allReports) -> {
+                progressIndicator.setVisible(false);
+
+                FilteredList<Object> filteredData = new FilteredList<>(
+                        FXCollections.observableArrayList(allReports), p -> true
+                );
+
+                filterField.textProperty().addListener((obs, oldVal, newVal) -> {
+                    filteredData.setPredicate(item -> {
+                        if (newVal == null || newVal.isBlank()) return true;
+                        String filter = newVal.toLowerCase();
+                        return getSearchString(item).contains(filter);
+                    });
+                });
+
+                adminPageTable.setItems(filteredData);
+                idMenuSelection.setItems(filteredData);
+                idMenuSelection.setOnAction(e -> {
+                    Object selected = idMenuSelection.getValue();
+                    if (selected != null) {
+                        autoFillFields(selected);
+                    }
+                });
+                clearInputs();
+            }, (error) -> {
+                error.printStackTrace();
+                progressIndicator.setVisible(false);
+            });
         }
     }
 
     public <T> void configConfirmButton(Class<T> type) {
+        confirmButton.setText("Confirm");
         confirmButton.setOnAction(e -> {
             progressIndicator.setVisible(true);
             if (type == User.class) {
@@ -558,7 +510,6 @@ public class AdminMainController implements PostParent {
                     });
                 }
             } else if (type == StiEntry.class) {
-                System.out.println("LOADING STI");
                 if (editOrAddButton.getText().equals("Add Mode")) {
                     InputBoxController nameController = controllerMap.get("Name");
                     InputBoxController symptomsController = controllerMap.get("Symptoms");
@@ -597,7 +548,7 @@ public class AdminMainController implements PostParent {
                             progressIndicator.setVisible(false);
                             if (value) {
                                 General.getInfoAlert("User updated successfully");
-                                loadTableData(User.class);
+                                loadTableData(StiEntry.class);
                             }
                         }, (error) -> {
                             progressIndicator.setVisible(false);
@@ -605,6 +556,19 @@ public class AdminMainController implements PostParent {
                         });
                         loadTableData(StiEntry.class);
                     }
+                }
+            } else if (type == Report.class) {
+                confirmButton.setText("Mark as Resolved");
+                InputBoxController detailsController = controllerMap.get("How it's Resolved");
+
+                if (!detailsController.getInputText().isEmpty()) {
+                    reportService.resolvePostAsync((Report) idMenuSelection.getValue(), detailsController.getInputText(), (value) -> {
+                        progressIndicator.setVisible(false);
+                    }, (error) -> {
+                        progressIndicator.setVisible(false);
+                        error.printStackTrace();
+                    });
+                    loadTableData(Report.class);
                 }
             }
         });

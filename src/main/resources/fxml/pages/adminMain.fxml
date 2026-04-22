@@ -98,7 +98,7 @@
                                       <Insets />
                                   </opaqueInsets>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Report" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
+                              <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Report" onAction="#generateReportTable" textAlignment="CENTER" toggleGroup="$adminOptions" wrapText="true">
                                   <font>
                                       <Font size="14.0" />
                                   </font>
