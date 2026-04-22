@@ -5,6 +5,7 @@ import Models.Report;
 import Models.StiEntry;
 import Models.User;
 import Service.PostService;
+import Service.ReportService;
 import Service.StiService;
 import Service.UserService;
 import javafx.collections.FXCollections;
@@ -80,6 +81,7 @@ public class AdminMainController implements PostParent {
     private final UserService userService = new UserService();
     private final PostService postService = new PostService();
     private final StiService stiService = new StiService();
+    private final ReportService reportService = new ReportService();
     private ArrayList<Post> postsList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
     private ArrayList<StiEntry> stiList = new ArrayList<>();
@@ -213,7 +215,7 @@ public class AdminMainController implements PostParent {
 
             deleteButton.setOnAction(e -> {
                 Report report = (Report) idMenuSelection.getValue();
-                reportService.deleteUserAsync(user, (value) -> {
+                reportService.deleteReportAsync(user, (value) -> {
                     progressIndicator.setVisible(false);
                     if (value) {
                         General.getInfoAlert("Post Deleted Successfully");

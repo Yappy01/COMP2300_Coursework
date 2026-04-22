@@ -2,6 +2,7 @@ package Controller;
 
 import Models.Post;
 import Service.PostService;
+import Service.ReportService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -31,6 +32,7 @@ public class ComPageOverlayController {
 
     private Post post;
     private final PostService postService = new PostService();
+    private final ReportService reportService = new ReportService();
 
     public void setParentController(PostParent parentController) {
         this.parentController = parentController;
@@ -100,7 +102,7 @@ public class ComPageOverlayController {
         parentController.setProgressIndicatorVisibility(true);
         String text = General.getTextInput("Reporting Post", "Please Type Reason for Reporting Post: ");
 
-        postService.reportPost(post, "report", (value) -> {
+        reportService.reportPost(post, "report", (value) -> {
             if (value) {
                 System.out.println("Successfully reported post");
             }
@@ -111,4 +113,5 @@ public class ComPageOverlayController {
             parentController.setProgressIndicatorVisibility(false);
         });
     }
+
 }

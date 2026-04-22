@@ -60,17 +60,6 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
-    public void reportPost(Post post, String reason, Consumer<Boolean> onSucceeded, Consumer<Throwable> onFailed) {
-        Task<Boolean> task = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                return postDatabase.toggleReport(post.getPostId(), Session.getInstance().getUser().getUserId(), reason);
-            }
-        };
-
-        General.setTask(task, onSucceeded, onFailed, executor);
-    }
-
     public void commentPost(Post post, String content) {
         if (content == null || content.equals("")) {
             return;
