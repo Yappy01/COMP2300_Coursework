@@ -181,6 +181,56 @@ public class AdminMainController implements PostParent {
     }
 
     @FXML
+    private void generateReportTable() {
+        postScrollPage.setVisible(false);
+        progressIndicator.setVisible(true);
+        TableView<Report> reportTable = new TableView<>();
+
+        if (adminPageTable != null) {
+            reportTable.getStyleClass().addAll(adminPageTable.getStyleClass());
+        }
+
+        TableColumn<Report, String> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("reportId"));
+
+        TableColumn<Report, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Report, String> reasonColumn = new TableColumn<>("Reason");
+        reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
+
+        TableColumn<Report, Integer> deleteColumn = new TableColumn<>("Deletion");
+        deleteColumn.setCellValueFactory(new PropertyValueFactory<>("deletion"));
+
+        reportTable.getColumns().addAll(idColumn, nameColumn, reasonColumn, deleteColumn);
+
+        adminPageTable = (TableView<Object>) (Object) reportTable;
+        tableViewArea.getChildren().set(0, reportTable);
+
+        try {
+            generateInputBoxes();
+            loadTableData(Report.class);
+
+            deleteButton.setOnAction(e -> {
+                Report report = (Report) idMenuSelection.getValue();
+                reportService.deleteUserAsync(user, (value) -> {
+                    progressIndicator.setVisible(false);
+                    if (value) {
+                        General.getInfoAlert("Post Deleted Successfully");
+                    }
+                    loadTableData(User.class);
+                }, (error) -> {
+                    progressIndicator.setVisible(false);
+                    error.printStackTrace();
+                });
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        configConfirmButton(Report.class);
+    }
+
+    @FXML
     private void generateUserTable() {
         postScrollPage.setVisible(false);
         progressIndicator.setVisible(true);
