@@ -1,6 +1,6 @@
 package Models;
 
-public class StiEntry {
+public class StiEntry extends AdminEntity{
 
     // Attributes
     private int stiId;

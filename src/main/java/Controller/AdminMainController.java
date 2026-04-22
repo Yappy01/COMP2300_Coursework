@@ -1,18 +1,15 @@
 package Controller;
 
-import Models.Post;
-import Models.Report;
-import Models.StiEntry;
-import Models.User;
+import Models.*;
 import Service.PostService;
 import Service.ReportService;
 import Service.StiService;
 import Service.UserService;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,12 +23,12 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 import utils.General;
 import utils.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,45 +45,24 @@ public class AdminMainController implements PostParent {
     @FXML private Button confirmButton;
     @FXML private Button editOrAddButton;
     @FXML private Button deleteButton;
-    @FXML private ComboBox<Object> idMenuSelection;
+    @FXML private ComboBox<? extends AdminEntity> idMenuSelection;
     @FXML private VBox inputField;
     @FXML private HBox tableViewArea;
-    @FXML private TableView<Object> adminPageTable;
+    @FXML private TableView<AdminEntity> adminPageTable;
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Parent commonTopBar;
     @FXML private CommonTopBarController commonTopBarController;
-
     private ComPageOverlayController comPageOverlayController;
 
-    private ObservableList<Object> originalMasterData = FXCollections.observableArrayList();
-    private FilteredList<Object> filteredData = new FilteredList<>(originalMasterData, p -> true);
+    private ObservableList<AdminEntity> originalMasterData = FXCollections.observableArrayList();
+    private FilteredList<AdminEntity> filteredData;
+    private SortedList<AdminEntity> sortedData;
     private Map<String, InputBoxController> controllerMap = new HashMap<>();
-    private final StringConverter<Object> stringConverter = new StringConverter<Object>() {
-        @Override
-        public String toString(Object object) {
-            if (object == null) {
-                return "";
-            }
-            // Cast Object to User to access getUserId()
-            if (object instanceof User) {
-                User user = (User) object;
-                return String.valueOf(user.getUserId());
-            }
-            return object.toString();
-        }
-        @Override
-        public User fromString(String string) {
-            // This is rarely used unless the combo box is editable
-            return null;
-        }
-    };
     private final UserService userService = new UserService();
     private final PostService postService = new PostService();
     private final StiService stiService = new StiService();
     private final ReportService reportService = new ReportService();
     private ArrayList<Post> postsList = new ArrayList<>();
-    private ArrayList<User> userList = new ArrayList<>();
-    private ArrayList<StiEntry> stiList = new ArrayList<>();
     private final ObservableList<String> roles = FXCollections.observableArrayList("Admin", "User", "Verified");
 
     public void initialize() {
@@ -96,6 +72,31 @@ public class AdminMainController implements PostParent {
         progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
         generateUserTable();
+
+        filteredData = new FilteredList<>(originalMasterData, p -> true);
+        sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(adminPageTable.comparatorProperty());
+
+        filterField.textProperty().addListener((obs, oldVal, newVal) -> {
+            filteredData.setPredicate(item -> {
+                if (newVal == null || newVal.isBlank()) return true;
+                String filter = newVal.toLowerCase();
+                return getSearchString(item).contains(filter);
+            });
+        });
+
+        filteredData.setPredicate(null);
+
+        adminPageTable.setItems(sortedData);
+        ((ComboBox<AdminEntity>)idMenuSelection).setItems(sortedData);
+
+        // Update UI Components
+        idMenuSelection.setOnAction(e -> {
+            AdminEntity selected = idMenuSelection.getValue();
+            if (selected != null) {
+                autoFillFields(selected);
+            }
+        });
     }
 
 
@@ -103,40 +104,34 @@ public class AdminMainController implements PostParent {
     private void generateInfoPageTable() {
         postScrollPage.setVisible(false);
         progressIndicator.setVisible(true);
-        TableView<StiEntry> stiTable = new TableView<>();
 
-        if (adminPageTable != null) {
-            stiTable.getStyleClass().addAll(adminPageTable.getStyleClass());
-        }
+        adminPageTable.getColumns().clear();
+        originalMasterData.clear();
 
-        TableColumn<StiEntry, String> idColumn = new TableColumn<>("ID");
+        TableColumn<AdminEntity, String> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("stiId"));
 
-        TableColumn<StiEntry, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<AdminEntity, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameColumn.setCellFactory(wrapTextCellFactory());
 
-        TableColumn<StiEntry, String> symptomsColumn = new TableColumn<>("Symptoms");
+        TableColumn<AdminEntity, String> symptomsColumn = new TableColumn<>("Symptoms");
         symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
         symptomsColumn.setCellFactory(wrapTextCellFactory());
 
-        TableColumn<StiEntry, String> treatmentColumn = new TableColumn<>("Treatment");
+        TableColumn<AdminEntity, String> treatmentColumn = new TableColumn<>("Treatment");
         treatmentColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
         treatmentColumn.setCellFactory(wrapTextCellFactory());
 
-        TableColumn<StiEntry, String> preventionColumn = new TableColumn<>("Prevention");
+        TableColumn<AdminEntity, String> preventionColumn = new TableColumn<>("Prevention");
         preventionColumn.setCellValueFactory(new PropertyValueFactory<>("prevention"));
         preventionColumn.setCellFactory(wrapTextCellFactory());
 
-        TableColumn<StiEntry, Integer> riskLevelColumn = new TableColumn<>("Risk Level");
+        TableColumn<AdminEntity, Integer> riskLevelColumn = new TableColumn<>("Risk Level");
         riskLevelColumn.setCellValueFactory(new PropertyValueFactory<>("riskLevel"));
 
-        stiTable.getColumns().addAll(idColumn, nameColumn, symptomsColumn, treatmentColumn, preventionColumn, riskLevelColumn);
+        adminPageTable.getColumns().addAll(idColumn, nameColumn, symptomsColumn, treatmentColumn, preventionColumn, riskLevelColumn);
         loadTableData(StiEntry.class);
-
-        adminPageTable = (TableView<Object>) (Object) stiTable;
-        // Clear the VBox and show the NEW table
-        tableViewArea.getChildren().set(0, stiTable);
 
         try {
             generateInputBoxes();
@@ -167,7 +162,7 @@ public class AdminMainController implements PostParent {
                     deleteButton.setDisable(true);
                 } else { //Currently is in Add mode changing to edit mode
                     clearInputs();
-                    Object selected = idMenuSelection.getValue();
+                    AdminEntity selected = idMenuSelection.getValue();
                     if (selected != null) {
                         autoFillFields(selected);
                     }
@@ -186,36 +181,30 @@ public class AdminMainController implements PostParent {
 
     @FXML
     private void generateReportTable() {
+        adminPageTable.getColumns().clear();
+        originalMasterData.clear();
         postScrollPage.setVisible(false);
         progressIndicator.setVisible(true);
-        TableView<Report> reportTable = new TableView<>();
 
-        if (adminPageTable != null) {
-            reportTable.getStyleClass().addAll(adminPageTable.getStyleClass());
-        }
-
-        TableColumn<Report, String> idColumn = new TableColumn<>("ID");
+        TableColumn<AdminEntity, String> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("reportId"));
 
-        TableColumn<Report, String> postColumn = new TableColumn<>("Post");
+        TableColumn<AdminEntity, String> postColumn = new TableColumn<>("Post");
         postColumn.setCellValueFactory(new PropertyValueFactory<>("postId"));
 
-        TableColumn<Report, String> nameColumn = new TableColumn<>("Username");
+        TableColumn<AdminEntity, String> nameColumn = new TableColumn<>("Username");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
-        TableColumn<Report, String> statusColumn = new TableColumn<>("Status");
+        TableColumn<AdminEntity, String> statusColumn = new TableColumn<>("Status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        TableColumn<Report, Integer> reasonColumn = new TableColumn<>("Reason");
+        TableColumn<AdminEntity, Integer> reasonColumn = new TableColumn<>("Reason");
         reasonColumn.setCellValueFactory(new PropertyValueFactory<>("reason"));
 
-        TableColumn<Report, Integer> resolvedColumn = new TableColumn<>("How Its Resolved");
+        TableColumn<AdminEntity, Integer> resolvedColumn = new TableColumn<>("How Its Resolved");
         resolvedColumn.setCellValueFactory(new PropertyValueFactory<>("how_its_resolved"));
 
-        reportTable.getColumns().addAll(idColumn, postColumn, nameColumn, statusColumn, reasonColumn, resolvedColumn);
-
-        adminPageTable = (TableView<Object>) (Object) reportTable;
-        tableViewArea.getChildren().set(0, reportTable);
+        adminPageTable.getColumns().addAll(idColumn, postColumn, nameColumn, statusColumn, reasonColumn, resolvedColumn);
 
         try {
             //generate Input Boxes
@@ -259,31 +248,25 @@ public class AdminMainController implements PostParent {
     private void generateUserTable() {
         postScrollPage.setVisible(false);
         progressIndicator.setVisible(true);
-        TableView<User> userTable = new TableView<>();
+        adminPageTable.getColumns().clear();
+        originalMasterData.clear();
 
-        if (adminPageTable != null) {
-            userTable.getStyleClass().addAll(adminPageTable.getStyleClass());
-        }
-
-        TableColumn<User, Integer> idCol = new TableColumn<>("ID");
+        TableColumn<AdminEntity, Integer> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
-        TableColumn<User, String> nameCol = new TableColumn<>("Name");
+        TableColumn<AdminEntity, String> nameCol = new TableColumn<>("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn<User, String> emailCol = new TableColumn<>("Email");
+        TableColumn<AdminEntity, String> emailCol = new TableColumn<>("Email");
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        TableColumn<User, String> roleCol = new TableColumn<>("Role");
+        TableColumn<AdminEntity, String> roleCol = new TableColumn<>("Role");
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-        userTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
-
-        adminPageTable = (TableView<Object>) (Object) userTable;
-        // Clear the VBox and show the NEW table
-        tableViewArea.getChildren().set(0, userTable);
+        adminPageTable.getColumns().addAll(idCol, nameCol, emailCol, roleCol);
 
         try {
+            originalMasterData.clear();
             generateInputBoxes();
             loadTableData(User.class);
 
@@ -337,7 +320,7 @@ public class AdminMainController implements PostParent {
                         deleteButton.setDisable(true);
                     } else { //Currently is in Add mode changing to edit mode
                         clearInputs();
-                        Object selected = idMenuSelection.getValue();
+                        AdminEntity selected = idMenuSelection.getValue();
                         if (selected != null) {
                             autoFillFields(selected);
                         }
@@ -370,27 +353,15 @@ public class AdminMainController implements PostParent {
             userService.getAllUserAsync((allUsers) -> {
                 progressIndicator.setVisible(false);
 
-                FilteredList<Object> filteredData = new FilteredList<>(
-                        FXCollections.observableArrayList(allUsers), p -> true
-                );
+                originalMasterData.setAll(allUsers);
 
-                filterField.textProperty().addListener((obs, oldVal, newVal) -> {
-                    filteredData.setPredicate(item -> {
-                        if (newVal == null || newVal.isBlank()) return true;
-                        String filter = newVal.toLowerCase();
-                        return getSearchString(item).contains(filter);
-                    });
-                });
+                System.out.println("1. Raw data size: " + allUsers.size());
+                System.out.println("2. Master list size: " + originalMasterData.size());
+                System.out.println("3. Table items size: " + adminPageTable.getItems().size());
+
+                System.out.println(originalMasterData.size());
 
                 // Update UI Components
-                adminPageTable.setItems(filteredData);
-                idMenuSelection.setItems(filteredData);
-                idMenuSelection.setOnAction(e -> {
-                    Object selected = idMenuSelection.getValue();
-                    if (selected != null) {
-                        autoFillFields(selected);
-                    }
-                });
                 clearInputs();
             }, (error) -> {
                 progressIndicator.setVisible(false);
@@ -402,56 +373,30 @@ public class AdminMainController implements PostParent {
             stiService.getAllAsync((allStis) -> {
                 progressIndicator.setVisible(false);
 
-                FilteredList<Object> filteredData = new FilteredList<>(
-                        FXCollections.observableArrayList(allStis), p -> true
-                );
+                originalMasterData.setAll(allStis);
 
-                filterField.textProperty().addListener((obs, oldVal, newVal) -> {
-                    filteredData.setPredicate(item -> {
-                        if (newVal == null || newVal.isBlank()) return true;
-                        String filter = newVal.toLowerCase();
-                        return getSearchString(item).contains(filter);
-                    });
-                });
+                System.out.println("1. Raw data size: " + allStis.size());
+                System.out.println("2. Master list size: " + originalMasterData.size());
+                System.out.println("3. Table items size: " + adminPageTable.getItems().size());
 
-                adminPageTable.setItems(filteredData);
-                idMenuSelection.setItems(filteredData);
-                idMenuSelection.setOnAction(e -> {
-                    Object selected = idMenuSelection.getValue();
-                    if (selected != null) {
-                        autoFillFields(selected);
-                    }
-                });
                 clearInputs();
             }, (error) -> {
                 error.printStackTrace();
                 progressIndicator.setVisible(false);
             });
         } else if (type == Report.class) {
+            System.out.println("Loading report data");
             progressIndicator.setVisible(true);
             reportService.getAllReportAsync((allReports) -> {
                 progressIndicator.setVisible(false);
 
-                FilteredList<Object> filteredData = new FilteredList<>(
-                        FXCollections.observableArrayList(allReports), p -> true
-                );
+                originalMasterData.setAll(allReports);
+                System.out.println(originalMasterData.size());
 
-                filterField.textProperty().addListener((obs, oldVal, newVal) -> {
-                    filteredData.setPredicate(item -> {
-                        if (newVal == null || newVal.isBlank()) return true;
-                        String filter = newVal.toLowerCase();
-                        return getSearchString(item).contains(filter);
-                    });
-                });
+                System.out.println("1. Raw data size: " + allReports.size());
+                System.out.println("2. Master list size: " + originalMasterData.size());
+                System.out.println("3. Table items size: " + adminPageTable.getItems().size());
 
-                adminPageTable.setItems(filteredData);
-                idMenuSelection.setItems(filteredData);
-                idMenuSelection.setOnAction(e -> {
-                    Object selected = idMenuSelection.getValue();
-                    if (selected != null) {
-                        autoFillFields(selected);
-                    }
-                });
                 clearInputs();
             }, (error) -> {
                 error.printStackTrace();
@@ -577,7 +522,7 @@ public class AdminMainController implements PostParent {
     public void generateInputBoxes() throws IOException {
         int columns = inputField.getChildren().size();
         inputField.getChildren().remove(2, columns);
-        for (TableColumn<Object, ?> col : adminPageTable.getColumns()) {
+        for (TableColumn<AdminEntity, ?> col : adminPageTable.getColumns()) {
             if (col.getText().equals("ID")) {
                 continue;
             }
@@ -653,11 +598,11 @@ public class AdminMainController implements PostParent {
         };
     }
 
-    private void autoFillFields(Object object) {
+    private void autoFillFields(AdminEntity object) {
         if (object == null) return;
 
         try {
-            for (TableColumn<Object, ?> col : adminPageTable.getColumns()) {
+            for (TableColumn<AdminEntity, ?> col : adminPageTable.getColumns()) {
                 String columnName = col.getText();
 
                 Object value = col.getCellData(object);
@@ -682,7 +627,7 @@ public class AdminMainController implements PostParent {
         }
     }
 
-    private String getSearchString(Object obj) {
+    private String getSearchString(AdminEntity obj) {
         if (obj == null) return "";
         StringBuilder sb = new StringBuilder();
         for (java.lang.reflect.Field field : obj.getClass().getDeclaredFields()) {

@@ -1,6 +1,6 @@
 package Models;
 
-public class User {
+public class User extends AdminEntity {
     private Integer userId;
     private String name;
     private String password;

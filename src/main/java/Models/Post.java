@@ -2,7 +2,7 @@ package Models;
 
 import java.sql.Timestamp;
 
-public class Post {
+public class Post extends AdminEntity {
     private int postId;
     private int userId;
     private String content;
