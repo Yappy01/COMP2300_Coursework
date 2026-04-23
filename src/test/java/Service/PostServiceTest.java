@@ -86,10 +86,6 @@ class PostServiceTest {
         Session.endSession();
     }
 
-    // =====================================================
-    // canPost — Rate Limiting Tests (Boundary + Partition)
-    // =====================================================
-
     @Nested
     @DisplayName("canPost Rate Limiting")
     class CanPostTests {
@@ -185,10 +181,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // likePost — Async Tests
-    // =====================================================
-
     @Nested
     @DisplayName("likePost")
     class LikePostTests {
@@ -260,10 +252,6 @@ class PostServiceTest {
             verify(mockDatabase).toggleLike(eq(-1), anyInt());
         }
     }
-
-    // =====================================================
-    // commentPost — Synchronous Tests (Partition + Boundary)
-    // =====================================================
 
     @Nested
     @DisplayName("commentPost")
@@ -358,10 +346,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // getCommentsAsync — Async + Limit Tests
-    // =====================================================
-
     @Nested
     @DisplayName("getCommentsAsync")
     class GetCommentsAsyncTests {
@@ -439,9 +423,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // getAllPostsAsync — Partition + Limit Tests
-    // =====================================================
 
     @Nested
     @DisplayName("getAllPostsAsync")
@@ -571,9 +552,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // getPostByUserAsync — Partition + Limit Tests
-    // =====================================================
 
     @Nested
     @DisplayName("getPostByUserAsync")
@@ -654,9 +632,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // insertPostAsync — File Upload + Partition Tests
-    // =====================================================
 
     @Nested
     @DisplayName("insertPostAsync")
@@ -762,9 +737,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // deletePostAsync — Cloudinary Integration Tests
-    // =====================================================
 
     @Nested
     @DisplayName("deletePostAsync")
@@ -858,10 +830,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // tempDeleteAsync — Soft Delete Tests
-    // =====================================================
-
     @Nested
     @DisplayName("tempDeleteAsync")
     class TempDeleteAsyncTests {
@@ -913,10 +881,6 @@ class PostServiceTest {
             assertTrue(latch.await(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS));
         }
     }
-
-    // =====================================================
-    // editPostAsync — Update with Image Replacement
-    // =====================================================
 
     @Nested
     @DisplayName("editPostAsync")
@@ -997,10 +961,6 @@ class PostServiceTest {
             verify(mockUploader).upload(eq(mockFile), any());
         }
     }
-
-    // =====================================================
-    // searchPostAsync — Multi-Parameter Search Tests
-    // =====================================================
 
     @Nested
     @DisplayName("searchPostAsync")
@@ -1093,10 +1053,6 @@ class PostServiceTest {
         }
     }
 
-    // =====================================================
-    // Callback Edge Cases
-    // =====================================================
-
     @Nested
     @DisplayName("Callback Edge Cases")
     class CallbackEdgeCases {
@@ -1139,6 +1095,148 @@ class PostServiceTest {
             );
 
             Thread.sleep(500);
+        }
+    }
+
+
+
+    private void injectField(String fieldName, Object value) throws Exception {
+        var field = PostService.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(service, value);
+    }
+
+    @Nested
+    @DisplayName("Search Partition Tests")
+    class SearchTests {
+
+        @Test
+        @DisplayName("Partition: Partial Params - Should work with only content filtered")
+        void searchPostAsync_partialPartition_shouldWork() throws InterruptedException {
+            CountDownLatch latch = new CountDownLatch(1);
+
+            // Testing the partition where user only provides content, leaving others null
+            when(mockDatabase.searchPosts(isNull(), eq("java"), isNull(), isNull(), isNull(), isNull()))
+                    .thenReturn(new ArrayList<>());
+
+            service.searchPostAsync(null, "java", null, null, null, null,
+                    list -> {
+                        assertNotNull(list);
+                        latch.countDown();
+                    },
+                    e -> fail());
+
+            assertTrue(latch.await(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS));
+        }
+
+        @Test
+        @DisplayName("Boundary: Zero Values - Should handle 0 likes/comments correctly")
+        void searchPostAsync_zeroBoundary_shouldWork() throws InterruptedException {
+            CountDownLatch latch = new CountDownLatch(1);
+
+            // Boundary Value Analysis: Testing exact zero for numeric filters
+            when(mockDatabase.searchPosts(anyInt(), anyString(), any(), eq(0), eq(0), anyString()))
+                    .thenReturn(new ArrayList<>());
+
+            service.searchPostAsync(1, "test", new Timestamp(System.currentTimeMillis()), 0, 0, "path",
+                    list -> latch.countDown(),
+                    e -> fail());
+
+            assertTrue(latch.await(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS));
+        }
+    }
+
+    @Nested
+    @DisplayName("Tag Logic Partitions")
+    class TagTests {
+
+        @Test
+        @DisplayName("Partition: Non-Existent Tag - Should return empty list safely")
+        void getPostsByTagsAsync_emptyPartition_shouldReturnEmpty() throws InterruptedException {
+            CountDownLatch latch = new CountDownLatch(1);
+            when(mockDatabase.getPostsByTag("UnknownTag")).thenReturn(new ArrayList<>());
+
+            service.getPostsByTagsAsync("UnknownTag",
+                    list -> {
+                        assertTrue(list.isEmpty());
+                        latch.countDown();
+                    },
+                    e -> fail());
+
+            assertTrue(latch.await(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS));
+        }
+
+        @Test
+        @DisplayName("Boundary: Max Tag Length - Should handle 50-char tag names")
+        void getPostsByTagsAsync_lengthBoundary_shouldWork() throws InterruptedException {
+            CountDownLatch latch = new CountDownLatch(1);
+            String longTag = "A".repeat(50); // Boundary based on VARCHAR(50) schema
+
+            when(mockDatabase.getPostsByTag(longTag)).thenReturn(new ArrayList<>());
+
+            service.getPostsByTagsAsync(longTag, list -> latch.countDown(), e -> fail());
+            assertTrue(latch.await(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS));
+        }
+    }
+
+    @Nested
+    @DisplayName("State-Transition Tests")
+    class EditStateTests {
+
+        @Test
+        @DisplayName("State Transition: Image Swap - Should delete old image before uploading new")
+        void editPostAsync_imageSwap_shouldCleanUpOldState() throws Exception {
+            CountDownLatch latch = new CountDownLatch(1);
+            File newFile = mock(File.class);
+
+            // Initial State: Post has an existing Cloudinary publicId
+            when(mockPost.getPublicId()).thenReturn("old_public_id");
+
+            Map<String, String> uploadResult = new HashMap<>();
+            uploadResult.put("secure_url", "https://new-image.png");
+            uploadResult.put("public_id", "new_public_id");
+
+            // Mocking the sequence: Destroy Old -> Upload New -> Update DB
+            when(mockUploader.destroy(eq("old_public_id"), any())).thenReturn(new HashMap<>());
+            when(mockUploader.upload(eq(newFile), any())).thenReturn(uploadResult);
+            when(mockDatabase.update(any())).thenReturn(true);
+
+            service.editPostAsync(mockPost, newFile,
+                    success -> {
+                        assertTrue(success);
+                        latch.countDown();
+                    },
+                    e -> fail());
+
+            assertTrue(latch.await(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS));
+
+            // Verify the state transition logic was followed exactly
+            verify(mockUploader).destroy(eq("old_public_id"), any());
+            verify(mockPost).setImageLink("https://new-image.png");
+            verify(mockPost).setPublicId("new_public_id");
+        }
+    }
+
+    @Nested
+    @DisplayName("Resource & Concurrency Limits")
+    class ConcurrencyTests {
+
+        @Test
+        @DisplayName("Limit: Thread Pool Saturation - Should handle 10 concurrent tasks")
+        void concurrency_threadPoolSaturation_shouldNotDeadlock() throws InterruptedException {
+            int taskCount = 10; // Matching your FixedThreadPool(10)
+            CountDownLatch latch = new CountDownLatch(taskCount);
+
+            for (int i = 0; i < taskCount; i++) {
+                service.getAllPostsAsync("all", 1, false,
+                        list -> latch.countDown(),
+                        e -> latch.countDown()
+                );
+            }
+
+            // Ensures the executor service processes tasks within reasonable time
+            boolean completed = latch.await(10, TimeUnit.SECONDS);
+            assertTrue(completed, "ExecutorService failed to process 10 concurrent tasks.");
         }
     }
 }
