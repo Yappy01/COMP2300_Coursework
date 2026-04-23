@@ -1,6 +1,7 @@
 package Models;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Post extends AdminEntity {
     private int postId;
@@ -13,6 +14,7 @@ public class Post extends AdminEntity {
     private Timestamp updatedAt;
     private String publicId;
     private String reasonDeleted;
+    private ArrayList<Tag> tagsList;
 
     // Constructor (full)
     public Post(int postId, int userId, String content, int likeCount,
@@ -27,16 +29,18 @@ public class Post extends AdminEntity {
         this.updatedAt = updatedAt;
         this.publicId = publicId;
         this.reasonDeleted = reasonDeleted;
+        this.tagsList = new ArrayList<>();
     }
 
     // Constructor (for new post)
-    public Post(int userId, String content, String imageLink, String publicId) {
+    public Post(int userId, String content, String imageLink, String publicId ,ArrayList<Tag> tagsList) {
         this.userId = userId;
         this.content = content;
         this.imageLink = imageLink;
         this.publicId = publicId;
         this.likeCount = 0;
         this.commentCount = 0;
+        this.tagsList = tagsList;
         this.createdAt = new Timestamp(System.currentTimeMillis());
         this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
@@ -120,5 +124,13 @@ public class Post extends AdminEntity {
 
     public void setReasonDeleted(String reasonDeleted) {
         this.reasonDeleted = reasonDeleted;
+    }
+
+    public ArrayList<Tag> getTagsList() {
+        return tagsList;
+    }
+
+    public void setTagsList(ArrayList<Tag> tagsList) {
+        this.tagsList = tagsList;
     }
 }

@@ -2,6 +2,7 @@ package DBHandling;
 
 import Models.Comment;
 import Models.Post;
+import Models.Tag;
 import Models.User;
 import utils.DBConnection;
 
@@ -57,38 +58,24 @@ public class ComPostDatabase {
         return false;
     }
 
-    // 2️⃣ Read (By ID)
-    public Post findById(int id) {
-        String sql = "SELECT * FROM posts WHERE postId = ?";
-        Post post = null;
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                post = extractPost(rs);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return post;
-    }
-
     // 3️⃣ Get All Posts
     public ArrayList<Post> getAll() {
         ArrayList<Post> list = new ArrayList<>();
-        String sql = "SELECT * FROM posts ORDER BY createdAt DESC";
+
+        // Updated SQL using STRING_AGG to collect tags into one column
+        String sql = "SELECT p.*, STRING_AGG(t.name, ',') AS tag_list " +
+                "FROM posts p " +
+                "LEFT JOIN post_tags pt ON p.postId = pt.postid " +
+                "LEFT JOIN tags t ON pt.tagid = t.tagId " +
+                "GROUP BY p.postId " +
+                "ORDER BY p.createdAt DESC";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                // Your existing extractPost will now handle the "tag_list" column
                 list.add(extractPost(rs));
             }
 
@@ -112,10 +99,18 @@ public class ComPostDatabase {
         } else if (type.equals("comments")) {
             orderBy = "commentcount";
         }
+        String baseQuery = "SELECT p.*, STRING_AGG(t.name, ',') AS tag_list " +
+                "FROM posts p " +
+                "LEFT JOIN post_tags pt ON p.postId = pt.postid " +
+                "LEFT JOIN tags t ON pt.tagid = t.tagId ";
+
         if (showDeleted) {
-            sql = "SELECT * FROM posts ORDER BY " + orderBy + " DESC LIMIT ?"; //Selects all
+            // Selects everything
+            sql = baseQuery + "GROUP BY p.postId ORDER BY p." + orderBy + " DESC LIMIT ?";
         } else {
-            sql = "SELECT * FROM posts WHERE reasonDeleted IS NULL ORDER BY " + orderBy + " DESC LIMIT ?"; //Selects all that has no reason deleted
+            // Selects only active posts
+            sql = baseQuery + "WHERE p.reasonDeleted IS NULL " +
+                    "GROUP BY p.postId ORDER BY p." + orderBy + " DESC LIMIT ?";
         }
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -173,7 +168,14 @@ public class ComPostDatabase {
     // 4️⃣ Filter by User
     public ArrayList<Post> getPostsByUser(Integer userId, Integer limit) {
         ArrayList<Post> list = new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE userId = ? ORDER BY createdAt DESC LIMIT ?";
+        String sql = "SELECT p.*, STRING_AGG(t.name, ',') AS tag_list " +
+                "FROM posts p " +
+                "LEFT JOIN post_tags pt ON p.postId = pt.postid " +
+                "LEFT JOIN tags t ON pt.tagid = t.tagId " +
+                "WHERE p.userId = ? " +
+                "GROUP BY p.postId " +
+                "ORDER BY p.createdAt DESC " +
+                "LIMIT ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -195,10 +197,13 @@ public class ComPostDatabase {
 
     public ArrayList<Post> getPostsByRole(String role, Integer limit) {
         ArrayList<Post> list = new ArrayList<>();
-        String sql = "SELECT p.* " +
+        String sql = "SELECT p.*, STRING_AGG(t.name, ',') AS tag_list " +
                 "FROM posts p " +
                 "JOIN users u ON p.userId = u.\"userId\" " +
+                "LEFT JOIN post_tags pt ON p.postId = pt.postid " +
+                "LEFT JOIN tags t ON pt.tagid = t.tagId " +
                 "WHERE u.role = ? " +
+                "GROUP BY p.postId " +
                 "ORDER BY p.createdAt DESC " +
                 "LIMIT ?";
 
@@ -207,28 +212,6 @@ public class ComPostDatabase {
 
             stmt.setString(1, role);
             stmt.setInt(2, limit);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                list.add(extractPost(rs));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-    // 5️⃣ Search by Content (Keyword)
-    public ArrayList<Post> searchByContent(String keyword) {
-        ArrayList<Post> list = new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE content LIKE ? ORDER BY createdAt DESC";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -297,7 +280,12 @@ public class ComPostDatabase {
     }
 
     public Post searchPostById(int postId) {
-        String sql = "SELECT * FROM posts WHERE postid = ?";
+        String sql = "SELECT p.*, STRING_AGG(t.name, ',') AS tag_list " +
+                "FROM posts p " +
+                "LEFT JOIN post_tags pt ON p.postId = pt.postid " +
+                "LEFT JOIN tags t ON pt.tagid = t.tagId " +
+                "WHERE p.postId = ? " +
+                "GROUP BY p.postId";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -326,8 +314,17 @@ public class ComPostDatabase {
     ) {
         ArrayList<Post> results = new ArrayList<>();
 
-        String sql = "SELECT * FROM posts WHERE userid = ? AND content = ? AND createdat = ? AND imagelink = ? AND commentCount = ? AND likeCount = ?";
-
+        String sql = "SELECT p.*, STRING_AGG(t.name, ',') AS tag_list " +
+                "FROM posts p " +
+                "LEFT JOIN post_tags pt ON p.postId = pt.postid " +
+                "LEFT JOIN tags t ON pt.tagid = t.tagId " +
+                "WHERE p.userid = ? " +
+                "  AND p.content = ? " +
+                "  AND p.createdat = ? " +
+                "  AND p.imagelink = ? " +
+                "  AND p.commentCount = ? " +
+                "  AND p.likeCount = ? " +
+                "GROUP BY p.postId";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -422,7 +419,7 @@ public class ComPostDatabase {
 
     // 🔧 Helper Method
     private Post extractPost(ResultSet rs) throws SQLException {
-        return new Post(
+        Post post = new Post(
                 rs.getInt("postId"),
                 rs.getInt("userId"),
                 rs.getString("content"),
@@ -434,5 +431,23 @@ public class ComPostDatabase {
                 rs.getString("publicId"),
                 rs.getString("reasonDeleted")
         );
+
+        String rawTags = rs.getString("tag_list");
+        ArrayList<Tag> tagObjects = new ArrayList<>();
+
+        if (rawTags != null && !rawTags.isBlank()) {
+            // 1. Split the comma-separated string into names
+            String[] tagNames = rawTags.split(",");
+
+            // 2. Convert each name into a Tag object and add to the list
+            for (String name : tagNames) {
+                tagObjects.add(new Tag(name.trim()));
+            }
+        }
+
+        // 3. Set the list of Tag objects to the post
+        post.setTagsList(tagObjects);
+
+        return post;
     }
 }
