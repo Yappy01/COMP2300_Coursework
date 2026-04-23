@@ -7,13 +7,18 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OverlayBController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: rgba(0,0,0,0.3);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.OverlayBController">
    <children>
       <StackPane fx:id="addPostPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #764834; -fx-background-radius: 40;" StackPane.alignment="CENTER">
          <children>
@@ -44,8 +49,22 @@
                                        </children>
                                     </VBox>
                                  </content></ScrollPane>
-                              <Button mnemonicParsing="false" fx:id="uploadButton" onAction="#uploadImage" styleClass="sidebar-button-medium" text="Upload Image" />
-                              <Button mnemonicParsing="false" fx:id="insertButton" onAction="#insertPost" styleClass="sidebar-button-medium" text="Post" />
+                              <FlowPane fx:id="tagArea" prefHeight="40.0" prefWidth="310.0" />
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <TextField fx:id="tagsTextField" promptText="Add Tags Here..." />
+                                    <Button fx:id="addTagsButton" mnemonicParsing="false" text="Add Tags" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadImage" styleClass="sidebar-button-medium" text="Upload Image" />
+                              <Button fx:id="insertButton" mnemonicParsing="false" onAction="#insertPost" styleClass="sidebar-button-medium" text="Post" />
                            </children>
                            <padding>
                               <Insets bottom="15.0" left="20.0" right="20.0" top="20.0" />

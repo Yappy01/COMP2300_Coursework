@@ -3,13 +3,16 @@ package Controller;
 import Models.Post;
 import Models.User;
 import Service.PostService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import utils.General;
@@ -25,6 +28,12 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 public class OverlayBController {
+    @FXML
+    private TextField tagsTextField;
+    @FXML
+    private Button addTagsButton;
+    @FXML
+    private FlowPane tagArea;
     @FXML
     private PostParent parentController;
 
@@ -175,7 +184,6 @@ public class OverlayBController {
 
     @FXML
     public void editPost() {
-
         if (selectedFile != null) {
             uploadButton.setVisible(true);
         }
@@ -213,6 +221,28 @@ public class OverlayBController {
         clickExitButton();
     }
 
+    private void addTags(ActionEvent event, TextField textField) {
+        String text = textField.getText();
+
+        if (text == null || text.isEmpty()) {
+            General.getErrorAlert("Please don't add empty tags");
+            return ;
+        }
+
+        try {
+            FXMLLoader tagLoader = new FXMLLoader(getClass().getResource("/fxml/components/tags.fxml"));
+            Node tag = tagLoader.load();
+            TagController controller = tagLoader.getController();
+            controller.setTagArea(tagArea);
+            controller.setTagLabel(text);
+
+            tagArea.getChildren().add(tag);
+            textField.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     public void initialize() {
         General.addPopup(insertButton, "Please don't include sensitive information like names or other personal details in your posts.");
@@ -224,5 +254,9 @@ public class OverlayBController {
             imagePreview.setVisible(true);
             imagePreview.setManaged(true);
         }
+
+        addTagsButton.setOnAction(e -> {
+            addTags(e, tagsTextField);
+        });
     }
 }
