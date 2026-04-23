@@ -5,7 +5,6 @@ import Service.QuizService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,7 +29,7 @@ public class QuizMainController {
     @FXML public void initialize() {
         usernameLbl.setText(utils.Session.getInstance().getUserName());
         progressIndicator.setVisible(false);
-    };
+    }
 
     @FXML
     public void handleQuizSelection(ActionEvent event) throws IOException {
@@ -53,7 +52,6 @@ public class QuizMainController {
                     quizzes -> {
                         this.currentQuizList = quizzes;
                         quiz_title.setText(selectedText);
-                        System.out.println("handleQuiz" + currentQuizList);
                         progressIndicator.setVisible(false);
                         startButton.setDisable(false);
                     },
