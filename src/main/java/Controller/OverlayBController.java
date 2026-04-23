@@ -1,8 +1,10 @@
 package Controller;
 
 import Models.Post;
+import Models.Tag;
 import Models.User;
 import Service.PostService;
+import Service.TagService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,12 +22,8 @@ import utils.Session;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
-import java.util.UUID;
+import java.util.ArrayList;
 
 public class OverlayBController {
     @FXML
@@ -53,10 +51,13 @@ public class OverlayBController {
     private Button insertButton;
 
     private final PostService postService = new PostService();
+    private final TagService tagService = new TagService();
 
     private File selectedFile; // store the chosen file temporarily
 
     private Post oriPost;
+
+    private ArrayList<Tag> tagsList = new ArrayList<>();
 
     public void setOriPost(Post oriPost) {
         this.oriPost = oriPost;
@@ -160,12 +161,18 @@ public class OverlayBController {
             return ;
         }
 
-        Post post = new Post(user.getUserId(), postText.getText(), "", "");
+        getTags();
+        Post post = new Post(user.getUserId(), postText.getText(), "", "", tagsList);
         postService.insertPostAsync(post, selectedFile,
             (value) -> {
                 if (value) {
-                    parentController.setProgressIndicatorVisibility(false);
-                    parentController.reloadCards();
+                    tagService.insertTagsAsync(post.getPostId(), tagsList, (v) -> {
+                        parentController.setProgressIndicatorVisibility(false);
+                        parentController.reloadCards();
+                    }, (error) -> {
+                        parentController.setOverlayBVisibility(false);
+                        error.printStackTrace();
+                    });
                 } else {
                     General.getErrorAlert("Don't spam upload");
                 }
@@ -228,10 +235,15 @@ public class OverlayBController {
             General.getErrorAlert("Please don't add empty tags");
             return ;
         }
+        if (tagArea.getChildren().size() == 5) {
+            General.getErrorAlert("Only maximum of 5 tags are available per post");
+            return ;
+        }
 
         try {
             FXMLLoader tagLoader = new FXMLLoader(getClass().getResource("/fxml/components/tags.fxml"));
             Node tag = tagLoader.load();
+            tag.setUserData(text);
             TagController controller = tagLoader.getController();
             controller.setTagArea(tagArea);
             controller.setTagLabel(text);
@@ -240,6 +252,17 @@ public class OverlayBController {
             textField.clear();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void getTags() {
+        for (Node node : tagArea.getChildren()) {
+            // Retrieve the string we stored in UserData
+            String tagName = (String) node.getUserData();
+
+            if (tagName != null) {
+                tagsList.add(new Tag(tagName));
+            }
         }
     }
 

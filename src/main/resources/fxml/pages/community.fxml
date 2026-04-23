@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommunityPageController">
+<StackPane fx:id="comPageArea" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CommunityPageController">
     <children>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../../css/styles.css">
             <top>
@@ -81,26 +82,19 @@
                             </padding>
                             <children>
                                 <Label alignment="CENTER" styleClass="sidebar-title" text="Groups" />
-                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Male" textAlignment="CENTER" wrapText="true">
+                                <ToggleButton mnemonicParsing="false" onAction="#filterTags" styleClass="sidebar-button-medium" text="Verified User" textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                     <opaqueInsets>
                                         <Insets />
                                     </opaqueInsets>
-                                    <toggleGroup>
+                           <toggleGroup>
                                         <ToggleGroup fx:id="groupTag" />
-                                    </toggleGroup>
+                           </toggleGroup>
                                 </ToggleButton>
-                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Female" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                    <opaqueInsets>
-                                        <Insets />
-                                    </opaqueInsets>
-                                </ToggleButton>
-                                <ToggleButton mnemonicParsing="false" onAction="#filterTags" styleClass="sidebar-button-medium" text="Verified User" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
+                        <TextField fx:id="searchBar" promptText="Other tags..." />
+                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" fx:id="searchButton" onAction="#loadFiltered" text="Search" textAlignment="CENTER" toggleGroup="$groupTag" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>

@@ -11,8 +11,35 @@ import java.util.ArrayList;
 
 public class ComPostDatabase {
 
+    public ArrayList<Post> getPostsByTag(String tagName) {
+        ArrayList<Post> list = new ArrayList<>();
+        String sql = "SELECT p.*, STRING_AGG(t_all.name, ',') AS tag_list " +
+                "FROM posts p " +
+                "JOIN post_tags pt_filter ON p.postId = pt_filter.postid " +
+                "JOIN tags t_filter ON pt_filter.tagid = t_filter.tagId " +
+                "LEFT JOIN post_tags pt_all ON p.postId = pt_all.postid " +
+                "LEFT JOIN tags t_all ON pt_all.tagid = t_all.tagId " +
+                "WHERE t_filter.name = ? " +
+                "GROUP BY p.postId " +
+                "ORDER BY p.createdAt DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, tagName);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(extractPost(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public Integer countPostsToday(User user) {
-        String sql = "SELECT COUNT(*) FROM posts WHERE userid = ? AND created_at >= CURRENT_DATE;";
+        String sql = "SELECT COUNT(*) FROM posts WHERE userid = ? AND createdat >= CURRENT_DATE;";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

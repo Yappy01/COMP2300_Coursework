@@ -4,8 +4,7 @@ public class Tag {
     private int tagId;
     private String name;
 
-    public Tag(int tagId, String name) {
-        this.tagId = tagId;
+    public Tag(String name) {
         this.name = name;
     }
 

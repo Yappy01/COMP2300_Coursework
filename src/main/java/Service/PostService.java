@@ -3,6 +3,7 @@ package Service;
 import DBHandling.ComPostDatabase;
 import Models.Comment;
 import Models.Post;
+import Models.Tag;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import javafx.concurrent.Task;
@@ -229,4 +230,16 @@ public class PostService {
 
         General.setTask(task, onSucceeded, onFailed, executor);
     }
+
+    public void getPostsByTagsAsync(String name, Consumer<ArrayList<Post>> onSucceeded, Consumer<Throwable> onFailed) {
+        Task<ArrayList<Post>> task = new Task<ArrayList<Post>>() {
+            @Override
+            protected ArrayList<Post> call() throws Exception {
+                return postDatabase.getPostsByTag(name);
+            }
+        };
+
+        General.setTask(task, onSucceeded, onFailed, executor);
+    }
 }
+

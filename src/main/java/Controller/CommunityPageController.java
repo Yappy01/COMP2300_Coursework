@@ -3,15 +3,13 @@ package Controller;
 import Models.Post;
 import Service.PostService;
 import Service.UserService;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import utils.General;
@@ -23,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommunityPageController implements PostParent {
+    @FXML
+    private ToggleButton searchButton;
+    @FXML
+    private TextField searchBar;
     @FXML
     private ScrollPane postScrollPage;
     @FXML
@@ -85,6 +87,7 @@ public class CommunityPageController implements PostParent {
         }
 
         filterRecent();
+
         postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() == 1.0) {
                 loadMoreButton.setVisible(true);
@@ -218,7 +221,6 @@ public class CommunityPageController implements PostParent {
         }
     }
 
-
     @FXML
     private void filterTags(ActionEvent event) {
         progressIndicator.setVisible(true);
@@ -239,7 +241,26 @@ public class CommunityPageController implements PostParent {
         } else {
             reloadCards();
         }
+    }
 
+    public void loadFiltered() {
+        String text = searchBar.getText();
+
+        if (text == null || text.isEmpty()) {
+            reloadCards();
+            return ;
+        }
+        postService.getPostsByTagsAsync(searchBar.getText(), (filteredPosts) -> {
+            postsList.clear();
+            cardTiles.getChildren().clear();
+
+            postsList = filteredPosts;
+            loadCards(); // UI update
+            progressIndicator.setVisible(false);
+        }, (error) -> {
+            progressIndicator.setVisible(false);
+            error.printStackTrace();
+        });
     }
 
     @FXML
