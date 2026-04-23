@@ -181,6 +181,17 @@ public class PostService {
         General.setTask(task, onSucceeded, onFailed, executor);
     }
 
+    public void searchPostByIdAsync(int postId, Consumer<Post> onSucceded, Consumer<Throwable> onFailed) {
+        Task<Post> task = new Task<Post>() {
+            @Override
+            protected Post call() throws Exception {
+                return postDatabase.searchPostById(postId);
+            }
+        };
+
+        General.setTask(task, onSucceded, onFailed, executor);
+    }
+
     public void searchPostAsync(
             Integer userId,
             String content,

@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -22,6 +23,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import utils.General;
 import utils.Session;
@@ -205,6 +208,17 @@ public class AdminMainController implements PostParent {
         resolvedColumn.setCellValueFactory(new PropertyValueFactory<>("how_its_resolved"));
 
         adminPageTable.getColumns().addAll(idColumn, postColumn, nameColumn, statusColumn, reasonColumn, resolvedColumn);
+
+        adminPageTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && adminPageTable.getSelectionModel().getSelectedItem() != null && adminPageTable.getSelectionModel().getSelectedItem() instanceof Report) {
+                // Get the selected data
+                AdminEntity selectedItem = adminPageTable.getSelectionModel().getSelectedItem();
+
+                // Summon the popup
+                System.out.println("report selected");
+                showPopup(((Report) selectedItem).getPostId());
+            }
+        });
 
         try {
             //generate Input Boxes
@@ -724,5 +738,43 @@ public class AdminMainController implements PostParent {
         } else {
             General.getInfoAlert("No more Posts");
         }
+    }
+
+    public void showPopup(int postId) {
+        progressIndicator.setVisible(true);
+        postService.searchPostByIdAsync(postId, (post) -> {
+            if (post != null) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/card.fxml"));
+                    Parent card = loader.load();
+
+                    CardController controller = loader.getController();
+                    controller.setParentController(this);
+
+                    userService.getUserName(post.getUserId(), (name) -> {
+                        controller.setComPageOverlayController(comPageOverlayController);
+                        controller.setPost(post);
+                        controller.setData(name, post.getContent(), post.getCreatedAt(), post.getLikeCount(), post.getCommentCount(), post.getImageLink());
+                        controller.setButtonBarVisibility(false);
+
+                        Stage stage = new Stage();
+                        stage.setTitle("Post Info");
+                        stage.initModality(Modality.APPLICATION_MODAL); // Block main window
+                        stage.setScene(new Scene(card));
+
+                        stage.showAndWait();
+                    }, (error) -> {
+                        error.printStackTrace();
+                        progressIndicator.setVisible(false);
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            progressIndicator.setVisible(false);
+        }, (error) -> {
+            progressIndicator.setVisible(false);
+            error.printStackTrace();
+        });
     }
 }

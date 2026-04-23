@@ -65,6 +65,10 @@ public class CardController {
         this.post = post;
     }
 
+    public void setButtonBarVisibility(Boolean value) {
+        buttonBar.setVisible(value);
+    }
+
     // Use this to set the data and contain of each card.
     public void setData(String name, String content, Timestamp date, Integer likeCount, Integer commentCount, String filePath) {
         if (post == null) {
@@ -152,7 +156,7 @@ public class CardController {
         postService.likePost(post, (value) -> {
             parentController.setProgressIndicatorVisibility(false);
             if (value) {
-                likeNumLabel.setText(General.formatLikes(Integer.valueOf(likeNumLabel.getText()) + 1));
+                likeNumLabel.setText(General.formatLikes(Integer.parseInt(likeNumLabel.getText()) + 1));
             }
         }, (error) -> {
             parentController.setProgressIndicatorVisibility(false);

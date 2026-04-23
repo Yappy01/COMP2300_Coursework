@@ -296,6 +296,26 @@ public class ComPostDatabase {
         return false;
     }
 
+    public Post searchPostById(int postId) {
+        String sql = "SELECT * FROM posts WHERE postid = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, postId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return extractPost(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public ArrayList<Post> searchPosts(
             Integer userId,
             String content,
