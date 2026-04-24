@@ -4,22 +4,35 @@ import Models.Quiz;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class QuizResultController {
 
     @FXML private Label resultLabel;
     @FXML private Label usernameLbl;
+    @FXML private ToggleGroup questions;
 
-    private QuizQuestionController quizQuestionController;
 
     @FXML public void initialize() {
         usernameLbl.setText(utils.Session.getInstance().getUserName());
+        questions.getToggles().forEach(toggle -> {
+            if (toggle instanceof Node node) {
+                node.setDisable(true);
+            }
+        });
     };
 
     public void show_result(int score){
@@ -44,7 +57,7 @@ public class QuizResultController {
     }
 
     @FXML void gotoQuestionPage(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/pages/quizQuestion.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/pages/homePage.fxml"));
         Stage stage = (Stage) resultLabel.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

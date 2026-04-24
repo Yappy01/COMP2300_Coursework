@@ -31,4 +31,12 @@ public class AdminPage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    @Override
+    public void stop() {
+        System.out.println("Stage is closing. Shutting down.");
+        System.exit(0);
+    }
+
+
 }
