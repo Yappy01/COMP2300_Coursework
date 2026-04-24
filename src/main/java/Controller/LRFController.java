@@ -114,7 +114,6 @@ public class LRFController {
                     if (value){
                         //alert for login
                         General.getInfoAlert("Successfully Login!");
-                        General.getInfoAlert("Login Successful");
 
                         //call init, assign_usertag and setNoteToSelf
                         Session.startSession(userService.searchByUsername(si_username.getText()));
