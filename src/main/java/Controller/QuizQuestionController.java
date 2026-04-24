@@ -30,10 +30,6 @@ public class QuizQuestionController {
     private final QuizService quizService = new QuizService();
     private int quizCategory;
 
-//    public void initialize() {
-//        // Example: Loading category 1 (STI Quiz)
-//        loadQuiz();
-//    }
 
     @FXML public void initialize() {
         usernameLbl.setText(utils.Session.getInstance().getUserName());
@@ -95,8 +91,6 @@ public class QuizQuestionController {
     }
 
     private void showQuestion(int index) {
-//        System.out.println(activeQuizzes.size());
-//        System.out.println("current Question index in show question: " + currentQuestionIndex);
 
         Quiz q = activeQuizzes.get(index);
 
@@ -127,25 +121,17 @@ public class QuizQuestionController {
         if (selected != null) {
             // Save answer
             userAnswers.put(currentQuestionIndex, selected.getText());
-//            if (activeQuizzes.get(currentQuestionIndex).getCorrectAnswer().equals(userAnswers.get(currentQuestionIndex))) {
-////                utils.General.getInfoAlert("You have selected the correct answer.");
-//
-//                if (currentQuestionIndex < 7) {
-//                    currentQuestionIndex++;
-//                    questions.selectToggle(questions.getToggles().get(currentQuestionIndex));
-//                    showQuestion(currentQuestionIndex);
-//                }
-//            }else{
-//                utils.General.getInfoAlert("You have not selected the correct answer.");
-//            }
+            if (activeQuizzes.get(currentQuestionIndex).getCorrectAnswer().equals(userAnswers.get(currentQuestionIndex))) {
 
-            if (currentQuestionIndex < 7) {
-                currentQuestionIndex++;
-//                System.out.println("current Question index: " + currentQuestionIndex);
-                questions.selectToggle(questions.getToggles().get(currentQuestionIndex));
-                showQuestion(currentQuestionIndex);
+                if (currentQuestionIndex < 7) {
+                    currentQuestionIndex++;
+                    questions.selectToggle(questions.getToggles().get(currentQuestionIndex));
+                    showQuestion(currentQuestionIndex);
+                }
+            }else{
+                utils.General.getInfoAlert("You have not selected the correct answer.");
             }
-//            userAnswers.get(currentQuestionIndex);
+
         }
     }
 
@@ -158,32 +144,17 @@ public class QuizQuestionController {
             }
         }
 
-
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/quizResult.fxml"));
         Parent root = loader.load();
         QuizResultController targetController = loader.getController();
-
         targetController.show_result(score);
 
         Stage stage = (Stage) (option1TBtn.getScene().getWindow());
         stage.setScene(new Scene(root));
         stage.show();
 
-        // Logic to switch to result view and display "score/8" [cite: 81]
     }
 
-//    public void clearAnswers() throws IOException {
-//        userAnswers.clear();
-//        QuizMainController quizMainController = new QuizMainController();
-//        ActionEvent event = new ActionEvent();
-//        quizMainController.handleQuizSelection(event);
-//        setQuizzes(activeQuizzes);
-//
-//        if (options != null) {
-//            options.selectToggle(null);
-//        }
-//    }
 
     @FXML void goToHomepage(ActionEvent event) throws IOException {
 //        Parent root = FXMLLoader.load(
