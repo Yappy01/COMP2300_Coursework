@@ -91,7 +91,7 @@
                                 </BorderPane>
                             </content>
                         </ScrollPane>
-                        <Button mnemonicParsing="false" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button mnemonicParsing="false" onAction="#addButton" styleClass="add-button" StackPane.alignment="BOTTOM_RIGHT">
                             <StackPane.margin>
                                 <Insets bottom="50.0" right="50.0" />
                             </StackPane.margin>

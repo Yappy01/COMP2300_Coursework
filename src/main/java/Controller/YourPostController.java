@@ -110,6 +110,11 @@ public class YourPostController implements PostParent{
         stage.show();
     }
 
+    @FXML
+    public void addButton() {
+        setOverlayBVisibility(true);
+    }
+
     public void goToPIPage(ActionEvent event) throws IOException {
         UserProfileController.gotoPIPage(event);
     }
