@@ -37,7 +37,6 @@ public class ReportDatabase {
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
-                System.out.println("Report marked as resolved successfully.");
                 return true;
             }
         } catch (SQLException e) {

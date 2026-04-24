@@ -75,6 +75,5 @@ public class General {
         Tooltip tooltip = new Tooltip(text);
         tooltip.setWrapText(true);
         button.setTooltip(tooltip);
-        System.out.println("Tooltip set");
     }
 }

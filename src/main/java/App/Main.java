@@ -1,36 +1,30 @@
 package App;
-import utils.DBConnection;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import utils.UIConstant;
 
-import java.sql.*;
+public class Main extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/LRFDocument_updated.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root,UIConstant.login_WIDTH,UIConstant.login_HEIGHT);
+        primaryStage.setTitle("Sexual Health Application");
+        primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+    }
 
-public class Main {
+    @Override
+    public void stop() {
+        System.out.println("Stage is closing. Shutting down.");
+        System.exit(0);
+    }
     public static void main(String[] args) {
-
-        try (Connection conn = DBConnection.getConnection()) {
-            System.out.println("Connected to Neon successfully!");
-
-            // Example query
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                    "SELECT * FROM users"
-            );
-
-            while (rs.next()) {
-                System.out.println("Tables: " + rs.getString("name"));
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public static long startTimer() {
-        return System.nanoTime();
+        launch(args);
     }
 
-    public static void stopTimer(long start) {
-        long end = System.nanoTime();
-        long durationMs = (end - start) / 1_000_000;
-
-        System.out.println("Connection opened in " + durationMs + " ms");
-    }
 }

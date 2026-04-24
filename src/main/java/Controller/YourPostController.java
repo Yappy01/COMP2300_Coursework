@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -40,6 +41,8 @@ public class YourPostController implements PostParent{
     private Parent commonTopBar;
     @FXML
     private CommonTopBarController commonTopBarController;
+    @FXML
+    private ToggleButton currentPageButton;
     private ComPageOverlayController comPageOverlayController;
     private OverlayBController overlayBController;
     private List<Post> postsList = new ArrayList<>();
@@ -116,6 +119,8 @@ public class YourPostController implements PostParent{
         loadMoreButton.setVisible(false);
         progressIndicator.setVisible(false);
         progressIndicator.setProgress(-1);
+        currentPageButton.setSelected(true);
+
 
         try {
             FXMLLoader overlayLoader = new FXMLLoader(getClass().getResource("/fxml/components/comPostOverlay.fxml"));

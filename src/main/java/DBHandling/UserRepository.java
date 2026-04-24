@@ -25,13 +25,11 @@ public class UserRepository {
 
             insert_user_stmt.executeUpdate();
 
-            System.out.println("Registration Successful");
 //            conn.close();
             return true;
         }catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("User not registered");
         return false;
     }
 
@@ -48,9 +46,7 @@ public class UserRepository {
                     String stored_password = rs.getString("password");
 
                     boolean isMatch = BCrypt.checkpw(password, stored_password);
-                    System.out.println("Does it match? " + isMatch);
                     if (BCrypt.checkpw(password, stored_password)) {
-                        System.out.println("Logged in successfully");
 //                        conn.close();
                         return true;
                     }
@@ -59,7 +55,6 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Invalid username or password");
         return false;
 
     }
@@ -70,7 +65,6 @@ public class UserRepository {
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement search_user_stmt = conn.prepareStatement(query)) {
-            System.out.println("Looking for user with name and email");
 
             search_user_stmt.setString(1, username.trim());
             search_user_stmt.setString(2, email);
@@ -78,11 +72,9 @@ public class UserRepository {
 
             try (ResultSet rs = search_user_stmt.executeQuery()) {
                 if (rs.next()) {
-                    System.out.println("User found");
                     return true;
 
                 }else{
-                    System.out.println("User not found");
                     return false;
                 }
             }catch(SQLException e) {
@@ -104,13 +96,11 @@ public class UserRepository {
             update_user_stmt.setString(2, username.trim());
             update_user_stmt.executeUpdate();
 
-            System.out.println("Password changed successfully");
             return true;
 
         }catch(SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Password not changed");
         return false;
     }
 
@@ -123,7 +113,6 @@ public class UserRepository {
             update_user_stmt.setString(1, note.trim());
             update_user_stmt.setString(2, username.trim());
             update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
             return true;
 
         }catch(SQLException e) {
@@ -277,7 +266,6 @@ public class UserRepository {
             update_user_stmt.setString(3, gender);
             update_user_stmt.setInt(4,userid);
             update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
             return true;
 
         }catch(SQLException e) {
@@ -298,7 +286,6 @@ public class UserRepository {
             update_user_stmt.setString(4, injuriesillness);
             update_user_stmt.setInt(5, userid);
             update_user_stmt.executeUpdate();
-            System.out.println("Note updated in the database successfully");
             return true;
 
         }catch(SQLException e) {

@@ -34,16 +34,6 @@ public class StiEntry extends AdminEntity{
         this.riskLevel = riskLevel;
     }
 
-    // Methods
-
-    public void getStiDetails() {
-        System.out.println("STI ID: " + stiId);
-        System.out.println("Name: " + name);
-        System.out.println("Symptoms: " + symptoms);
-        System.out.println("Prevention: " + prevention);
-        System.out.println("Treatment: " + treatment);
-        System.out.println("Risk Level: " + riskLevel);
-    }
 
     public int getStiId() {
         return stiId;

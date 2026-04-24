@@ -1,10 +1,8 @@
 package Controller;
 
-import DBHandling.StiDatabase;
 import Service.StiService;
 import Service.UserService;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,19 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import utils.General;
 import utils.Session;
 
-import javax.imageio.event.IIOWriteProgressListener;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
 public class HomePageController {
-    @FXML private AnchorPane buttonLayout;
     @FXML private ProgressIndicator progressIndicator;
     //all textfields, passwordfields and button in the fxml has been recorded here
     //even if they are not all used
@@ -52,6 +47,10 @@ public class HomePageController {
         this.assign_usertag(Session.getInstance().getUserName());
         if (Session.getInstance().getUser().getRole().equals("Admin")) {
             adminButton.setVisible(true);
+            adminButton.setManaged(true);
+        } else {
+            adminButton.setVisible(false);
+            adminButton.setManaged(false);
         }
         this.setNoteToSelf();
     }

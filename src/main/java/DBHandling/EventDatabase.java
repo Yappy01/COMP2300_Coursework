@@ -24,11 +24,10 @@ public class EventDatabase {
             pstmt.setInt(5, typeid); //foreign key
 
             pstmt.executeUpdate();
-            System.out.println("Event successfully recorded!");
             return true;
 
         } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -65,7 +64,6 @@ public class EventDatabase {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Database error: " + e.getMessage());
             e.printStackTrace();
         }
         return userEventList;
@@ -84,7 +82,6 @@ public class EventDatabase {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            System.err.println("Delete error: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

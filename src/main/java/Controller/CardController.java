@@ -1,11 +1,9 @@
 package Controller;
 
 import Models.Post;
-import Models.User;
 import Service.PostService;
 import Service.UserService;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
@@ -13,9 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import utils.General;
-import utils.Session;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -100,7 +96,6 @@ public class CardController {
             editButton.setVisible(false);
         }
         if (!filePath.equals("")) {
-            System.out.println(filePath);
             Image image = new Image(filePath);
             this.contentImage.setImage(image);
             contentImage.setVisible(true);
@@ -112,9 +107,6 @@ public class CardController {
             if (parentController instanceof AdminMainController) {
                 String text = General.getTextInput("Deletion of user post", "Please Type Reason for Deletion: ");
                 postService.tempDeleteAsync(post.getPostId(), text,(value) -> {
-                    if (value) {
-                        System.out.println("Successfully deleted");
-                    }
                     parentController.setProgressIndicatorVisibility(false);
                     parentController.reloadCards();
                 }, (error) -> {
@@ -123,9 +115,6 @@ public class CardController {
                 });
             } else {
                 postService.deletePostAsync(post, (value) -> {
-                    if (value) {
-                        System.out.println("Successfully deleted");
-                    }
                     parentController.setProgressIndicatorVisibility(false);
                     parentController.reloadCards();
                 }, (error) -> {

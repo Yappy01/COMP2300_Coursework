@@ -50,7 +50,7 @@
                                         <ToggleGroup fx:id="userToggle" />
                                     </toggleGroup>
                                 </ToggleButton>
-                                <ToggleButton mnemonicParsing="false" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$userToggle" wrapText="true">
+                                <ToggleButton fx:id="currentPageButton" mnemonicParsing="false" styleClass="sidebar-button-medium" text="Your Post" textAlignment="CENTER" toggleGroup="$userToggle" wrapText="true">
                                     <font>
                                         <Font size="14.0" />
                                     </font>

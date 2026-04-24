@@ -145,7 +145,6 @@ public class ComPostDatabase {
             // Set the value for the placeholder
             stmt.setInt(1, limit);
 
-            System.out.println(stmt);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -401,7 +400,6 @@ public class ComPostDatabase {
             } catch (SQLException e) {
                 e.printStackTrace();
                 conn.rollback(); // Undo everything if user already liked it (Primary Key violation)
-                System.out.println("User already liked this post or error occurred.");
                 return false;
             }
         } catch (SQLException e) {

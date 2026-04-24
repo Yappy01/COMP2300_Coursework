@@ -103,9 +103,6 @@ public class ComPageOverlayController {
         String text = General.getTextInput("Reporting Post", "Please Type Reason for Reporting Post: ");
 
         reportService.reportPost(post, "report", (value) -> {
-            if (value) {
-                System.out.println("Successfully reported post");
-            }
             parentController.setProgressIndicatorVisibility(false);
             parentController.reloadCards();
             }, (error) -> {

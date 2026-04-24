@@ -92,7 +92,6 @@ public class OverlayBController {
             controller.setImagePreview(imagePreview);
             insertButton.setText("edit");
             insertButton.setOnAction(e -> {
-                System.out.println("SUCCESSFULLY EDITED");
                 editPost();
             });
 
@@ -106,7 +105,6 @@ public class OverlayBController {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed to load file label UI.");
         }
     }
 
@@ -140,10 +138,7 @@ public class OverlayBController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to load file label UI.");
             }
-        } else {
-            System.out.println("No file selected.");
         }
     }
 
@@ -273,7 +268,6 @@ public class OverlayBController {
             imagePreview.setVisible(false);
             imagePreview.setManaged(false);
         } else  {
-            System.out.println("visible");
             imagePreview.setVisible(true);
             imagePreview.setManaged(true);
         }

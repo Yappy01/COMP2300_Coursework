@@ -5,7 +5,6 @@ import Service.PostService;
 import Service.ReportService;
 import Service.StiService;
 import Service.UserService;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -31,7 +30,6 @@ import utils.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -215,7 +213,6 @@ public class AdminMainController implements PostParent {
                 AdminEntity selectedItem = adminPageTable.getSelectionModel().getSelectedItem();
 
                 // Summon the popup
-                System.out.println("report selected");
                 showPopup(((Report) selectedItem).getPostId());
             }
         });
@@ -360,20 +357,12 @@ public class AdminMainController implements PostParent {
     
 
     public <T> void loadTableData(Class<T> type) {
-        System.out.println("LOad data");
         if (type == User.class) {
-            System.out.println("Loading user data");
             progressIndicator.setVisible(true);
             userService.getAllUserAsync((allUsers) -> {
                 progressIndicator.setVisible(false);
 
                 originalMasterData.setAll(allUsers);
-
-                System.out.println("1. Raw data size: " + allUsers.size());
-                System.out.println("2. Master list size: " + originalMasterData.size());
-                System.out.println("3. Table items size: " + adminPageTable.getItems().size());
-
-                System.out.println(originalMasterData.size());
 
                 // Update UI Components
                 clearInputs();
@@ -382,16 +371,11 @@ public class AdminMainController implements PostParent {
                 error.printStackTrace();
             });
         } else if (type == StiEntry.class) {
-            System.out.println("Loading Sti Data");
             progressIndicator.setVisible(true);
             stiService.getAllAsync((allStis) -> {
                 progressIndicator.setVisible(false);
 
                 originalMasterData.setAll(allStis);
-
-                System.out.println("1. Raw data size: " + allStis.size());
-                System.out.println("2. Master list size: " + originalMasterData.size());
-                System.out.println("3. Table items size: " + adminPageTable.getItems().size());
 
                 clearInputs();
             }, (error) -> {
@@ -399,17 +383,11 @@ public class AdminMainController implements PostParent {
                 progressIndicator.setVisible(false);
             });
         } else if (type == Report.class) {
-            System.out.println("Loading report data");
             progressIndicator.setVisible(true);
             reportService.getAllReportAsync((allReports) -> {
                 progressIndicator.setVisible(false);
 
                 originalMasterData.setAll(allReports);
-                System.out.println(originalMasterData.size());
-
-                System.out.println("1. Raw data size: " + allReports.size());
-                System.out.println("2. Master list size: " + originalMasterData.size());
-                System.out.println("3. Table items size: " + adminPageTable.getItems().size());
 
                 clearInputs();
             }, (error) -> {
@@ -589,7 +567,6 @@ public class AdminMainController implements PostParent {
         reloadCards();
         postScrollPage.vvalueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() == 1.0) {
-                System.out.println("At the bottom!");
                 loadMoreButton.setVisible(true);
             }
         });

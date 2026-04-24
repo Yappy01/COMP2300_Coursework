@@ -3,24 +3,18 @@ package Service;
 import DBHandling.ComPostDatabase;
 import Models.Comment;
 import Models.Post;
-import Models.Tag;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import javafx.concurrent.Task;
-import javafx.geometry.Pos;
-import javafx.scene.image.Image;
-import net.bytebuddy.implementation.bytecode.Throw;
 import utils.DBConnection;
 import utils.General;
 import utils.Session;
 
-import javax.swing.text.TableView;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -114,7 +108,6 @@ public class PostService {
                     String publicId = (String) uploadResult.get("public_id");
                     post.setImageLink(imageUrl); // 🔥 store URL, not file path
                     post.setPublicId(publicId);
-                    System.out.println(publicId + " there  HELLLLOOO\n");
                 }
                 return postDatabase.insertPost(post);
             }
@@ -147,7 +140,6 @@ public class PostService {
                     if (!"ok".equals(status) && !"not found".equals(status)) {
                         throw new RuntimeException("Cloudinary deletion failed: " + status);
                     }
-                    System.out.println(result);
                 }
                 return postDatabase.delete(post.getPostId());
             }
@@ -163,7 +155,6 @@ public class PostService {
                 if (selectedFile != null) {
                     if (!post.getPublicId().isEmpty()) {
                         Map result = cloudinary.uploader().destroy(post.getPublicId(), ObjectUtils.emptyMap());
-                        System.out.println(result);
                     }
 
                     Map uploadResult = cloudinary.uploader().upload(selectedFile, ObjectUtils.emptyMap());

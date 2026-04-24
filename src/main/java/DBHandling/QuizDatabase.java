@@ -28,11 +28,9 @@ public class QuizDatabase {
                             rs.getString("answer4"),
                             rs.getString("correctAnswer")
                     ));
-//                    System.out.println(rs.getString("correctAnswer"));
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Quiz Database error: " + e.getMessage());
             e.printStackTrace();
         }
 //        System.out.println("Quiz Database returned from quiz database: " + quizList);

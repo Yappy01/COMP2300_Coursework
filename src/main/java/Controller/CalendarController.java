@@ -1,10 +1,8 @@
 package Controller;
 
 import Service.EventService;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import utils.General;
@@ -57,7 +55,6 @@ public class CalendarController implements Initializable {
         LocalDate date = datePicker.getValue();
         // Validate Inputs
         if (date == null || hourBox.getValue() == null || minuteBox.getValue() == null || eventTitle.getText().isEmpty()) {
-            System.out.println("Error: Please fill all fields.");
             return;
         }
 
@@ -73,7 +70,6 @@ public class CalendarController implements Initializable {
         //Create LocalDateTime then convert to SQL Timestamp
         LocalDateTime ldt = LocalDateTime.of(date, LocalTime.of(hour, minute));
         Timestamp sqlTimestamp = Timestamp.valueOf(ldt);
-        System.out.println(ldt);
 
             // Save to database
             eventService.saveEventAsync(
@@ -85,7 +81,6 @@ public class CalendarController implements Initializable {
                 () -> {
                     userProfileController.setProgressIndicatorVisible(false);
                     clearFields();
-                    System.out.println("Event Saved Successfully!");
                     General.getInfoAlert("Event Saved!");
                     handleExit();
                 },

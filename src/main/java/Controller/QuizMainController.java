@@ -61,8 +61,6 @@ public class QuizMainController {
                         utils.General.getErrorAlert("Quiz was not loaded");
                     });
 
-        } else {
-            System.out.println("Source was not a MenuItem: " + source.getClass());
         }
     }
 
@@ -87,7 +85,6 @@ public class QuizMainController {
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            System.err.println("Could not load quizQuestion.fxml: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -38,6 +38,7 @@ public class UserProfileController {
     @FXML private TextField piTextfield;
     @FXML private VBox eventContainer;
     @FXML private ProgressIndicator progressIndicator;
+    @FXML private ToggleButton informationPageButton;
 
 
     private final UserService userService = new UserService();
@@ -51,9 +52,10 @@ public class UserProfileController {
 
     @FXML
     public void initialize(){
-        System.out.println("UserProfileController initialize");
         progressIndicator.setVisible(false);
         populateProfileFields();
+        informationPageButton.setSelected(true);
+
 
         visitsTreatments.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
             if (newToggle != null) {
@@ -187,7 +189,6 @@ public class UserProfileController {
 
     //display all events unfiltered in database
     public void displayEventsFromDatabase() {
-        System.out.println("populating list of events");
         progressIndicator.setVisible(true);
         eventContainer.getChildren().clear();
         UserProfileController currentController = this;
@@ -196,8 +197,7 @@ public class UserProfileController {
                     progressIndicator.setVisible(false);
                     try {
                         for (UserEvent userEvent : userEvents) {
-                            System.out.println("trying to load event");
-                            // Adding "/App/" before the filename
+                            // Adding "/Main/" before the filename
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/eventBox.fxml"));
                             Node node = loader.load();
 
@@ -274,7 +274,6 @@ public class UserProfileController {
         }
     public void refreshEvents() {
         if (eventContainer == null) {
-            System.err.println("Critical Error: eventContainer is null! Check FXML fx:id.");
             return;
         }
         eventContainer.getChildren().clear();
@@ -298,8 +297,6 @@ public class UserProfileController {
             if (selected != null && selected.getText().equals("PLANNED TREATMENTS")) {
                 typeToCreate = 2;
             }
-
-            System.out.println("typeToCreate: " + typeToCreate);
 
             calendarController.setInitialType(typeToCreate);
             calendarController.setUserProfileController(this);

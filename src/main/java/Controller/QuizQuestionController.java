@@ -57,8 +57,6 @@ public class QuizQuestionController {
     }
 
     public void loadQuiz() {
-        System.out.println("Loading Quiz");
-        System.out.println("quizCategory: " + quizCategory);
 
         quizService.getQuizzesAsync(quizCategory, allQuizzes -> {
             // Shuffle and pick exactly 8 questions
